@@ -124,3 +124,5 @@ Example of upsampling : Ling and Lee (1998) -> adding random sample to the minor
 
 #### 16.8: Cost sensitive Trainig:
 
+
+
