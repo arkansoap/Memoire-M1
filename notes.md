@@ -22,8 +22,8 @@ cuttoff (seuil) ?? \
 case weights (pondération) \
 straightforward (simple, direct, explicite) \
 roughly (grossièrement, brutalement) \
-plagues (tourmenter, harceler)
-
+plagues (tourmenter, harceler) \ 
+towards (envers) \
 
 ## Notes de lecture ch.16:
 
@@ -124,5 +124,14 @@ Example of upsampling : Ling and Lee (1998) -> adding random sample to the minor
 
 #### 16.8: Cost sensitive Trainig:
 
+Definition:
 
+> Instead of optimizing the typical performance measure, such as accuracy or impurity, some models can alternatively optimize a cost or loss function that diﬀerentially weights speciﬁc types of errors.
 
+Example : 
+
+>  misclassifying true events (false negatives) is X times as costly as incorrectly predicting nonevents (false positives).
+
+Voc : Bias the model toward less frequent classes  -> ??
+
+SVM model ??
