@@ -12,6 +12,21 @@
 - rose > caret , over and under sampling
 - code propre
 
+
+## Deuxieme visio : 
+
+- bbase de données 
+
+spotifiy, recidivist et cate bancaire haut de gamme, detection de fraude, taux de chum , kagle . base des collegues . 
+
+- models
+
+regression logistic, lda, rf and boosting. SVM pourquoi pas ? ... ch 13 et 14 -> se concentrer sur les modèles connus. 
+
+- autres axes solutions
+
+SMOTE (the r journal) et ROSE 
+
 ## Vocabulaire:
 amounts (quantités) \
 overwhelmed (subergé) \
@@ -135,3 +150,4 @@ Example :
 Voc : Bias the model toward less frequent classes  -> ??
 
 SVM model ??
+
