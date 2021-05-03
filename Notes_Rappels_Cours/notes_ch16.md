@@ -1,54 +1,12 @@
-#  modèles prédictifs de classification dans le cadre d'un échantillon non équilibré
-  * présentation de la problématique
-  * présentation de solutions
-  * application sous R et comparaison des résultats sur différentes bases de données
-  * référence de départ : C16-Remedies for Severe Class Imbalance, Applied Predictive Modeling, 
-    Max Kuhn and Kjell Johnson
-
-
-## Premier Visio :
-- surechantillonage et souséchantillonage
-- trouver des bases de données. 
-- rose > caret , over and under sampling
-- code propre
-
-
-## Deuxieme visio : 
-
-- bbase de données 
-
-spotifiy, recidivist et cate bancaire haut de gamme, detection de fraude, taux de chum , kagle . base des collegues . 
-
-- models
-
-regression logistic, lda, rf and boosting. SVM pourquoi pas ? ... ch 13 et 14 -> se concentrer sur les modèles connus. 
-
-- autres axes solutions
-
-SMOTE (the r journal) et ROSE 
-
-## Vocabulaire:
-amounts (quantités) \
-overwhelmed (subergé) \
-overcoming (suronter, résoudre) \
-derived (dérivé, issu, tiré, déduit) \
-prior (distribution) (préalable, initial) ?? \
-cuttoff (seuil) ?? \
-case weights (pondération) \
-straightforward (simple, direct, explicite) \
-roughly (grossièrement, brutalement) \
-plagues (tourmenter, harceler) \ 
-towards (envers) \
-
-## Notes de lecture ch.16:
+# Notes de lecture ch.16:
 
 - measure :Accuracy, Kappa??, Sensitivity, specificity, ROC Auc
 
 - good specificity but bad sensitivity -> same in Spotify study?
 
-### Résumé des sous parties et questionnement :
+# Résumé des sous parties et questionnement :
 
-#### 16.3: Model tuning 
+## 16.3: Model tuning 
 > The simplest approach to counteracting the negative eﬀects of class imbalance is to tune the model to maximize the accuracy of the minority class(es).
 
 Tuning the model : what paremetrs of which type ? only for RF i think
@@ -58,7 +16,7 @@ Didn't work for spotify or did i make it bad?
 
 Exactly the same for my works on spotify, not enouhgh high 
 
-#### 16.4: Alternate Cutoffs
+## 16.4: Alternate Cutoffs
 
 Did i really understand what it is?
 
@@ -85,7 +43,7 @@ cutoﬀ that is used to create the ROC curve.
 
 Use a cutoff of 0,064 ?? (am i talking of cuttoff in my spotify works?)
 
-#### 16.5: Adjusting Prior probabilities 
+## 16.5: Adjusting Prior probabilities 
 
 Did i confuse beetween prior probabilities and alternate cutoffs? I'm a bit lost... i remember Mr Piller called it prior sample what it seems to be alternate cuttoff (i have to check it!!)
 
@@ -105,7 +63,7 @@ I'm confused... priors probabilities or distribution.
 
 > For example, new priors of 60 % for the insured and 40 % for the uninsured in the FDA model increase the probability of having insurance signiﬁcantly.
 
-#### 16.6: Unequal Case Weights : 
+## 16.6: Unequal Case Weights : 
 
 For many predictive models of classification, this technic is possible. 
 
@@ -137,7 +95,7 @@ Example of upsampling : Ling and Lee (1998) -> adding random sample to the minor
 
 ... Finir de Lire cette sous partie ...
 
-#### 16.8: Cost sensitive Trainig:
+## 16.8: Cost sensitive Trainig:
 
 Definition:
 
@@ -150,4 +108,3 @@ Example :
 Voc : Bias the model toward less frequent classes  -> ??
 
 SVM model ??
-
