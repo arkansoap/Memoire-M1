@@ -18,7 +18,7 @@
 ## Deuxieme visio : 
 
 - base de données 
-spotifiy, recidivist et cate bancaire haut de gamme, detection de fraude, taux de chum , kagle . base des collegues . 
+spotifiy, recidivist, carte bancaire haut de gamme, detection de fraude, taux de chum , kagle. base des collegues . 
 - models
 regression logistic, lda, rf and boosting. SVM pourquoi pas ? ... ch 13 et 14 -> se concentrer sur les modèles connus. 
 - autres axes solutions

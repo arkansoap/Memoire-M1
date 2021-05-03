@@ -28,7 +28,7 @@ Not a real solution for our issue because it changes our definition classes
 
 Unless we do it with care / i don't think it is a good solution
 
-> There may be situations where the sensitivity/speciﬁcity trade-oﬀ can be accomplished without severely compromising the accuracy of the majority class (which, of course, depends on the context of the problem).
+> There may be situations where the sensitivity/speciﬁcity trade-oﬀ can be accomplished without severely compromising the accuracy of the majority class (which, of course, depends on the context of the problem)
 
 Interesting if : 
 

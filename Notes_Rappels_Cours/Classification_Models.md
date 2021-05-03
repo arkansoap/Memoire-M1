@@ -8,13 +8,13 @@
 
 - Extrait du cours de Mr Piller :
 
-<img src="FDA1.png" width="50%" height="50%">
+<img src="img/FDA1.png" width="50%" height="50%">
 
 - Roots of LDA : Fisher(1936) and Wells(1939)
 
     * wells approach (from Max kun's book):
 
-    <img src="WelchApproach.png" width="50%" height="50%">
+    <img src="img/WelchApproach.png" width="50%" height="50%">
 
     > Since a single predictor is used for this example, it belies the complexity of
     using Bayes’ Rule in practice. For classiﬁcation, the number of predictors is
@@ -40,7 +40,7 @@
 
 - from max kuhn's book :
 
-<img src="log.png" width="50%" height="50%">
+<img src="img/log.png" width="50%" height="50%">
 
 ## K-nearest neighboors (cours Mme scholler)
 
@@ -48,7 +48,7 @@
 
 - From MAx kuhn's book :
 
-<img src="KNN.png" width="50%" height="50%">
+<img src="img/KNN.png" width="50%" height="50%">
 
 in the K-nearest neighbor classiﬁcation model, a new sample is predicted based on the K-closest data points in the training set. 
 
@@ -60,7 +60,7 @@ in the K-nearest neighbor classiﬁcation model, a new sample is predicted based
 
  the original problem may be stated in a finite-dimensional space, it often happens that the sets to discriminate are not linearly separable in that space. For this reason, it was proposed[5] that the original finite-dimensional space be mapped into a much higher-dimensional space, presumably making the separation easier in that space
 
-<img src="svm.png" width="30%" height="30%">
+<img src="img/svm.png" width="30%" height="30%">
 
 - *Hard margin* : If the training data is linearly separable and *soft margin* to cases in which the data are not linearly separable
 
@@ -82,7 +82,7 @@ In this case, two-dimensional predictor space is cut into three regions (or term
     if Predictor A >= 0.13 and Predictor B < 0.197 then Class = 2
     if Predictor A < 0.13 then Class = 2
 
-<img src="tree.png" width="30%" height="30%">
+<img src="img/tree.png" width="30%" height="30%">
 
 ## Random Forest (voir cours de Mme Scholler)
 
