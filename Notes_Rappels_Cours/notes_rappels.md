@@ -24,6 +24,24 @@ regression logistic, lda, rf and boosting. SVM pourquoi pas ? ... ch 13 et 14 ->
 - autres axes solutions
 SMOTE (the r journal) et ROSE 
 
+## Question pour visio 3 :
+
+- choix base données préselectionnées :
+  - covtype : classer type d'arbres minoritaires ? classer un type de sols ? (on peut dire prédire?)
+  - chess : classer parties nulles / classer type d'ouverture en fonctions de certains paramètres?
+- spotify : 
+un seul découpage ou plusieurs, suite des découpages H et B ou test de inaudible ?
+fonction distinct? 
+- problème ordinateur : fac ouverte jusqu' à quand ? possibilité travailler pc fac (assez puissant?)?
+- github : 
+  - base de données trop grosses. github lfs, autres ou no need de mettre à dispo les bases (liens suffisants)
+  - img n'apparaissent pas ds readme alors que ça fonctionne sous VScode
+- compréhension des modèles et techniques de correction en cours, question viendront avec le travail en dur sur les bases de données. 
+- pourquoi tydiverse ne charge pas lubridate?
+- caravan : pourquoi ça ne fonctionne pas ? explication de ces fonctions.
+- Pour un code opti et propre : tidymodels ok ou encore trop complexe ? 
+  > rsample (sampling), recipe(pre-processing), parsnip(specify the model), workflows(putting everything together), tune(tuning hyperparameters), yardsticks(evaluate the model), ...
+
 # Vocabulaire:
 amounts (quantités) \
 overwhelmed (subergé) \

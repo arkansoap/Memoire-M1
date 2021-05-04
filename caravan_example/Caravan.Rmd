@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library (tidyverse) # collection of packages for data analysis
 library(ISLR) # Data for an Introduction to Statistical Learning with Applications in R/ contain the "Caravan / insurance data" 
 library(caret) # Classification And REgression Training
-library(pROC) # n Tools for visualizing, smoothing and comparing ROC.
+library(pROC) # Tools for visualizing, smoothing and comparing ROC.
 ```
 
 # Applied Predictive modeling - Mx Kuhn, ... (16.9 Computing)
