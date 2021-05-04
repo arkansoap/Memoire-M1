@@ -17,9 +17,15 @@ knitr::opts_chunk$set(echo = TRUE)
 library (tidyverse) # collection of packages for data analysis
 library(caret) # Classification And REgression Training
 library(pROC) # Tools for visualizing, smoothing and comparing ROC.
+library(ROCR) # evaluating and visualizing classifier performance
 library(lubridate) # R commands for date-times
 library(tidymodels) #  collection of packages for modeling and machine learning using tidyverse principles. pre-process/train/validate
 library(MASS) # Modern Applied Statistics with S" for regression and classification
+library(stargazer) # Well-Formatted Regression and Summary Statistics Tables
+library(randomForest) # ensemble learning method with multitude of decision tree 
+library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en créant un cluster de cœurs.
+library(parallel) # détection du nombre de coeurs
+library(ranger) # A Fast Implementation of Random Forests
 ```
 
 # Préparation de la base de données 
@@ -96,9 +102,12 @@ Recodage de track-popularity / regroupement basse/autres :
 popularity <- cut(spot1$track_popularity, c(-1,12.5,100))
 spot_B=cbind(popularity,spot1)
 spot_B<-spot_B[,-5]
+# spot_B$popularity <- recode_factor(spot_B$popularity,
+#                                      "(12.5,100]" = "Autre",
+#                                      "(-1,12.5]" = "basse")
 spot_B$popularity <- recode_factor(spot_B$popularity,
-                                     "(12.5,100]" = "Autre",
-                                     "(-1,12.5]" = "basse")
+                                   "(12.5,100]" = 0,
+                                   "(-1,12.5]" = 1)
 ```
 
 On enlève les variables non pertinentes pour la classification : 
@@ -143,8 +152,12 @@ evaluation.transformed <- preproc.param %>% predict(evaluation)
 ```
 
 ```{r}
-# # Determine the predictor names :
-# predictors <- names(training)[names(training) != "popularity"]
+# Determine the predictor names :
+predictors <- names(training)[names(training) != "popularity"]
+```
+
+```{r}
+plot(spot_B$popularity)
 ```
 
 # LDA : Linear discriminant analysis
@@ -156,4 +169,83 @@ ModLda <- lda(popularity~., data = train.transformed)
 predLda <- ModLda %>% predict(test.transformed)
 # Model accuracy
 mean(predLda$class==test.transformed$popularity)
+```
+
+Confusion matrix and statistic (kappa) with CARET :
+
+```{r}
+confusionMatrix(predLda$class, test.transformed$popularity)
+```
+
+Courbe ROC et AUC : 
+
+```{r}
+pred <- prediction(predLda$posterior[,2], test.transformed$popularity)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, col=rainbow(10))
+segments(0,0,1,1)
+perf<-performance(pred,"auc");perf@y.values[[1]]
+
+```
+
+```{r}
+# ???
+# rocLDA <- roc(test.transformed$popularity, as.numeric(predLda$class))
+```
+
+# Logistic regression :
+
+```{r}
+logit <- glm(popularity~., data= spot_B, family=binomial(link=logit))
+```
+
+```{r}
+summary(logit)
+```
+
+```{r}
+stargazer(logit, type="text")
+# coeff duration = 0 ??
+```
+
+# random forest : 
+
+```{r}
+rf <- randomForest(popularity ~ .,
+  data = train.transformed, method = "class", 
+  parms = list(split = "gini"), na.action = na.roughfix
+)
+
+```
+
+Choix optimal des paramètres avec caret :
+
+```{r}
+# enregistrement d'un cluster avec le package doParallel
+library(doParallel)
+registerDoParallel(cores = 6)
+
+rangerGrid <- expand.grid(mtry = c(1, 2, 4, 8, 14),
+                          min.node.size = c(5, 10, 50, 100),
+                          splitrule = "gini"
+                          )
+ctrlCv <- trainControl(method = "repeatedcv", repeats = 3, number = 5)
+
+system.time(ranger.rf <- train(popularity ~ .,
+                              data = train.transformed, method = "ranger",
+                              trControl = ctrlCv, tuneGrid = rangerGrid
+                              )
+            )
+
+# fermeture du cluster
+stopImplicitCluster()
+
+# pour CV, paramètre number et reapets ? 
+# na.action not necessary because all na were ommitted
+```
+
+```{r}
+ranger.rf
+ranger.rf$bestTune
+ranger.rf$finalModel
 ```
