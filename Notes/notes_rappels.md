@@ -7,9 +7,22 @@
 
 # List of book and articles : 
 
-- ROSE : Menardi and Torelli (2013)
-- LDA : Fisher(1936) and Wells(1939)
-- ...
+- [From google scholar](https://scholar.google.fr/scholar?hl=en&as_sdt=0%2C5&q=imbalanced+class+classification+problem&btnG=)
+  - Byon Eunshin, Shrivastava, AbhishekK, Ding, Yu :A classification procedure for highly imbalanced class sizes.
+- referenced by max kuhn in his book  
+  - Menardi and Torelli (2013) : ROSE
+  - Fisher(1936) and Wells(1939) : LDA
+  - Weiss and Provost (2001a) :  priors that reﬂect the natural class imbalance will materially bias
+  predictions to the majority class
+  - Ting (2002) : One approach to rebalancing the training set would be to increase the
+  weights for the samples in the minority classes. 
+  - Artis et al. (2002) : sampling methods
+  - Ling and Li (1998) : provide one approach to up-sampling in which cases
+  from the minority classes are sampled with replacement until each class has approximately the same number.
+  - Chawla et al. (2002) : SMOTE
+  - A substantial amount of research has been conducted on the eﬀectiveness of using sampling procedures to combat skewed class distributions, most notably Weiss and Provost (2001b), Batista et al. (2004), Van Hulse et al. (2007), Burez and Van den Poel (2009), and Jeatrakul et al. (2010).
+  -  For class imbalances, unequal costs for each class can adjust the parameters to increase or decrease the sensitivity of the model to particular classes (Veropoulos et al. 1999)
+  - Johnson and Wichern (2001),  Breiman et al. (1984): COSTS
 
 # Rencontres avec Mme scholler : 
 
@@ -73,7 +86,10 @@ towards (envers) \
 sparse (clairesmée; dispersée, rare) \
 reach (portée, étendue) \
 reaching (atteindre) \
-range (gamme)
+range (gamme) \
+skewd class distribution ( distribution asymétrique des classes) \
+subset (sous-ensemble) \
+retain (conserve)
 
 **Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
 **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
