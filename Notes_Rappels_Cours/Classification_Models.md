@@ -60,9 +60,15 @@ in the K-nearest neighbor classiﬁcation model, a new sample is predicted based
 
  the original problem may be stated in a finite-dimensional space, it often happens that the sets to discriminate are not linearly separable in that space. For this reason, it was proposed[5] that the original finite-dimensional space be mapped into a much higher-dimensional space, presumably making the separation easier in that space
 
+ - The support vector machines create an optimum hyperplane that separates the training data by the maximum margin. However, sometimes we would like to allow some misclassifications while separating categories. **The SVM model has a cost function, which controls training errors and margins**. For example, a small cost creates a large margin (a soft margin) and allows more misclassifications. On the other hand, a large cost creates a narrow margin (a hard margin) and permits fewer misclassifications. In this recipe, we will illustrate how the large and small cost will affect the SVM classifier.
+
+ - Concerning the gamma value in the SVM, gamma says how far the 'reach' of each training example is (http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html), but can be just thought of as a regularization parameter. The higher the gamma, the more local the reach, and you have to watch out that your model keeps a general behavior since it is prone to adjust too much to the training examples.
+
 <img src="img/svm.png" width="30%" height="30%">
 
 - *Hard margin* : If the training data is linearly separable and *soft margin* to cases in which the data are not linearly separable
+
+- [Choice of kernel option](https://data-flair.training/blogs/svm-kernel-functions/#:~:text=SVM%20Kernel%20Functions,it%20into%20the%20required%20form.&text=These%20functions%20can%20be%20different,(RBF)%2C%20and%20sigmoid.) 
 
 ## Basic Classification Trees (voir cours de Mme Scholler)
 
@@ -85,6 +91,13 @@ In this case, two-dimensional predictor space is cut into three regions (or term
 <img src="img/tree.png" width="30%" height="30%">
 
 ## Random Forest (voir cours de Mme Scholler)
+
+ - [introduction to rf](https://www.youtube.com/watch?v=D_2LkhMJcfY)
+
+ - parameters : 
+    - mtry : number of variables randomy sampled at each split 
+    - ntree : number of tree to grow
+    - nodesize : minimum number of observation in a terminal node. setting it lower heads to trees with a larger depth which means that more splits are performed until the  terminal nodes. (default value is 1 for classification and 5 for regression -diaz urirarte and de andres 2006).
 
 ## Boosting (voir cours de Mme Scholler)
 

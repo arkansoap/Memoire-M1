@@ -1,24 +1,14 @@
 # Notes de lecture ch.16:
 
-- measure :Accuracy, Kappa??, Sensitivity, specificity, ROC Auc
-
-- good specificity but bad sensitivity -> same in Spotify study?
-
-# Résumé des sous parties et questionnement :
-
-## 16.3: Model tuning 
+## Model tuning 
 > The simplest approach to counteracting the negative eﬀects of class imbalance is to tune the model to maximize the accuracy of the minority class(es).
 
-Tuning the model : what paremetrs of which type ? only for RF i think
-Didn't work for spotify or did i make it bad?
-
+Exactly the same for my works on spotify, not enouhgh high 
 > Given that the increase in sensitivity is not high enough to be considered acceptable
 
-Exactly the same for my works on spotify, not enouhgh high 
+## Alternate Cutoffs
 
-## 16.4: Alternate Cutoffs
-
-Did i really understand what it is?
+Not efficient in my spotify works
 
 > When there are two possible outcome categories, another method for increasing the prediction accuracy of the minority class samples is to determine alternative cutoﬀs for the predicted probabilities
 
@@ -38,46 +28,36 @@ Interesting if :
 > Find the point on the ROC curve that is closest (i.e., the shortest distance) to the perfect model (with 100 % sensitivity and 100 % speciﬁcity)
 - use of Youden's J index ???
 > (see Sect. 11.2), which measures the proportion of correctly predicted samples
-for both the event and nonevent groups. This index can be computed for each
-cutoﬀ that is used to create the ROC curve.
 
-Use a cutoff of 0,064 ?? (am i talking of cuttoff in my spotify works?)
+## Adjusting Prior probabilities 
 
-## 16.5: Adjusting Prior probabilities 
+Weiss and Provost (2001a) suggest that priors that reﬂect the natural class imbalance will materially bias predictions to the majority class. Using more balanced priors or a balanced training set may help deal with a class imbalance.
 
-Did i confuse beetween prior probabilities and alternate cutoffs? I'm a bit lost... i remember Mr Piller called it prior sample what it seems to be alternate cuttoff (i have to check it!!)
-
-What does it means? It's not 50% as default 
+Many interrogations about it ???
 
 > Unless speciﬁed manually, these models typically derive the value of the priors from the training data.
 
-prior ou prior probabilities?
-
 > Using more balanced priors or a balanced training set may help deal with a class imbalance.
-
-here i understand the prior is the repartition (allocation) of the sample.
 
 > For the insurance data, the priors are 6 % and 94 % for the insured and uninsured, respectively.
 
-I'm confused... priors probabilities or distribution.
-
 > For example, new priors of 60 % for the insured and 40 % for the uninsured in the FDA model increase the probability of having insurance signiﬁcantly.
 
-## 16.6: Unequal Case Weights : 
+## Unequal Case Weights : 
 
 For many predictive models of classification, this technic is possible. 
 
 > One approach to rebalancing the training set would be to increase the weights for the samples in the minority classes (Ting 2002). 
 
-To illustrate : 
+To illustrate : (seems to be close to oversampling)
 
 >  can be interpreted as having identical duplicate data points with the exact same predictor values
 
-#### 16.7: Sampling Methods
+## Sampling Methods
 
 Very similar than case weights
 
-- With a priori knowledge of a class imbalance : 
+- With a priori knowledge of a class imbalance (?): 
 
 >  to select a training set sample to have roughly equal event rates during the initial data collection.
 
@@ -95,7 +75,7 @@ Example of upsampling : Ling and Lee (1998) -> adding random sample to the minor
 
 ... Finir de Lire cette sous partie ...
 
-## 16.8: Cost sensitive Trainig:
+## Cost sensitive Trainig:
 
 Definition:
 
@@ -105,6 +85,12 @@ Example :
 
 >  misclassifying true events (false negatives) is X times as costly as incorrectly predicting nonevents (false positives).
 
-Voc : Bias the model toward less frequent classes  -> ??
+## Over and under sampling methods
 
-SVM model ??
+## ROSE : Randomly Over Sampling Examples 
+
+Creates a sample of synthetic  data by enlarging the features space of minority and majority class examples. Operationally, the new examples are down from a conditionnal kernel density estimate of the two classes as describe in Menardi and torelli (2013)
+
+## SMOTE - Supersampling Rare Events in R : 
+
+The SMOTE function oversamples your rare event by using bootstrapping and k-nearest neighbor to synthetically create additional observations of that event. The definition of rare event is usually attributed to any outcome/dependent/target/response variable that happens less than 15% of the time. For more details about this algorithm, read the original white paper, SMOTE: Synthetic Minority Over-sampling Technique, from its creators.
