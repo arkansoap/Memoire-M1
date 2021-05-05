@@ -33,13 +33,11 @@ SMOTE (the r journal) et ROSE
 - Faire une fonction pour les mesures de performance utilisable pour tous les modèles !!!
   - roc, auc, liftcurve, kappa, accuracy
 
-- Faire une Fonction pour tuner les paramètres ?
+- Faire une Fonction pour tuner les paramètres ? / pour lancer les modèles ?
 
 - quoi en "0" et en "1" choice of positive class and negative class?
 
 - prior knowledge about data ? ( for kernel choice and other things )
-
-- summaryfunction??? twoclasssummary???
 
 - separer coeurs pr bosser pdt que r tourne / 2 sessions de r possibles ? /cb de temps je laisse tourner avant d arreter ?
 
