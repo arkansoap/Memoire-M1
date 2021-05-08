@@ -27,6 +27,7 @@ library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en cr
 library(parallel) # détection du nombre de coeurs
 library(ranger) # A Fast Implementation of Random Forests. (tune rf)
 library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
+library(kableExtra) # Create Awesome HTML Table
 ```
 
 # Préparation de la base de données 
@@ -161,7 +162,7 @@ predictors <- names(training)[names(training) != "popularity"]
 plot(spot_B$popularity)
 ```
 
-# Models : 
+# First Models : 
 
 ## LDA : Linear discriminant analysis
 
@@ -192,7 +193,6 @@ perf<-performance(pred,"auc");perf@y.values[[1]]
 ```
 
 ```{r}
-
 rocLDA <- roc(test.transformed$popularity, as.numeric(predLda$class))
 ```
 
@@ -220,6 +220,27 @@ rf <- randomForest(popularity ~ .,
 )
 
 ```
+
+## SVM
+
+```{r}
+svmFit <- svm(popularity ~ ., data = train.transformed, scale = FALSE, kernel = "radial", cost = 5)
+```
+
+```{r}
+predict.svm <- predict(svmFit, newdata = test.transformed)
+predict.svm
+mean(predict.svm==test.transformed$popularity)
+confusionMatrix(predict.svm,test.transformed$popularity )
+```
+
+## Boosting
+
+# Remedies :
+
+## tune parameters :
+
+### RF
 
 Choix optimal des paramètres avec caret :           
 
@@ -253,22 +274,7 @@ ranger.rf$bestTune
 ranger.rf$finalModel
 ```
 
-## SVM
-
-```{r}
-svmFit <- svm(popularity ~ ., data = train.transformed, scale = FALSE, kernel = "radial", cost = 5)
-```
-
-```{r}
-predict.svm <- predict(svmFit, newdata = test.transformed)
-predict.svm
-mean(predict.svm==test.transformed$popularity)
-confusionMatrix(predict.svm,test.transformed$popularity )
-```
-
-```{r}
-??tune.svm
-```
+### SVM
 
 ```{r}
 registerDoParallel(cores = 6)
@@ -287,7 +293,6 @@ stopImplicitCluster()
 tuneSvm
 ```
 
-
 ```{r}
 # system.time(tuneSvm <- tune.svm(popularity~., data = train.transformed,
 #                                 type = "C-classification",
@@ -297,11 +302,9 @@ tuneSvm
 #                                 class.weights= c("0"=1,"1"=10)))
 ```
 
-# Remedies :
-
-## tune parameters :
-
 ## Alternate cut off :
+
+### Créations de fonctions :
 
 ```{r}
 #changer notation P and N
@@ -334,7 +337,47 @@ evoSeuil <- function(x,y,z){
 ```
 
 ```{r}
+changeSeuil <- function(x,y,z,S){
+  change_seuil<-rep(1,nrow(z))
+  change_seuil[y[,1]>S]<-0
+  round(prop.table(table(x,change_seuil),margin=1)*100,1)%>% 
+    kable(caption = "Matrice de confusion avec le nouveau seuil") %>% kable_styling()
+}
+```
+
+### LDA 
+
+```{r}
 evoSeuil(test.transformed$popularity, predLda$posterior,test.transformed)
 ```
 
-positive and negative points 
+```{r}
+changeSeuil(test.transformed$popularity, predLda$posterior,test.transformed,0.8)
+```
+
+positive and negative points : 
+
+## Unequal case weight 
+
+### SVM
+
+
+```{r}
+set.seed(1983)
+svmFitW <- svm(popularity ~ ., data = train.transformed, 
+              scale = FALSE, 
+              kernel = "radial", cost = 10,
+              class.weights = c("0" = 1, "1" = 4))
+```
+
+```{r}
+predict.svmW <- predict(svmFitW, newdata = test.transformed)
+mean(predict.svmW==test.transformed$popularity)
+confusionMatrix(predict.svmW,test.transformed$popularity )
+```
+
+
+## Resampling methods
+
+
+
