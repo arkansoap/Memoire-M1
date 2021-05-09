@@ -72,12 +72,67 @@ O. Préparation des bases de données et création des fonctions utilisée par l
 
 ## performance measure
 
+accuracy , errors, roc, kappa, lift curves, ...
 
+On définit trois types d'erreurs : 
+
+* erreur globale de classement : $(FP +FN)/total$
+
+* erreur de type 1 : $FP/N$
+
+* erreur de type 2 : $FN/P$
+
+kappa formula and definition : 
+
+ > The Kappa statistic (also known as Cohen’s Kappa) was originally designed to assess the agreement between two raters (Cohen 1960). Kappa takes into account the accuracy that would be generated simply by chance. (wikipedia)
+ 
+the kappa can range from -1 to +1 
+
+$$ K = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}$$
+Where $Pr(a)$ represents the actual observed agree-ment, and $Pr(e)$ represents chance agreement. We calculate this two ratio with the confusion matrix. 
+
+```{r}
+perf.measure <- function(pred ,realCl, real )
+{
+  MatConf <- table(pred,realCl) %>% addmargins %>% 
+    kable(caption = "matrice de confusion")%>% kable_styling
+  P <- sum(realCl==1)
+  N <- sum(realCl==0)
+  n <- P+N
+  Pp <- sum(pred==1)
+  Np <- sum(pred==0)
+  Pre <- (((N*Np)/n)+((P*Pp)/n))/n
+  Pra <- sum((pred==0)&(real==0))+sum((pred==1)&(real==1))/n
+  kappa <- (pra - pre)/(1 - pre)
+  error <- sum(pred!=realCl)/nrow(real)
+  FPrate <- sum((pred==1)&(real==0))/N
+  FNrate <- sum((pred==0)&(real==1))/P
+  accuracy <- 1 - error
+  out <- c(error, accuracy, FPrate, FNrate, kappa)
+  names(out) <- c("error", "accuracy", "FP/N", "FN/P", "kappa")
+  perfM <- out%>%kable(caption = "Performance measures",
+                       col.names = "value") %>% kable_styling()
+  print(perfM)
+  print(MatConf)
+}
+```
+
+Courbe ROC
+
+```{r}
+RocAuc <- function(predpost, realite){
+  pred <- prediction(predpost[,2], realite)
+  perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+  plot(perf, col=rainbow(10))
+  segments(0,0,1,1)
+  perf<-performance(pred,"auc");perf@y.values[[1]]
+}
+```
 
 ## Alternate cutoff
 
 ```{r}
-#changer notation P and N
+#changer notation P and N ? x= Y, y = prediction, z = realite
 evoSeuil <- function(x,y,z){
   N<-sum(z==1)
   P<-sum(z==0)
@@ -107,14 +162,15 @@ evoSeuil <- function(x,y,z){
 ```
 
 ```{r}
+# x= Y, y = prediction, z = realite, S = seuil
 changeSeuil <- function(x,y,z,S){
   change_seuil<-rep(1,nrow(z))
   change_seuil[y[,1]>S]<-0
   round(prop.table(table(x,change_seuil),margin=1)*100,1)%>% 
-    kable(caption = "Matrice de confusion avec le nouveau seuil") %>% kable_styling()
+    kable(caption = "Matrice de confusion avec le nouveau seuil") %>%
+    kable_styling()
 }
 ```
-
   
 # Préparation de la base de données 
 
@@ -136,7 +192,6 @@ Lignes dupliquées :
 
 Je ne parviens pas à utiliser la fonction distinct de dplyr, aucune lignes supprimées...
 Enlever duplicated par track_name n'est pas une bonne idée car on enlève les reprises et cover. Duplicated garde la première valeur de la liste.
-
 
 ```{r}
 spot1 <- spotify[!duplicated(spotify$track_id),]
@@ -257,28 +312,18 @@ plot(spot_B$popularity)
 ModLda <- lda(popularity~., data = train.transformed)
 # Make predictions
 predLda <- ModLda %>% predict(test.transformed)
-# Model accuracy
-mean(predLda$class==test.transformed$popularity)
 ```
 
-Confusion matrix and statistic (kappa) with CARET :
+Pour le moment, Je conserve les deux chunks ci-dessous pour comparer avex les résultats de mes fonctions. 
 
 ```{r}
+# Avec CARET
 confusionMatrix(predLda$class, test.transformed$popularity)
 ```
 
-Courbe ROC et AUC : 
-
 ```{r}
-pred <- prediction(predLda$posterior[,2], test.transformed$popularity)
-perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-plot(perf, col=rainbow(10))
-segments(0,0,1,1)
-perf<-performance(pred,"auc");perf@y.values[[1]]
+# Avec proc 
 
-```
-
-```{r}
 # Pourquoi pas la même qu'au dessus ?????????????
 # control and case group ????? (rapport avec réalité et prédiction / levels?)
 rocLDA <- roc(test.transformed$popularity, ordered(predLda$class))
@@ -410,7 +455,6 @@ changeSeuil(test.transformed$popularity, predLda$posterior,test.transformed,0.8)
 
 ### SVM
 
-
 ```{r}
 set.seed(1983)
 svmFitW <- svm(popularity ~ ., data = train.transformed, 
@@ -425,7 +469,6 @@ mean(predict.svmW==test.transformed$popularity)
 confusionMatrix(predict.svmW,test.transformed$popularity )
 ```
 
-
 ## Resampling methods
 
 ### Over and down sampling
@@ -439,7 +482,6 @@ need numeric data only :
 ```{r}
 train.transformed.num <- train.transformed[, -c(2,5,7,15)]
 ```
-
 
 ```{r}
 smoteData <- SMOTE(train.transformed.num[,-1],train.transformed.num[,1])
@@ -456,7 +498,6 @@ plot(NewdataSmote$class)
 
 Random Over-Sampling Examples
 
-
 ```{r}
 rose <- ROSE(popularity~. , train.transformed)
 ```
@@ -468,7 +509,6 @@ RoseData <- rose$data
 ```{r}
 plot(RoseData$popularity)
 ```
-
 
 rose.eval ...
 

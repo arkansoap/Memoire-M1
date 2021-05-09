@@ -24,11 +24,22 @@
   -  For class imbalances, unequal costs for each class can adjust the parameters to increase or decrease the sensitivity of the model to particular classes (Veropoulos et al. 1999)
   - Johnson and Wichern (2001),  Breiman et al. (1984): COSTS
 
-# Questions pour rencontres n°4 avec Mme scholler : 
+# Notes et question pour moi ou rencontres n°4 avec Mme scholler si non résolues : 
 
 - grid et expand grid?
 - spotify : laisser year (center et scale)?
-- courbe roc différente avec proc / voir help proc (levels , control and cases)
+- courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
+- utiliser fonction ds une autre fonction
+- faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
+
+# A faire session travail suivante : 
+
+- Commencer par refaire toute notation et code propre pr spotify
+  Faire tourner si nécessaire sur Pc MSI ce qui est long pdt qu'on change le pas long sur celui d Alia
+- Finir d'avoir tout parcouru avec spotify puis faire pareil avec recidivism
+
+  Cela permettra de voir ce qu'il faut automatiser ou non, ce qui est utile ou non. Comparaison. 
+
 
 # Vocabulaire:
 amounts (quantités) \
