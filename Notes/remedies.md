@@ -1,4 +1,4 @@
-# Notes de lecture ch.16:
+# Remedies for imbalanced sample 
 
 ## Model tuning 
 > The simplest approach to counteracting the negative eﬀects of class imbalance is to tune the model to maximize the accuracy of the minority class(es).
@@ -53,7 +53,17 @@ To illustrate : (seems to be close to oversampling)
 
 >  can be interpreted as having identical duplicate data points with the exact same predictor values
 
-## Sampling Methods
+## Cost sensitive Trainig:
+
+Definition:
+
+> Instead of optimizing the typical performance measure, such as accuracy or impurity, some models can alternatively optimize a cost or loss function that diﬀerentially weights speciﬁc types of errors.
+
+Example : 
+
+>  misclassifying true events (false negatives) is X times as costly as incorrectly predicting nonevents (false positives).
+
+## Re Sampling Methods
 
 Very similar than case weights
 
@@ -73,25 +83,13 @@ Example of upsampling : Ling and Lee (1998) -> adding random sample to the minor
 
 > Ling and Li (1998) provide one approach to up-sampling in which cases from the minority classes are sampled with replacement until each class has approximately the same number. 
 
-... Finir de Lire cette sous partie ...
+### Over and under sampling methods
 
-## Cost sensitive Trainig:
-
-Definition:
-
-> Instead of optimizing the typical performance measure, such as accuracy or impurity, some models can alternatively optimize a cost or loss function that diﬀerentially weights speciﬁc types of errors.
-
-Example : 
-
->  misclassifying true events (false negatives) is X times as costly as incorrectly predicting nonevents (false positives).
-
-## Over and under sampling methods
-
-## ROSE : Randomly Over Sampling Examples 
+### ROSE : Randomly Over Sampling Examples 
 
 Creates a sample of synthetic  data by enlarging the features space of minority and majority class examples. Operationally, the new examples are down from a conditionnal kernel density estimate of the two classes as describe in Menardi and torelli (2013)
 
-## SMOTE - Supersampling Rare Events in R : (Chawla et al. 2002)
+### SMOTE - Supersampling Rare Events in R : (Chawla et al. 2002)
 
 The SMOTE function oversamples your rare event by using bootstrapping and k-nearest neighbor to synthetically create additional observations of that event. The definition of rare event is usually attributed to any outcome/dependent/target/response variable that happens less than 15% of the time. For more details about this algorithm, read the original white paper, SMOTE: Synthetic Minority Over-sampling Technique, from its creators.
 

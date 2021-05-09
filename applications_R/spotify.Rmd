@@ -28,8 +28,94 @@ library(parallel) # détection du nombre de coeurs
 library(ranger) # A Fast Implementation of Random Forests. (tune rf)
 library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
 library(kableExtra) # Create Awesome HTML Table
+library(smotefamily) # Synthetic Minority Oversampling TEchnique
+library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
 ```
 
+# idée de plan et qq notes 
+
+Penser à citer les articles et à expliciter rapidement les notions mathéatiques derrière les concepts (comment le modèle apprend -formule et grap)
+
+O. Préparation des bases de données et création des fonctions utilisée par la suite  ??
+
+1. Définition problèmatique : 
+  1.1 Préparation des bases de données
+  1.2 Création des fonctions pour automatiser le code 
+  1.3 Observation des résultats de classification sur échantillons déséquilibrés (3 ou 4 base de données). On fait tourner les modèles et on observe que la machine apprend mal avec des modèles basés sur une classe déséquilibrée. 
+
+2. Solutions : 
+
+  2.1 Optimiser les paramètres : 
+    2.1.1 Présentation et définition (définition et appli sur les modèles)
+    2.1.2 Mesure de l'efficacité de la technique
+    2.1.3 Avantages et inconvénients de la technique
+  
+  2.2 Alternate cutt off : 
+    2.1.1 Présentation et définition (définition et appli sur les modèles)
+    2.1.2 Mesure de l'efficacité de la technique
+    2.1.3 Avantages et inconvénients de la technique
+  
+  2.4 Fonction de coût :
+    ...
+  2.3 Unequal case weights :
+    ...
+
+  2.5 Resamplings methods : 
+    2.5.1 Over and donw sampling
+    2.5.2 SMOTE
+    2.5.3 ROSE
+    2.5.4 Comparatif des techniques de resampling
+  
+  3. Conclusions
+  
+# Fonctions : 
+
+## performance measure
+
+
+
+## Alternate cutoff
+
+```{r}
+#changer notation P and N
+evoSeuil <- function(x,y,z){
+  N<-sum(z==1)
+  P<-sum(z==0)
+  Error<-NULL
+  ErrorI<-NULL
+  ErrorII<-NULL
+  for(i in 1:101){
+  c<-(i-1)/100
+  Prediction<-rep(1,nrow(z))
+  Prediction[y[,1]>c]<-0
+  Error[i]<-sum(Prediction!=x)/nrow(z)
+  ErrorI[i]<-sum((Prediction==0)&(x==1))/N
+  ErrorII[i]<-sum((Prediction==1)&(x==0))/P
+  }
+  par(cex=0.7)
+  plot((0:100)/100,Error,type="l",xlim=c(0,1),ylim=c(0,1),
+  ylab="Taux d'erreur",xlab="Seuil")
+  par(new=T)
+  plot((0:100)/100,ErrorI,type="l",xlim=c(0,1),ylim=c(0,1),
+  ylab="",xlab="",xaxt="n",yaxt="n",col="orange")
+  par(new=T)
+  plot((0:100)/100,ErrorII,type="l",xlim=c(0,1),ylim=c(0,1),ylab="",xlab="",xaxt="n",yaxt="n",col="blue",lty="dashed")
+  legend('topright', legend=c("Erreur ", "Erreur I", "Erreur 2"),
+         col=c("black","orange", "blue"), pch=15, bty="n", pt.cex=1, cex= 0.8, horiz=FALSE, inset=c(0.1,0.1))
+  title("Evolution des 3 types d'erreur")
+}
+```
+
+```{r}
+changeSeuil <- function(x,y,z,S){
+  change_seuil<-rep(1,nrow(z))
+  change_seuil[y[,1]>S]<-0
+  round(prop.table(table(x,change_seuil),margin=1)*100,1)%>% 
+    kable(caption = "Matrice de confusion avec le nouveau seuil") %>% kable_styling()
+}
+```
+
+  
 # Préparation de la base de données 
 
 ## En amont 
@@ -193,7 +279,11 @@ perf<-performance(pred,"auc");perf@y.values[[1]]
 ```
 
 ```{r}
-rocLDA <- roc(test.transformed$popularity, as.numeric(predLda$class))
+# Pourquoi pas la même qu'au dessus ?????????????
+# control and case group ????? (rapport avec réalité et prédiction / levels?)
+rocLDA <- roc(test.transformed$popularity, ordered(predLda$class))
+plot(rocLDA)
+rocLDA$auc
 ```
 
 ## Logistic regression :
@@ -304,47 +394,6 @@ tuneSvm
 
 ## Alternate cut off :
 
-### Créations de fonctions :
-
-```{r}
-#changer notation P and N
-evoSeuil <- function(x,y,z){
-  N<-sum(z==1)
-  P<-sum(z==0)
-  Error<-NULL
-  ErrorI<-NULL
-  ErrorII<-NULL
-  for(i in 1:101){
-  c<-(i-1)/100
-  Prediction<-rep(1,nrow(z))
-  Prediction[y[,1]>c]<-0
-  Error[i]<-sum(Prediction!=x)/nrow(z)
-  ErrorI[i]<-sum((Prediction==0)&(x==1))/N
-  ErrorII[i]<-sum((Prediction==1)&(x==0))/P
-  }
-  par(cex=0.7)
-  plot((0:100)/100,Error,type="l",xlim=c(0,1),ylim=c(0,1),
-  ylab="Taux d'erreur",xlab="Seuil")
-  par(new=T)
-  plot((0:100)/100,ErrorI,type="l",xlim=c(0,1),ylim=c(0,1),
-  ylab="",xlab="",xaxt="n",yaxt="n",col="orange")
-  par(new=T)
-  plot((0:100)/100,ErrorII,type="l",xlim=c(0,1),ylim=c(0,1),ylab="",xlab="",xaxt="n",yaxt="n",col="blue",lty="dashed")
-  legend('topright', legend=c("Erreur ", "Erreur I", "Erreur 2"),
-         col=c("black","orange", "blue"), pch=15, bty="n", pt.cex=1, cex= 0.8, horiz=FALSE, inset=c(0.1,0.1))
-  title("Evolution des 3 types d'erreur")
-}
-```
-
-```{r}
-changeSeuil <- function(x,y,z,S){
-  change_seuil<-rep(1,nrow(z))
-  change_seuil[y[,1]>S]<-0
-  round(prop.table(table(x,change_seuil),margin=1)*100,1)%>% 
-    kable(caption = "Matrice de confusion avec le nouveau seuil") %>% kable_styling()
-}
-```
-
 ### LDA 
 
 ```{r}
@@ -355,7 +404,7 @@ evoSeuil(test.transformed$popularity, predLda$posterior,test.transformed)
 changeSeuil(test.transformed$popularity, predLda$posterior,test.transformed,0.8)
 ```
 
-positive and negative points : 
+## Cost function
 
 ## Unequal case weight 
 
@@ -378,6 +427,50 @@ confusionMatrix(predict.svmW,test.transformed$popularity )
 
 
 ## Resampling methods
+
+### Over and down sampling
+
+### SMOTE 
+
+Synthetic Minority Oversampling Technique
+
+need numeric data only : 
+
+```{r}
+train.transformed.num <- train.transformed[, -c(2,5,7,15)]
+```
+
+
+```{r}
+smoteData <- SMOTE(train.transformed.num[,-1],train.transformed.num[,1])
+```
+
+```{r}
+NewdataSmote <- smoteData$data
+str(NewdataSmote)
+NewdataSmote$class<-as.factor(NewdataSmote$class)
+plot(NewdataSmote$class)
+```
+
+### ROSE
+
+Random Over-Sampling Examples
+
+
+```{r}
+rose <- ROSE(popularity~. , train.transformed)
+```
+
+```{r}
+RoseData <- rose$data
+```
+
+```{r}
+plot(RoseData$popularity)
+```
+
+
+rose.eval ...
 
 
 
