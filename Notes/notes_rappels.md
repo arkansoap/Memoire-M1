@@ -31,14 +31,28 @@
 - courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
 - utiliser fonction ds une autre fonction
 - faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
+- changer seuil ds le fit directement ?  est ce possible ?
+
+
+Aide mémoire r :
+
+- effacer objet d'un  workspace de r : `rm(objet)` 
+- Changer nom d'un objet du WS : `mv("oldname", "newname")` (package gdata)
 
 # A faire session travail suivante : 
 
+- refaire fonction pour avec pour seul argument pred et real (gerer les dollars ds la fonction)
 - Commencer par refaire toute notation et code propre pr spotify
   Faire tourner si nécessaire sur Pc MSI ce qui est long pdt qu'on change le pas long sur celui d Alia
 - Finir d'avoir tout parcouru avec spotify puis faire pareil avec recidivism
 
   Cela permettra de voir ce qu'il faut automatiser ou non, ce qui est utile ou non. Comparaison. 
+
+- possibilité changer poids pour mod : logit, svm, 
+- probit à la place de logit
+- courbe roc : 
+  - plot(performance(predtest, "acc")) : accuracy et cutoff
+  - plot(performance(predtest, "tpr", "fpr")) : true positive and false positive rate
 
 
 # Vocabulaire:
