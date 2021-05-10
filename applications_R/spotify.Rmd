@@ -31,6 +31,7 @@ library(kableExtra) # Create Awesome HTML Table
 library(smotefamily) # Synthetic Minority Oversampling TEchnique
 library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
 library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
+library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
 ```
 
 # idée de plan et qq notes 

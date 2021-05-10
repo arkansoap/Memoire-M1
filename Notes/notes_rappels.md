@@ -26,6 +26,23 @@
 
 # Notes et question pour moi ou rencontres n°4 avec Mme scholler si non résolues : 
 
+- naives bayes classification (library naivesbayes)
+
+**basics of formula** : 
+$$P(A ∩ B) = P(A) P(B|A) \leftrightarrow P(B|A) = \frac{P(A ∩ B)}{P(A)}$$
+
+**Rappel** 
+- stat fréquentiste : probabilités des évènements selon une certaine théorie.
+- stat bayésienne : probabilités des théories au vu de certains évènements.
+
+**def wiki**: In statistics, naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem with strong (naïve) independence assumptions between the features
+
+**Naives** : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)
+
+**Laplace correction** will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)
+
+**numeric data** use bins txo regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)
+
 - grid et expand grid?
 - spotify : laisser year (center et scale)?
 - courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
@@ -74,7 +91,8 @@ range (gamme) \
 skewd class distribution ( distribution asymétrique des classes) \
 subset (sous-ensemble) \
 retain (conserve) \
-kernel (noyau)
+kernel (noyau) \
+appointment (designation, rdv)
 
 **Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
 **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
