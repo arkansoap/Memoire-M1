@@ -101,3 +101,20 @@ In this case, two-dimensional predictor space is cut into three regions (or term
 
 ## Boosting (voir cours de Mme Scholler)
 
+## naives bayes classification (library naivesbayes)
+
+**basics of formula** : 
+$$P(A ∩ B) = P(A) P(B|A) \leftrightarrow P(B|A) = \frac{P(A ∩ B)}{P(A)}$$
+
+**Rappel** 
+- stat fréquentiste : probabilités des évènements selon une certaine théorie.
+- stat bayésienne : probabilités des théories au vu de certains évènements.
+
+**def wiki**: In statistics, naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem with strong (naïve) independence assumptions between the features
+
+**Naives** : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)
+
+**Laplace correction** will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)
+
+**numeric data** use bins txo regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)
+

@@ -22,54 +22,28 @@
   - Chawla et al. (2002) : SMOTE
   - A substantial amount of research has been conducted on the eﬀectiveness of using sampling procedures to combat skewed class distributions, most notably Weiss and Provost (2001b), Batista et al. (2004), Van Hulse et al. (2007), Burez and Van den Poel (2009), and Jeatrakul et al. (2010).
   -  For class imbalances, unequal costs for each class can adjust the parameters to increase or decrease the sensitivity of the model to particular classes (Veropoulos et al. 1999)
-  - Johnson and Wichern (2001),  Breiman et al. (1984): COSTS
+  - Johnson and Wichern (2001),  Breiman et al. (1984): COSTS 
 
-# Notes et question pour moi ou rencontres n°4 avec Mme scholler si non résolues : 
 
-- naives bayes classification (library naivesbayes)
 
-**basics of formula** : 
-$$P(A ∩ B) = P(A) P(B|A) \leftrightarrow P(B|A) = \frac{P(A ∩ B)}{P(A)}$$
+# Notes, questions et à faire : 
 
-**Rappel** 
-- stat fréquentiste : probabilités des évènements selon une certaine théorie.
-- stat bayésienne : probabilités des théories au vu de certains évènements.
+- fonctions : 
+  - pour chaque base : 
+    - Y, predictors : pour injecter ds fonctions (automotisation maxium)
+    - prediction, realite (pour mesures de perf)
+  - utiliser fonction ds une autre fonction ?
+  - faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
+  - refaire fonction pour avec pour seul argument pred et real (gerer les dollars ds la fonction)
 
-**def wiki**: In statistics, naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem with strong (naïve) independence assumptions between the features
-
-**Naives** : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)
-
-**Laplace correction** will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)
-
-**numeric data** use bins txo regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)
-
-- grid et expand grid?
+ grid et expand grid?
 - spotify : laisser year (center et scale)?
 - courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
-- utiliser fonction ds une autre fonction
-- faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
 - changer seuil ds le fit directement ?  est ce possible ?
-
-
-Aide mémoire r :
-
-- effacer objet d'un  workspace de r : `rm(objet)` 
-- Changer nom d'un objet du WS : `mv("oldname", "newname")` (package gdata)
-
-# A faire session travail suivante : 
-
-- refaire fonction pour avec pour seul argument pred et real (gerer les dollars ds la fonction)
-- Commencer par refaire toute notation et code propre pr spotify
-  Faire tourner si nécessaire sur Pc MSI ce qui est long pdt qu'on change le pas long sur celui d Alia
-- Finir d'avoir tout parcouru avec spotify puis faire pareil avec recidivism
-
-  Cela permettra de voir ce qu'il faut automatiser ou non, ce qui est utile ou non. Comparaison. 
-
 - possibilité changer poids pour mod : logit, svm, 
-- probit à la place de logit
-- courbe roc : 
-  - plot(performance(predtest, "acc")) : accuracy et cutoff
-  - plot(performance(predtest, "tpr", "fpr")) : true positive and false positive rate
+- probit à la place de logit ? QDA au lieu de LDA?
+- approfondir les "tune"
+- évaluer new data resampled, ROSE et SMOTE, avant et après les fit ?
 
 
 # Vocabulaire:
@@ -106,3 +80,12 @@ appointment (designation, rdv)
     - stat bayésienne : probabilités des théories au vu de certains évènements.
 
 - [video conseillée par PE sur maximu de vraisemblance](https://www.youtube.com/watch?v=VOIhswqFWVc) 
+
+# Aide mémoire r :
+
+- effacer objet d'un  workspace de r : `rm(objet)` 
+- Changer nom d'un objet du WS : `mv("oldname", "newname")` (package gdata)
+- courbe roc : 
+  - plot(performance(predtest, "acc")) : accuracy et cutoff
+  - plot(performance(predtest, "tpr", "fpr")) : true positive and false positive rate
+- crée new colonne à un dataframe en utilisant data\$new

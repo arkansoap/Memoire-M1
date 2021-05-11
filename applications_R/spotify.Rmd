@@ -351,11 +351,8 @@ rocLDA$auc
 ## Logistic regression :
 
 ```{r}
-Modlogit <- glm(popularity~., data= train.transformed, family=binomial(link=logit))
-```
 
-```{r}
-predlog <- predict(Modlogit, type = 'response')
+Modlogit <- glm(popularity~., data= train.transformed, family=binomial(link=logit))
 ```
 
 ```{r}
@@ -366,10 +363,47 @@ summary(Modlogit)
 stargazer(logit, type="text")
 ```
 
+technique 1 : 
+
+```{r}
+# Estimate the audible probability
+problog <- predict(Modlogit, train.transformed, type = 'response')
+```
+
+```{r}
+#Find the audible probability of the average prospect
+average <- sum(spot_B$popularity=="1")/nrow(spot_B)
+```
+
+```{r}
+#Predict a inaudible classement if probability of audibility is lower than average (0.1924379)
+predlog <- ifelse(problog < average, 1, 0)
+```
+
+```{r}
+# Calculate the model's accuracy
+mean(predlog == train.transformed$popularity)
+```
+
+technique 2 : 
+
 ```{r}
 # pr verif 
-table(true = train.transformed$popularity, pred = round(fitted(Modlogit)))
+table(true = train.transformed$popularity, 
+      pred = round(fitted(Modlogit)))
 ```
+
+```{r}
+mean(fitted(Modlogit))
+average
+```
+
+performance : 
+
+```{r}
+perf.measure(predlog, train.transformed$popularity, train.transformed)
+```
+
 
 ```{r}
 perf.measure(round(fitted(Modlogit)),
@@ -473,6 +507,9 @@ tuneSvm
 
 ## Alternate cut off :
 
+On expliquera le procédé.
+En conclusion, on explicitera que cela nous coute trop en terme d'erreur globale si l'on veut un bon pouvoir de détection. 
+
 ### LDA 
 
 ```{r}
@@ -486,12 +523,17 @@ changeSeuil(predLda, test.transformed$popularity ,test.transformed, 0.2, "autre"
 ### Logit 
 
 ```{r}
-evoSeuil(predlog, train.transformed$popularity, train.transformed, "logit")
+evoSeuil(problog, train.transformed$popularity, train.transformed, "logit")
 ```
 
 ```{r}
-changeSeuil(predlog, train.transformed$popularity, train.transformed,0.3, "logit")
+logseuil<-changeSeuil(problog, train.transformed$popularity, train.transformed,0.3, "logit")
 ```
+
+```{r}
+perf.measure(predlog, train.transformed$popularity, train.transformed)
+```
+
 
 ## Cost function
 
