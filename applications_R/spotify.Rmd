@@ -42,31 +42,22 @@ source("functions_UC.R")
 
 ## En amont 
 
-On charge la base de donnée. Les variables de types "str" sont recodées en facteurs.
-
 ```{r}
+#On charge la base de donnée. Les variables de types "str" sont recodées en facteurs.
 spotify <- read.csv("spotify_songs.csv", header = TRUE, sep = ",",stringsAsFactors=T)
-```
 
-Etant données qu'il n'y a que 15 valeurs manquantes, on décide de supprimer les individus contenant ces valeurs.
-
-```{r}
+# Etant données qu'il n'y a que 15 valeurs manquantes, on décide de supprimer les individus contenant ces valeurs.
 sum(is.na(spotify))
 spotify = na.omit(spotify)
-```
-Lignes dupliquées : 
 
-```{r}
+# Lignes dupliquées : 
 spot1 <- spotify[!duplicated(spotify$track_id),]
 # spot2 <- spotify
 # spot2 %>% distinct(track_id)
 # spot3 <- spotify[duplicated(spot2$track_id),]
 # spot4 <- spotify[!duplicated(spotify$track_name),]
-```
 
-Changement du nom des levels:
-
-```{r}
+#Changement du nom des levels:
 spot1$key <- recode_factor(spot1$key,
   "0" = "C",
   "1" = "Db",
@@ -83,28 +74,19 @@ spot1$key <- recode_factor(spot1$key,
 )
 
 spot1$mode <- recode_factor(spot1$mode, "0" = "mineur", "1" = "majeur")
-```
 
-recodage de la date / regroupement par tranches :
-
-```{r}
+# recodage de la date / regroupement par tranches :
 spot1$track_album_release_date <- as.Date(spot1$track_album_release_date , format= "%Y")
 spot1<- spot1 %>% mutate(year = year(track_album_release_date))
 spot1$years <- cut(spot1$year, breaks = c(1956,2000,2010,2015,2018,2020),
                    diag.lab=0,
                    labels = c("1956-2000","2001-2010",
                               "2011-2015","2016-2018","2019-2020"))
-```
 
-Suppression de instrumentalness mal codé : 
-
-```{r}
+# Suppression de instrumentalness mal codé : 
 spot1<-spot1[,-c(7,19)]
-```
 
-Recodage de track-popularity / regroupement basse/autres :
-
-```{r}
+# Recodage de track-popularity / regroupement basse/autres :
 popularity <- cut(spot1$track_popularity, c(-1,12.5,100))
 spot_B=cbind(popularity,spot1)
 spot_B<-spot_B[,-5]
@@ -114,56 +96,34 @@ spot_B<-spot_B[,-5]
 spot_B$popularity <- recode_factor(spot_B$popularity,
                                    "(12.5,100]" = 0,
                                    "(-1,12.5]" = 1)
-```
 
-On enlève les variables non pertinentes pour la classification : 
 
-```{r}
-str(spot_B)
+# On enlève les variables non pertinentes pour la classification : 
 spot_B<-spot_B[,-c(2,3,4,5,6,7,8,10)]
-```
 
-## Partitionnement : 
-
-The training and test sets were created using stratiﬁed random sampling.
-
-First, split the training set off:
-
-```{r}
-set.seed(42)
-split1 <- createDataPartition(spot_B$popularity, p = .7)[[1]]
-other <- spot_B[-split1,]
-training <- spot_B[ split1,]
-```
-
-Now create the evaluation and test sets :
-
-```{r}
-set.seed(24)
-split2 <- createDataPartition(spot_B$popularity, p = 1/3)[[1]]
-evaluation <- other[ split2,]
-testing <- other[-split2,]
-```
-
-## Normalize/standardize the data :
-
-```{r}
-# Estimate preprocessing parameters
-preproc.param <- training %>% 
-  preProcess(method = c("center", "scale"))
-# Transform the data using the estimated parameters
-train.transformed <- preproc.param %>% predict(training)
-test.transformed <- preproc.param %>% predict(testing)
-evaluation.transformed <- preproc.param %>% predict(evaluation)
-```
-
-```{r}
-# Determine the predictor names :
-predictors <- names(training)[names(training) != "popularity"]
+# On efface les bases inutiles 
+rm(spot1, spotify)
 ```
 
 ```{r}
 plot(spot_B$popularity)
+```
+
+## Partitionnement : 
+
+The training and test sets were created using stratiﬁed random sampling. First, split the training set off. Then create the evaluation and test sets. Hence we normalize/standardize the datas. 
+
+```{r}
+#posssibilité de changer les paramètres prop1, prop2, seed1, seed2
+datas <- split_standard2(spot_B, "popularity")
+
+# verif
+sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
+```
+
+```{r}
+# Version avec moins de paramètre
+# datas <- split_standard(spot_B, "popularity")
 ```
 
 # First Models : 
@@ -172,24 +132,24 @@ plot(spot_B$popularity)
 
 ```{r}
 # Fit the model
-ModLda <- lda(popularity~., data = train.transformed)
+ModLda <- lda(popularity~., data = datas$train)
 # Make predictions
-predLda <- ModLda %>% predict(test.transformed)
+predLda <- ModLda %>% predict(datas$test)
 ```
 
 ```{r}
-perf.measure(predLda$class, test.transformed$popularity, test.transformed)
+perf.measure(predLda$class, datas[["test"]]$popularity, datas[["test"]])
 ```
 
 ```{r}
-RocAuc(predLda, test.transformed$popularity, "autre")
+RocAuc(predLda, datas[["test"]]$popularity, "autre")
 ```
 
-Pour le moment, Je conserve les deux chunks ci-dessous pour comparer avex les résultats de mes fonctions. 
+Pour le moment, Je conserve les deux chunks ci-dessous pour comparer avec les résultats de mes fonctions. 
 
 ```{r}
 # Avec CARET
-confusionMatrix(predLda$class, test.transformed$popularity)
+confusionMatrix(predLda$class, datas[["test"]]$popularity)
 ```
 
 ```{r}
@@ -197,7 +157,7 @@ confusionMatrix(predLda$class, test.transformed$popularity)
 
 # Pourquoi pas la même qu'au dessus ?????????????
 # control and case group ????? (rapport avec réalité et prédiction / levels?)
-rocLDA <- roc(test.transformed$popularity, ordered(predLda$class))
+rocLDA <- roc(datas[["test"]]$popularity, ordered(predLda$class))
 plot(rocLDA)
 rocLDA$auc
 ```
@@ -206,7 +166,8 @@ rocLDA$auc
 
 ```{r}
 
-Modlogit <- glm(popularity~., data= train.transformed, family=binomial(link=logit))
+Modlogit <- glm(popularity~., data= datas$train,
+                family=binomial(link=logit))
 ```
 
 ```{r}
@@ -214,14 +175,14 @@ summary(Modlogit)
 ```
 
 ```{r}
-stargazer(logit, type="text")
+stargazer(Modlogit, type="text")
 ```
 
 technique 1 : 
 
 ```{r}
 # Estimate the audible probability
-problog <- predict(Modlogit, train.transformed, type = 'response')
+problog <- predict(Modlogit, datas$train, type = 'response')
 ```
 
 ```{r}
@@ -236,14 +197,14 @@ predlog <- ifelse(problog < average, 1, 0)
 
 ```{r}
 # Calculate the model's accuracy
-mean(predlog == train.transformed$popularity)
+mean(predlog == datas$train$popularity)
 ```
 
 technique 2 : 
 
 ```{r}
 # pr verif 
-table(true = train.transformed$popularity, 
+table(true = datas$train$popularity, 
       pred = round(fitted(Modlogit)))
 ```
 
@@ -255,24 +216,24 @@ average
 performance : 
 
 ```{r}
-perf.measure(predlog, train.transformed$popularity, train.transformed)
+perf.measure(predlog, datas$train$popularity, datas$train)
 ```
 
 
 ```{r}
 perf.measure(round(fitted(Modlogit)),
-             train.transformed$popularity, train.transformed)
+             datas$train$popularity, datas$train)
 ```
 
 ```{r}
-RocAuc(fitted(Modlogit), train.transformed$popularity, "logit")
+RocAuc(fitted(Modlogit), datas$train$popularity, "logit")
 ```
 
 ## random forest : 
 
 ```{r}
 Modrf <- randomForest(popularity ~ .,
-  data = train.transformed, method = "class", 
+  data = datas$train, method = "class", 
   parms = list(split = "gini"), na.action = na.roughfix
 )
 
@@ -281,14 +242,13 @@ Modrf <- randomForest(popularity ~ .,
 ## SVM
 
 ```{r}
-svmFit <- svm(popularity ~ ., data = train.transformed, scale = FALSE, kernel = "radial", cost = 5)
+ModSvm <- svm(popularity ~ ., data = datas$train, scale = FALSE, kernel = "radial", cost = 5)
 ```
 
 ```{r}
-predict.svm <- predict(svmFit, newdata = test.transformed)
-predict.svm
-mean(predict.svm==test.transformed$popularity)
-confusionMatrix(predict.svm,test.transformed$popularity )
+predSvm <- predict(ModSvm, newdata = datas$test)
+mean(predSvm==datas$test$popularity)
+confusionMatrix(predSvm,datas$test$popularity )
 ```
 
 ## Boosting
@@ -313,7 +273,7 @@ rangerGrid <- expand.grid(mtry = c(1, 2, 4, 8, 14),
 ctrlCv <- trainControl(method = "repeatedcv", repeats = 3, number = 5)
 
 system.time(ranger.rf <- train(popularity ~ .,
-                              data = train.transformed, method = "ranger",
+                              data = datas$train, method = "ranger",
                               trControl = ctrlCv, tuneGrid = rangerGrid
                               )
             )
@@ -336,7 +296,7 @@ ranger.rf$finalModel
 ```{r}
 registerDoParallel(cores = 6)
 
-system.time(tuneSvm <- tune(svm, popularity~., data = test.transformed,
+system.time(tuneSvm <- tune(svm, popularity~., data = datas$test,
                       ranges = list(gamma = c(0.1, 1, 10), cost = 10^(1:3)),
                       tunecontrol = tune.control(nrepeat = 10,
                                                  sampling = "cross",
@@ -351,7 +311,7 @@ tuneSvm
 ```
 
 ```{r}
-# system.time(tuneSvm <- tune.svm(popularity~., data = train.transformed,
+# system.time(tuneSvm <- tune.svm(popularity~., data = data$train,
 #                                 type = "C-classification",
 #                                 kernel = "polynomial", degree =  2,
 #                                 cost = 10^(1:3),
@@ -367,25 +327,25 @@ En conclusion, on explicitera que cela nous coute trop en terme d'erreur globale
 ### LDA 
 
 ```{r}
-evoSeuil(predLda, test.transformed$popularity, test.transformed, "autre")
+evoSeuil(predLda, datas$test$popularity, datas$test, "autre")
 ```
 
 ```{r}
-changeSeuil(predLda, test.transformed$popularity ,test.transformed, 0.2, "autre")
+changeSeuil(predLda, datas$test$popularity, datas$test, 0.2, "autre")
 ```
 
 ### Logit 
 
 ```{r}
-evoSeuil(problog, train.transformed$popularity, train.transformed, "logit")
+evoSeuil(problog, datas$train$popularity, datas$train, "logit")
 ```
 
 ```{r}
-logseuil<-changeSeuil(problog, train.transformed$popularity, train.transformed,0.3, "logit")
+logseuil<-changeSeuil(problog, datas$train$popularity, datas$train,0.3, "logit")
 ```
 
 ```{r}
-perf.measure(predlog, train.transformed$popularity, train.transformed)
+perf.measure(predlog, datas$train$popularity, datas$train)
 ```
 
 
@@ -397,16 +357,16 @@ perf.measure(predlog, train.transformed$popularity, train.transformed)
 
 ```{r}
 set.seed(1983)
-svmFitW <- svm(popularity ~ ., data = train.transformed, 
+svmFitW <- svm(popularity ~ ., data = datas$train, 
               scale = FALSE, 
               kernel = "radial", cost = 10,
               class.weights = c("0" = 1, "1" = 4))
 ```
 
 ```{r}
-predict.svmW <- predict(svmFitW, newdata = test.transformed)
-mean(predict.svmW==test.transformed$popularity)
-confusionMatrix(predict.svmW,test.transformed$popularity )
+predict.svmW <- predict(svmFitW, newdata = datas$test)
+mean(predict.svmW==datas$test$popularity)
+confusionMatrix(predict.svmW,datas$test$popularity )
 ```
 
 ## Resampling methods
@@ -420,11 +380,11 @@ Synthetic Minority Oversampling Technique
 need numeric data only : 
 
 ```{r}
-train.transformed.num <- train.transformed[, -c(2,5,7,15)]
+datas_train_num<- datas$train[, -c(2,5,7,15)]
 ```
 
 ```{r}
-smoteData <- SMOTE(train.transformed.num[,-1],train.transformed.num[,1])
+smoteData <- SMOTE(datas_train_num[,-1],datas_train_num[,1])
 ```
 
 ```{r}
@@ -439,7 +399,7 @@ plot(NewdataSmote$class)
 Random Over-Sampling Examples
 
 ```{r}
-rose <- ROSE(popularity~. , train.transformed)
+rose <- ROSE(popularity~. , datas$train)
 ```
 
 ```{r}

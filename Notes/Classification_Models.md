@@ -1,3 +1,9 @@
+# Difference beetween regression and classificaton : 
+
+Regression and classification are categorized under the same umbrella of supervised machine learning. Both share the same concept of utilizing known datasets (referred to as training datasets) to make predictions.
+
+The main difference between them is that the output variable in regression is numerical (or continuous) while that for classification is categorical (or discrete).
+
 # Models studies : 
 
 ## Linear Discriminant Ananlysis : ( Voir cours de Mr Piller)

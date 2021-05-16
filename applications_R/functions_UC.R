@@ -1,6 +1,59 @@
 # Fichier contenant les fonctions pour les applications illustrative : 
 
+# Split and standardize :
+ 
+splitdata <- function(data, dataCl, prop, x){
+  set.seed(x)
+  split <- createDataPartition(data[[dataCl]], p = prop)[[1]]
+  splitA <- data[-split,]
+  splitB <- data[ split,]
+  return(list(splitA= splitA,splitB= splitB))
+}
+
+standardize <- function(data1, data2, data3){
+  # Estimate preprocessing parameters
+  preproc.param <- data1 %>%
+    preProcess(method = c("center", "scale"))
+  # Transform the data using the estimated parameters
+  train.transformed <- preproc.param %>% predict(data1)
+  test.transformed <- preproc.param %>% predict(data2)
+  evaluation.transformed <- preproc.param %>% predict(data3)
+return(list(train = train.transformed, test = test.transformed, eval = evaluation.transformed))
+}
+
+split_standard2 <- function(data, dataCl, prop1=0.7, seed1=42, prop2=1/3, seed2=42){
+  data1 <- splitdata(data, dataCl, prop1, seed1)
+  data2 <- splitdata(data1$splitA, "popularity", prop2, seed2)
+  datas <- standardize(data1[["splitB"]],
+                       data2[["splitA"]], data2[["splitB"]])
+}
+
+split_standard <- function(data, dataCl){
+  set.seed(42)
+  split1 <- createDataPartition(data[[dataCl]],
+                                p = .7)[[1]]
+  other <- data[-split1,]
+  training <- data[ split1,]
+  set.seed(24)
+  split2 <- createDataPartition(other[[dataCl]],
+                                p = 1/3)[[1]]
+  evaluation <- other[ split2,]
+  testing <- other[-split2,]
+  # Estimate preprocessing parameters
+  preproc.param <- training %>%
+    preProcess(method = c("center", "scale"))
+  # Transform the data using the estimated parameters
+  train.transformed <- preproc.param %>% predict(training)
+  test.transformed <- preproc.param %>% predict(testing)
+  evaluation.transformed <- preproc.param %>%
+    predict(evaluation)
+  return(list(train = train.transformed, test = test.transformed,
+              eval = evaluation.transformed))
+}
+
 # measure performance :
+
+# A modifier avec arguments : pred, real, y ...
 
 perf.measure <- function(pred ,realCl, real )
 {

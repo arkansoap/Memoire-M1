@@ -56,19 +56,10 @@
 5. Annexes:
     - 5.1 scripts .rmd complets (préparation bases de données, travaux exhaustifs)
   
-
 # Notes, questions et à faire : 
 
-- fonctions : 
-  - pour chaque base : 
-    - Y, predictors : pour injecter ds fonctions (automotisation maxium)
-    - prediction, realite (pour mesures de perf)
-  - utiliser fonction ds une autre fonction ?
-  - faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
-  - refaire fonction pour avec pour seul argument pred et real (gerer les dollars ds la fonction)
-  -récupérer/utioliser un des éléments en sortie?
-
- grid et expand grid?
+- SET.SEED CHANGE NUMBER ? I DONT THINK SO  ? AND WHERE ? ONLY BEFORE A SIMULATION OR A SPLIT 
+- automatisation avec fonctions (avoir à donner juste un data (préparé en amont), preditors et Topredict.
 - spotify : laisser year (center et scale)?
 - courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
 - changer seuil ds le fit directement ?  est ce possible ?
@@ -76,18 +67,11 @@
 - probit à la place de logit ? QDA au lieu de LDA?
 - approfondir les "tune"
 - évaluer new data resampled, ROSE et SMOTE, avant et après les fit ?
-- COURSERA ET NOTEX
 - préciser ordinal and non ordinal factor
 - préciser levels des factors (bas et reste pour 1 et 0)
-
-# Difference beetween regression and classificaton : 
-
-Regression and classification are categorized under the same umbrella of supervised machine learning. Both share the same concept of utilizing known datasets (referred to as training datasets) to make predictions.
-
-The main difference between them is that the output variable in regression is numerical (or continuous) while that for classification is categorical (or discrete).
-
-**Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
-**Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
+- AVOIR UN SCRIPT SPOTIFY COMPLET AVEC LE FILE FUNCTIONS_UC.R OPERATIONNEL FIN JUIN AU PLUS TARD !!!
+- LIRE ARTICLES 
+- BOOSTING et NAIVES BAYES 
 
 # Rappels, liens et phrases clés pour moi :
 
@@ -109,3 +93,6 @@ The main difference between them is that the output variable in regression is nu
 - crée new colonne à un dataframe en utilisant data\$new
 - penser au bon "type" pour predict
 - `source("file.R")` pour utiliser fonctions sauvegardées dans un fichier .R
+- **Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
+
+  **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
