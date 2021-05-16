@@ -104,7 +104,7 @@ In this case, two-dimensional predictor space is cut into three regions (or term
 ## naives bayes classification (library naivesbayes)
 
 **basics of formula** : 
-$$P(A ∩ B) = P(A) P(B|A) \leftrightarrow P(B|A) = \frac{P(A ∩ B)}{P(A)}$$
+$$P(A ∩ B) = P(A) P(B|A) \iff P(B|A) = \frac{P(A ∩ B)}{P(A)}$$
 
 **Rappel** 
 - stat fréquentiste : probabilités des évènements selon une certaine théorie.

@@ -24,7 +24,38 @@
   -  For class imbalances, unequal costs for each class can adjust the parameters to increase or decrease the sensitivity of the model to particular classes (Veropoulos et al. 1999)
   - Johnson and Wichern (2001),  Breiman et al. (1984): COSTS 
 
+# Idée de plan pour le rendu final : 
 
+1. Définition problèmatique : 
+  - 1.1 Définition de concepts pour la compréhension : machine learning, classification, mesures de performances des modèles
+  - 1.2 Observation des résultats de classification sur échantillons déséquilibrés (3 ou 4 base de données). 
+    On fait tourner les modèles et on observe que la machine apprend mal avec des modèles basés sur une classe déséquilibrée. 
+
+2. Présentations et définitions des Solutions : 
+
+  - 2.1 Optimiser les paramètres : 
+  
+  - 2.2 Alternate cutt off : 
+  
+  - 2.4 Fonction de coût :
+
+  - 2.3 Unequal case weights :
+
+  - 2.5 Resamplings methods : 
+    - 2.5.1 Over and donw sampling
+    - 2.5.2 SMOTE
+    - 2.5.3 ROSE
+    - 2.5.4 Comparatif des techniques de resampling
+    
+3. Applications sur bases de données 
+  
+4. Conclusions
+    - 4.1 Avantages et inconvénients de chaque méthode
+    - 4.2 Conculsions géngérales ...
+  
+5. Annexes:
+    - 5.1 scripts .rmd complets (préparation bases de données, travaux exhaustifs)
+  
 
 # Notes, questions et à faire : 
 
@@ -35,6 +66,7 @@
   - utiliser fonction ds une autre fonction ?
   - faire un package de mes fonctions pour les utiliser sur chaque bases de données sans copier la partie fonction (juste un import de library)
   - refaire fonction pour avec pour seul argument pred et real (gerer les dollars ds la fonction)
+  -récupérer/utioliser un des éléments en sortie?
 
  grid et expand grid?
 - spotify : laisser year (center et scale)?
@@ -44,29 +76,15 @@
 - probit à la place de logit ? QDA au lieu de LDA?
 - approfondir les "tune"
 - évaluer new data resampled, ROSE et SMOTE, avant et après les fit ?
+- COURSERA ET NOTEX
+- préciser ordinal and non ordinal factor
+- préciser levels des factors (bas et reste pour 1 et 0)
 
+# Difference beetween regression and classificaton : 
 
-# Vocabulaire:
-amounts (quantités) \
-overwhelmed (subergé) \
-overcoming (suronter, résoudre) \
-derived (dérivé, issu, tiré, déduit) \
-prior (distribution) (préalable, initial) ?? \
-cuttoff (seuil) ?? \
-case weights (pondération) \
-straightforward (simple, direct, explicite) \
-roughly (grossièrement, brutalement) \
-plagues (tourmenter, harceler) \ 
-towards (envers) \
-sparse (clairesmée; dispersée, rare) \
-reach (portée, étendue) \
-reaching (atteindre) \
-range (gamme) \
-skewd class distribution ( distribution asymétrique des classes) \
-subset (sous-ensemble) \
-retain (conserve) \
-kernel (noyau) \
-appointment (designation, rdv)
+Regression and classification are categorized under the same umbrella of supervised machine learning. Both share the same concept of utilizing known datasets (referred to as training datasets) to make predictions.
+
+The main difference between them is that the output variable in regression is numerical (or continuous) while that for classification is categorical (or discrete).
 
 **Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
 **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
@@ -89,3 +107,5 @@ appointment (designation, rdv)
   - plot(performance(predtest, "acc")) : accuracy et cutoff
   - plot(performance(predtest, "tpr", "fpr")) : true positive and false positive rate
 - crée new colonne à un dataframe en utilisant data\$new
+- penser au bon "type" pour predict
+- `source("file.R")` pour utiliser fonctions sauvegardées dans un fichier .R

@@ -1,4 +1,6 @@
 *.ipynb_checkpoints
 **/.ipynb_checkpoints
+**/.csv
+**/.Rhistory
 applied-predictive-modeling-max-kuhn-kjell-johnson_1518.pdf
 caravan-insurance-challenge.csv

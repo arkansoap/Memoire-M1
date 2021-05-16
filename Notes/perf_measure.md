@@ -2,6 +2,8 @@
 
 ## accuracy
 
+accuracy not a good indicators in case of imbalanced model because if we predict only 0 , we will have a bigger accuracy!!!
+
 ## Lift curves: définition wikipédia
 
 En exploration de données, le lift est une mesure de la performance d'un modèle prédictif ou descriptif, mesuré par rapport au modèle du choix aléatoire.
@@ -25,6 +27,15 @@ Un classificateur aléatoire tracera une droite allant de (0, 0) à (1, 1).
 
 ## Kappa : Cohen 1960
 
+kappa formula and definition : 
+
+ > The Kappa statistic (also known as Cohen’s Kappa) was originally designed to assess the agreement between two raters (Cohen 1960). Kappa takes into account the accuracy that would be generated simply by chance. (wikipedia)
+ 
+the kappa can range from -1 to +1 
+
+$$ K = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}$$
+Where $Pr(a)$ represents the actual observed agree-ment, and $Pr(e)$ represents chance agreement. We calculate this two ratio with the confusion matrix. 
+
  The Kappa statistic (also known as Cohen’s Kappa) was originally designed to assess the agreement between two raters (Cohen 1960). Kappa takes into account the accuracy that would be generated simply by chance. The form of the statistic is :
 
 Kappa = (O − E) / (1 − E)
@@ -34,3 +45,17 @@ where O is the observed accuracy and E is the expected accuracy based on the mar
 Usefull in context of unbalanced classes
 
 > Jacob Cohen critiqued use of percent agreement due to its inability to account for chance agreement. He introduced the Cohen's kappa, developed to account for the possibility that raters actually guess on at least some variables due to uncertainty. Like most correlation statistics,
+
+# Confusion matrix 
+
+# Sensitivity, specificity, FPrate, FNrate, DP, FA, ...
+
+On définit trois types d'erreurs : 
+
+* erreur globale de classement : $(FP +FN)/total$
+
+* erreur de type 1 : $FP/N$
+
+* erreur de type 2 : $FN/P$
+
+# G means, F ...
