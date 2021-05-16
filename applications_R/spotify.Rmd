@@ -38,7 +38,7 @@ library(naivebayes) #naive Bayes classifiers are a family of simple "probabilist
 source("functions_UC.R")
 ```
   
-# Préparation de la base de données 
+# Préparation de la base de données ...
 
 ## En amont 
 
