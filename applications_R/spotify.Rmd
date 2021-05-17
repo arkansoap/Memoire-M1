@@ -4,7 +4,7 @@ author: "Thibault FUCHEZ"
 date: "04/05/2021"
 output: html_document
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -33,6 +33,11 @@ library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
 library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
 library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
 ```
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+```
+
 
 ```{r}
 source("functions_UC.R")
@@ -398,11 +403,6 @@ NewdataSmote$class<-as.factor(NewdataSmote$class)
 plot(NewdataSmote$class)
 ```
 
-```{r}
-modldasmote <- 
-```
-
-
 ### ROSE
 
 Random Over-Sampling Examples
@@ -425,6 +425,36 @@ rose.eval ...
 ModelsRose <- models(y = "popularity", data = RoseData)
 ```
 
+```{r}
+# function predict en developpement
+
+predictions <- function(models, datas){
+  predLda <- predict(models[["Modlda"]], datas[["test"]])
+  predrf<- predict(models[["Modrf"]], datas[["test"]],
+                   type = "prob")
+  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]])
+  # Estimate the audible probability
+  problog <- predict(models[["ModSvm"]], newdata = datas[["test"]],
+                     type = 'response')
+  #Find the audible probability of the average prospect
+  average <- sum(datas$train$popularity=="1")/nrow(datas$train)
+  #Predict a inaudible classement if probability of audibility is lower than average (0.1924379)
+  predlog <- ifelse(problog < average, 1, 0)
+  return(list(predLda = predLda, predrf = predrf,
+              predSvm = predSvm, predlog = predlog))
+}
+
+pred <- predictions(datas = datas, models = Models )
+```
+
+```{r}
+for (i in names(Models)){
+  print(i)
+}
+```
+```{r}
+
+```
 
 
 
