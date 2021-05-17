@@ -62,7 +62,7 @@
 - automatisation avec fonctions (avoir à donner juste un data (préparé en amont), preditors et Topredict.
 - spotify : laisser year (center et scale)?
 - courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
-- changer seuil ds le fit directement ?  est ce possible ?
+- changer seuil ds le fit directement ?  est ce possible ? argument PRIOR
 - possibilité changer poids pour mod : logit, svm, 
 - probit à la place de logit ? QDA au lieu de LDA?
 - approfondir les "tune"

@@ -128,6 +128,11 @@ sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
 
 # First Models : 
 
+```{r}
+Models <- models(y = "popularity", data = datas$train)
+```
+
+
 ## LDA : Linear discriminant analysis
 
 ```{r}
@@ -348,7 +353,6 @@ logseuil<-changeSeuil(problog, datas$train$popularity, datas$train,0.3, "logit")
 perf.measure(predlog, datas$train$popularity, datas$train)
 ```
 
-
 ## Cost function
 
 ## Unequal case weight 
@@ -394,6 +398,11 @@ NewdataSmote$class<-as.factor(NewdataSmote$class)
 plot(NewdataSmote$class)
 ```
 
+```{r}
+modldasmote <- 
+```
+
+
 ### ROSE
 
 Random Over-Sampling Examples
@@ -411,6 +420,11 @@ plot(RoseData$popularity)
 ```
 
 rose.eval ...
+
+```{r}
+ModelsRose <- models(y = "popularity", data = RoseData)
+```
+
 
 
 

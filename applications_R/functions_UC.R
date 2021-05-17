@@ -134,3 +134,18 @@ changeSeuil <- function(pred, realCl, real, seuil, mod){
     kable(caption = "matrice de confusion avec le nouveau seuil") %>%
     kable_styling
 }
+
+# Fit the models :
+
+models <- function(y, data){
+  Modlda <- lda(as.formula(paste(y , "~ .")), data = data)
+  Modlr <- glm(as.formula(paste(y , "~ .")), data = data,
+               family=binomial(link=logit))
+  Modrf <- randomForest(as.formula(paste(y , "~ .")), data = data,
+                        method = "class", parms = list(split = "gini"),
+                        na.action = na.roughfix)
+  ModSvm <- svm(as.formula(paste(y , "~ .")), data = data, 
+                scale = FALSE, kernel = "radial", cost = 5)
+  return(list(Modlda = Modlda, Modlr = Modlr, Modrf = Modrf, ModSvm = ModSvm))
+}
+
