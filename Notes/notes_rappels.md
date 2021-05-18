@@ -102,4 +102,13 @@
 - The type="response" option tells R to output probabilities of the form P(Y = 1|X)
 - tail() return the first or last object of a part
 - args(function) to know what are arguments of a function and their default value
-- lapply pour appliquer une fonction à un vecteur (au lieu d'utiliser une boucle for)
+- fammille apply pour appliquer une fonction à un vecteur (au lieu d'utiliser une boucle for)
+  - lapply returnes a list
+  - sapply (for simplify apply) if all element have the same type . (equivalent à unlist(lapply))
+  - vapply : on précise le format de la sortie
+- anonymous function :
+  Use anonymous function inside lapply()
+  lapply(list(1,2,3), function(x) { 3 * x })
+- before lost yourself on the web, think to chek the help in R
+- regular expression : sequence of charahcters or metacharacters that form a search pattern that u can use to      match strings (pattern existence, replacement, extraction). function using it :  grepl, grep, sub ..
+  type mark regex in R console for detail
