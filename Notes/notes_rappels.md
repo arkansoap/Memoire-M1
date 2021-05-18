@@ -72,6 +72,9 @@
 - AVOIR UN SCRIPT SPOTIFY COMPLET AVEC LE FILE FUNCTIONS_UC.R OPERATIONNEL FIN JUIN AU PLUS TARD !!!
 - LIRE ARTICLES 
 - BOOSTING et NAIVES BAYES 
+- AVERAGE : est ce sensé ?
+- Fonctions pour sortir tableau comparatif et graphiques comparatifs à partir des fonctions perf et roc
+- Pr faire tourner fonctions avec modèles tuner, possibilité de rajouter un arg tune control
 
 # Rappels, liens et phrases clés pour moi :
 
@@ -96,3 +99,4 @@
 - **Wrapper function** : A wrapper function is a subroutine in a software library or a computer program whose main purpose is to call a second subroutine or a system call with little or no additional computation. en.wikipedia.org
 
   **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
+- The type="response" option tells R to output probabilities of the form P(Y = 1|X)

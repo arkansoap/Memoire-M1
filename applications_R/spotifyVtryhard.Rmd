@@ -4,7 +4,7 @@ author: "Thibault FUCHEZ"
 date: "04/05/2021"
 output: html_document
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -37,7 +37,6 @@ library(naivebayes) #naive Bayes classifiers are a family of simple "probabilist
 ```{r}
 setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 ```
-
 
 ```{r}
 source("functions_UC.R")
@@ -137,7 +136,6 @@ sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
 Models <- models(y = "popularity", data = datas$train)
 ```
 
-
 ## LDA : Linear discriminant analysis
 
 ```{r}
@@ -175,7 +173,6 @@ rocLDA$auc
 ## Logistic regression :
 
 ```{r}
-
 Modlogit <- glm(popularity~., data= datas$train,
                 family=binomial(link=logit))
 ```
@@ -426,35 +423,5 @@ ModelsRose <- models(y = "popularity", data = RoseData)
 ```
 
 ```{r}
-# function predict en developpement
-
-predictions <- function(models, datas){
-  predLda <- predict(models[["Modlda"]], datas[["test"]])
-  predrf<- predict(models[["Modrf"]], datas[["test"]],
-                   type = "prob")
-  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]])
-  # Estimate the audible probability
-  problog <- predict(models[["ModSvm"]], newdata = datas[["test"]],
-                     type = 'response')
-  #Find the audible probability of the average prospect
-  average <- sum(datas$train$popularity=="1")/nrow(datas$train)
-  #Predict a inaudible classement if probability of audibility is lower than average (0.1924379)
-  predlog <- ifelse(problog < average, 1, 0)
-  return(list(predLda = predLda, predrf = predrf,
-              predSvm = predSvm, predlog = predlog))
-}
-
 pred <- predictions(datas = datas, models = Models )
 ```
-
-```{r}
-for (i in names(Models)){
-  print(i)
-}
-```
-```{r}
-
-```
-
-
-

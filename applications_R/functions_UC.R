@@ -75,8 +75,7 @@ perf.measure <- function(pred ,realCl, real )
   names(out) <- c("error", "accuracy", "FP/N", "FN/P", "kappa")
   perfM <- out%>%kable(caption = "Performance measures",
                        col.names = "value") %>% kable_styling()
-  print(perfM)
-  print(MatConf)
+  return(list(perf = perfM, matconf = MatConf))
 }
 
 # Courbe ROC
@@ -149,3 +148,19 @@ models <- function(y, data){
   return(list(Modlda = Modlda, Modlr = Modlr, Modrf = Modrf, ModSvm = ModSvm))
 }
 
+# function predict en developpement
+# !!!!! changer critère d'acceptation pour predrf et predlog
+
+predictions <- function(models, datas){
+  predLda <- predict(models[["Modlda"]], datas[["test"]])
+  probrf <- predict(models[["Modrf"]], datas[["test"]],
+                    type = "prob")
+  predrf <- ifelse(probrf[,2] > 0.5, 1, 0)
+  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]])
+  problog <- predict(models[["Modlr"]], newdata = datas[["test"]],
+                     type = 'response')
+  # average <- sum(datas$train$popularity=="1")/nrow(datas$train)
+  predlog <- ifelse(problog > 0.5, 1, 0)
+  return(list(predLda = predLda, predrf = predrf,
+              predSvm = predSvm, predlog = predlog))
+}
