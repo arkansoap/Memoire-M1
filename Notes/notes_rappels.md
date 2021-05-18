@@ -100,3 +100,6 @@
 
   **Fonction wrapper** : En programmation informatique, une fonction wrapper (de l'anglais « "wrapper function" ») est un programme dont la fonction principale est d'appeler une autre fonction. 
 - The type="response" option tells R to output probabilities of the form P(Y = 1|X)
+- tail() return the first or last object of a part
+- args(function) to know what are arguments of a function and their default value
+- lapply pour appliquer une fonction à un vecteur (au lieu d'utiliser une boucle for)
