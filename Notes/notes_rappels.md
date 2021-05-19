@@ -26,12 +26,16 @@
 
 # Idée de plan pour le rendu final : 
 
+!!!obligation de faire des choix dans les techniques pre/ during / post car enormément de techniques proposées.
+
 1. Définition problèmatique : 
   - 1.1 Définition de concepts pour la compréhension : machine learning, classification, mesures de performances des modèles
   - 1.2 Observation des résultats de classification sur échantillons déséquilibrés (3 ou 4 base de données). 
     On fait tourner les modèles et on observe que la machine apprend mal avec des modèles basés sur une classe déséquilibrée. 
 
-2. Présentations et définitions des Solutions : 
+    !!!!!la grande question est "qu'est ce que ça nous coute?!!!! qu est ce qu'on est pret à concéder en terme d'erreur globale (et autres aspect) pour coller au mieux aux préférences de l'utilisateur en termes de performance. Arbitrage !!!!!!
+
+2. Présentations et définitions des Solutions : !!!!!!plan à reformuler autour de pre, during post!!!!!
 
   - 2.1 Optimiser les paramètres : 
   
@@ -75,6 +79,7 @@
 - AVERAGE : est ce sensé ?
 - Fonctions pour sortir tableau comparatif et graphiques comparatifs à partir des fonctions perf et roc
 - Pr faire tourner fonctions avec modèles tuner, possibilité de rajouter un arg tune control
+- PCA // 
 
 # Rappels, liens et phrases clés pour moi :
 
