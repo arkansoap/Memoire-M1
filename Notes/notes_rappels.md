@@ -62,24 +62,7 @@
   
 # Notes, questions et à faire : 
 
-- SET.SEED CHANGE NUMBER ? I DONT THINK SO  ? AND WHERE ? ONLY BEFORE A SIMULATION OR A SPLIT 
-- automatisation avec fonctions (avoir à donner juste un data (préparé en amont), preditors et Topredict.
-- spotify : laisser year (center et scale)?
-- courbe roc différente avec proc / voir help proc (levels , control and cases) / balanced accuracy?
-- changer seuil ds le fit directement ?  est ce possible ? argument PRIOR
-- possibilité changer poids pour mod : logit, svm, 
-- probit à la place de logit ? QDA au lieu de LDA?
-- approfondir les "tune"
-- évaluer new data resampled, ROSE et SMOTE, avant et après les fit ?
-- préciser ordinal and non ordinal factor
-- préciser levels des factors (bas et reste pour 1 et 0)
-- AVOIR UN SCRIPT SPOTIFY COMPLET AVEC LE FILE FUNCTIONS_UC.R OPERATIONNEL FIN JUIN AU PLUS TARD !!!
-- LIRE ARTICLES 
-- BOOSTING et NAIVES BAYES 
-- AVERAGE : est ce sensé ?
-- Fonctions pour sortir tableau comparatif et graphiques comparatifs à partir des fonctions perf et roc
-- Pr faire tourner fonctions avec modèles tuner, possibilité de rajouter un arg tune control
-- PCA // 
+- pas de sortie kable ds certaines fonctions pour récupérer données des table ou df
 
 # Rappels, liens et phrases clés pour moi :
 

@@ -1,7 +1,7 @@
 ---
-title: "spotify"
+title: "Spotify"
 author: "Thibault FUCHEZ"
-date: "04/05/2021"
+date: "01/06/2021"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -159,137 +159,16 @@ Predictions <- predictions(models = Models, datas = datas)
 ```
 
 ```{r}
-# performance measure and comparisons
-perf.measure(pred = Predictions$predrf, realCl = datas$test$popularity, real = datas$test)
+listPred1 <- list(Predictions$predrf, Predictions$predlog, Predictions$predSvm, Predictions$predLda$class)
+lapply(listPred1, perf.measure, realCl = datas$test$popularity,
+       real = datas$test)
 ```
 
-# Remedies :
+We cans emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are not good. 
 
-## tune parameters :
+# Remedies 
 
-### RF
-
-Choix optimal des paramètres avec caret :           
-
-```{r}
-# enregistrement d'un cluster avec le package doParallel
-library(doParallel)
-registerDoParallel(cores = 6)
-
-rangerGrid <- expand.grid(
-  mtry = c(1, 2, 4, 8, 14),
-  min.node.size = c(5, 10, 50, 100),
-  splitrule = "gini"
-)
-ctrlCv <-
-  trainControl(method = "repeatedcv",
-               repeats = 3,
-               number = 5)
-
-system.time(
-  ranger.rf <- train(
-    popularity ~ .,
-    data = datas$train,
-    method = "ranger",
-    trControl = ctrlCv,
-    tuneGrid = rangerGrid
-  )
-)
-
-# fermeture du cluster
-stopImplicitCluster()
-
-# pour CV, paramètre number et reapets ?
-# na.action not necessary because all na were ommitted
-```
-
-```{r}
-ranger.rf
-ranger.rf$bestTune
-ranger.rf$finalModel
-```
-
-### SVM
-
-```{r}
-registerDoParallel(cores = 6)
-
-system.time(
-  tuneSvm <- tune(
-    svm,
-    popularity ~ .,
-    data = datas$test,
-    ranges = list(gamma = c(0.1, 1, 10), cost = 10 ^ (1:3)),
-    tunecontrol = tune.control(
-      nrepeat = 10,
-      sampling = "cross",
-      cross = 10
-    )
-  )
-)
-
-
-stopImplicitCluster()
-```
-
-```{r}
-tuneSvm
-```
-
-## Alternate cut off :
-
-On expliquera le procédé.
-En conclusion, on explicitera que cela nous coute trop en terme d'erreur globale si l'on veut un bon pouvoir de détection. 
-
-### LDA 
-
-```{r}
-evoSeuil(predLda, datas$test$popularity, datas$test, "autre")
-```
-
-```{r}
-changeSeuil(predLda, datas$test$popularity, datas$test, 0.2, "autre")
-```
-
-### Logit 
-
-```{r}
-evoSeuil(problog, datas$train$popularity, datas$train, "logit")
-```
-
-```{r}
-logseuil<-changeSeuil(problog, datas$train$popularity, datas$train,0.3, "logit")
-```
-
-```{r}
-perf.measure(predlog, datas$train$popularity, datas$train)
-```
-
-## Unequal case weight 
-
-### SVM
-
-```{r}
-set.seed(1983)
-svmFitW <- svm(
-  popularity ~ .,
-  data = datas$train,
-  scale = FALSE,
-  kernel = "radial",
-  cost = 10,
-  class.weights = c("0" = 1, "1" = 4)
-)
-```
-
-```{r}
-predict.svmW <- predict(svmFitW, newdata = datas$test)
-mean(predict.svmW==datas$test$popularity)
-confusionMatrix(predict.svmW,datas$test$popularity )
-```
-
-## Resampling methods
-
-### Over and down sampling
+## Datas prepocessing : 
 
 ### SMOTE 
 
@@ -298,14 +177,38 @@ Synthetic Minority Oversampling Technique
 need numeric data only : 
 
 ```{r}
-datas_train_num<- datas$train[, -c(2,5,7,15)]
+datas_num<- spot_B[, -c(2,5,7,15)]
 ```
 
 ```{r}
-smoteData <- SMOTE(datas_train_num[,-1],datas_train_num[,1])
-NewdataSmote <- smoteData$data
-NewdataSmote$class<-as.factor(NewdataSmote$class)
-plot(NewdataSmote$class)
+smote <- SMOTE(datas_num[,-1],datas_num[,1])
+```
+
+```{r}
+Smotedata <- smote$data
+Smotedata$class<-as.factor(Smotedata$class)
+str(Smotedata)
+plot(Smotedata$class)
+Smotedata$popularity <- Smotedata$class
+Smotedata <- Smotedata[,-11]
+```
+
+```{r}
+datasSmote <- split_standard2(Smotedata, "popularity")
+```
+
+```{r}
+ModelsSmote <- models(y = "popularity", data = datasSmote$train)
+```
+
+```{r}
+predSmote <- predictions(models = ModelsSmote, datas = datasSmote)
+```
+
+```{r}
+listpredSmote <- list(predSmote$predrf, predSmote$predlog, predSmote$predSvm, predSmote$predLda$class)
+lapply(listpredSmote, perf.measure, realCl = datasSmote$test$popularity,
+       real = datasSmote$test)
 ```
 
 ### ROSE
@@ -327,19 +230,36 @@ ModelsRose <- models(y = "popularity", data = datasRose$train)
 ```
 
 ```{r}
-A <- list(predRose$predrf, predRose$predlog, predRose$predSvm, predRose$predLda$class)
-lapply(A, perf.measure, realCl = datasRose$test$popularity,
+predRose <- predictions(models = ModelsRose, datas = datasRose)
+```
+
+```{r}
+listpredRose <- list(predRose$predrf, predRose$predlog, predRose$predSvm, predRose$predLda$class)
+lapply(listpredRose, perf.measure, realCl = datasRose$test$popularity,
        real = datasRose$test)
 ```
 
+## Learning method tuning : 
+
+## Prediction postprocessing : 
+
+* alternate cutoff LDA
+
 ```{r}
-Test <- models2("popularity", data = datas$train,
-                parRf = c(mtry = 12, ntree = 100))
+evoSeuil(Predictions$predLda, datas$test$popularity, datas$test, "autre")
 ```
 
 ```{r}
-test2 <- train(popularity ~ ., data = datas$train,
-                method = "glm")
-test2
+predldaseuil <- changeSeuil(Predictions$predLda, datas$test$popularity, datas$test, 0.2, "autre")
+predldaseuil
 ```
+
+```{r}
+perf.measure(predldaseuil, datas$test$popularity, datas$test)
+```
+
+* alternate cutoff rf
+
+pred
+
 

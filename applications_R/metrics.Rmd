@@ -1,0 +1,66 @@
+---
+title: "Metrics"
+author: "Thibault FUCHEZ"
+date: "31/05/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(ggplot2)
+library(kableExtra)
+library(dplyr)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In order to compare the performance's models, we use differents "metrics". The reliability of our tools is higlhy dependant on the structure of our datas. In our case, the imbalanced sample of datas classes has to be take into account in order to find the metrics which allows to give a good evaluation of our models. 
+
+# Confusion Matrix : 
+
+```{r}
+mc <- matrix(c("TP", "FP", "FN", "TN"), nrow = 2)
+dimnames(mc) <- list(c("Positive", "Negative"), c("Positive", "Negative"))
+as.data.frame(mc) %>% kable() %>% kable_styling() %>% 
+  pack_rows("True",1,2) %>% add_header_above(c(" " = 1 ,"Predicted" = 2))
+
+# collapse_rows, group_rows, ... ???
+```
+
+True Positive rate : Recall, sensitivity, detection power 
+
+$$TP_{rate} = \frac{TP}{TP+FN}$$
+
+True Negative rate : Specificity
+
+$$TN_{rate} = \frac{TN}{TN+FP}$$
+
+False Positive rate : False alarm 
+
+$$FP_{rate} = \frac{FP}{TN+FP}$$
+Global Error : 
+
+$$error = \frac{FP + FN}{TN+TP+FP+FN}$$
+
+Positive prediction value : precision
+
+$$PP_{value} = \frac{TP}{TP+FP}$$
+
+Accuracy : 
+
+$$accuracy = 1 - error$$
+
+dominance :
+
+$$dominance = TP_{rate} - TN_{rate}$$
+
+F-measure : 
+
+$$F_\beta = \frac{(1+\beta)^2 \times recall \times precision}{\beta^2 \times recall + precision}$$
+Kappa : 
+
+AUC : Aera under the ROC curve

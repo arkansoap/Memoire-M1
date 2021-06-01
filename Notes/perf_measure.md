@@ -35,6 +35,7 @@ Where $Pr(a)$ represents the actual observed agree-ment, and $Pr(e)$ represents 
 
 # Confusion matrix 
 
+
 # Sensitivity, specificity, FPrate, FNrate, DP, FA, ...
 
 On définit trois types d'erreurs : 

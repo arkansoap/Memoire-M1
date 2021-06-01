@@ -16,7 +16,12 @@ library(readr)
 ```
 
 ```{r}
-data <- read_csv("C:/Users/arkan/OneDrive/Bureau/recidivism-COMPAS.csv")
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+```
+
+
+```{r}
+data <- read_csv("recidivism-COMPAS.csv")
 ```
 
 ```{r}
@@ -56,4 +61,10 @@ retype(data)
 plot(data$is_recid)
 ```
 
+```{r}
+#temps passé en prison 
+
+data$time_jailed <- data[,"c_jail_out"] - data[,"c_jail_in"]
+str(data$time_jailed)
+```
 
