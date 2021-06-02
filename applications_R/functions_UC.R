@@ -72,7 +72,7 @@ split_standard <- function(data, dataCl) {
 
 # A modifier avec arguments : pred, real, y ...
 
-perf.measure <- function(pred , realCl, real)
+perf.measure <- function(pred , realCl, real, beta = 1)
 {
   MatConf <- table(pred, realCl) %>% addmargins %>%
     kable(caption = "matrice de confusion") %>% kable_styling
@@ -87,9 +87,14 @@ perf.measure <- function(pred , realCl, real)
   error <- sum(pred != realCl) / nrow(real)
   FPrate <- sum((pred == 1) & (real == 0)) / N
   TPrate <- sum((pred == 1) & (real == 1)) / P
+  TNrate <- sum((pred == 0) & (real == 0)) / N
+  PrecisionPPV <- sum((pred == 1) & (real == 1)) / Pp
   accuracy <- 1 - error
-  out <- c(error, accuracy, FPrate, TPrate, kappa)
-  names(out) <- c("error", "accuracy", "False Alarm", "Detection Power", "kappa")
+  dominance <- TPrate - TNrate
+  Fscore <- (((1+beta)^2)*TPrate*PrecisionPPV)/((beta^2)*(TPrate+PrecisionPPV))
+  out <- c(accuracy, FPrate, TPrate, kappa, dominance, PrecisionPPV, Fscore)
+  names(out) <- c("accuracy", "False Alarm", "Detection Power",
+                  "kappa", "dominance", "precision", "Fscore")
   perfM <- out %>% kable(caption = "Performance measures",
                          col.names = "value") %>% kable_styling()
   return(list(perf = perfM, matconf = MatConf))
@@ -218,8 +223,9 @@ models <- function(y, data) {
     as.formula(paste(y , "~ .")),
     data = data,
     scale = FALSE,
-    kernel = "radial",
-    cost = 5
+    kernel = "polynomial",
+    cost = 5,
+    probability = TRUE
   )
   return(list(
     Modlda = Modlda,

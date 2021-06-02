@@ -105,8 +105,6 @@ In this case, two-dimensional predictor space is cut into three regions (or term
     - ntree : number of tree to grow
     - nodesize : minimum number of observation in a terminal node. setting it lower heads to trees with a larger depth which means that more splits are performed until the  terminal nodes. (default value is 1 for classification and 5 for regression -diaz urirarte and de andres 2006).
 
-## Boosting (voir cours de Mme Scholler)
-
 ## naives bayes classification (library naivesbayes)
 
 **basics of formula** : 

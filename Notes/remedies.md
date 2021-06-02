@@ -158,7 +158,7 @@ The SMOTE function oversamples your rare event by using bootstrapping and k-near
 
 !!!! a lot of new techniques directly derived from this one as ADASYN
 
-# Active learning :
+## Active learning :
 
 The active learning strategy provides the ability of actively selecting the best , i.e the most informative, examples to learn from. 
 

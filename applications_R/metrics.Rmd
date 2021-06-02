@@ -64,3 +64,5 @@ $$F_\beta = \frac{(1+\beta)^2 \times recall \times precision}{\beta^2 \times rec
 Kappa : 
 
 AUC : Aera under the ROC curve
+
+benefits($TP_{rate}$) and costs ($FP_{rate}$)
