@@ -32,6 +32,7 @@ library(smotefamily) # Synthetic Minority Oversampling TEchnique
 library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
 library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
 library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
+library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
 ```
 
 ```{r}
@@ -136,16 +137,15 @@ plot(spot_B$popularity)
 The training and test sets were created using stratiﬁed random sampling. First, split the training set off. Then create the evaluation and test sets. Hence we normalize/standardize the datas. 
 
 ```{r}
-#posssibilité de changer les paramètres prop1, prop2, seed1, seed2
-datas <- split_standard2(spot_B, "popularity")
-
-# verif
-sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
+source("functions_UC.R")
 ```
 
 ```{r}
-# Version avec moins de paramètre
-# datas <- split_standard(spot_B, "popularity")
+#posssibilité de changer les paramètres prop1, prop2, seed1, seed2
+datas <- split_standard(spot_B, "popularity", mod = "standard")
+
+# verif
+sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
 ```
 
 # First Models : 
@@ -159,20 +159,48 @@ Predictions <- predictions(models = Models, datas = datas)
 ```
 
 ```{r}
-listPred1 <- list(Predictions$predrf, Predictions$predlog, Predictions$predSvm, Predictions$predLda$class)
-lapply(listPred1, perf.measure, realCl = datas$test$popularity,
-       real = datas$test)
+#matconfs
 ```
 
-We cans emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are not good. 
+```{r}
+Metrics1 <- TableMetrics(pred = Predictions, datas$test, "popularity")
+kable(as.data.frame(Metrics1), digits = 3) %>% kable_styling()
+class(Metrics1)
+```
+
+```{r}
+source("functions_UC.R")
+```
+
+```{r}
+AllRoc(Predictions, datas$test$popularity)
+```
+
+We can emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are not good. 
 
 # Remedies 
 
 ## Datas prepocessing : 
 
-- basic over and under sampling
-- ADASYN
-- weight
+### Random downsample
+
+```{r}
+DownSampleRandom <- downSample(spot_B[,-1], spot_B[,1])
+```
+
+```{r}
+plot(DownSampleRandom$Class)
+```
+
+### Random upsample
+
+```{r}
+UpSampleRandom <- upSample(spot_B[,-1], spot_B[,1])
+```
+
+```{r}
+plot(UpSampleRandom$Class)
+```
 
 ### SMOTE 
 
@@ -198,7 +226,7 @@ Smotedata <- Smotedata[,-11]
 ```
 
 ```{r}
-datasSmote <- split_standard2(Smotedata, "popularity")
+datasSmote <- split_standard(Smotedata, "popularity")
 ```
 
 ```{r}
@@ -210,10 +238,16 @@ predSmote <- predictions(models = ModelsSmote, datas = datasSmote)
 ```
 
 ```{r}
-listpredSmote <- list(predSmote$predrf, predSmote$predlog, predSmote$predSvm, predSmote$predLda$class)
-lapply(listpredSmote, perf.measure, realCl = datasSmote$test$popularity,
-       real = datasSmote$test)
+listpredSmote <- list(predSmote$predrf$cla, predSmote$predlog$cla,
+                      predSmote$predSvm, predSmote$predLda$class)
+lapply(listpredSmote, perf.measure,
+       real = datasSmote$test,
+       y = "popularity")
 ```
+
+### BLSmote
+
+### ADASYN
 
 ### ROSE
 
@@ -228,7 +262,7 @@ plot(RoseData$popularity)
 ```
 
 ```{r}
-datasRose<- split_standard2(RoseData, "popularity")
+datasRose<- split_standard(RoseData, "popularity")
 ```
 
 ```{r}
@@ -240,30 +274,22 @@ predRose <- predictions(models = ModelsRose, datas = datasRose)
 ```
 
 ```{r}
-listpredRose <- list(predRose$predrf, predRose$predlog, predRose$predSvm, predRose$predLda$class)
-lapply(listpredRose, perf.measure, realCl = datasRose$test$popularity,
-       real = datasRose$test)
+listpredRose <- list(predRose$predrf$cla, predRose$predlog$cla, predRose$predSvm, predRose$predLda$class)
+lapply(listpredRose, perf.measure,
+       real = datasRose$test,
+       y = "popularity")
 ```
 
 ## Learning method tuning : 
 
-write a tune grid parameter in function models, and other parameter.
-
-for rf : tune with ranger (mtry and/or minsizenode)
-
-for svm : 
+Note for svm : 
   - weight class parameter
-  - radial or polynomial
+  - radial or polynomial, ...
   - cost : The cost of constraints violation (default: 1)—it is the ‘C’-constant of the regularization term in the Lagrange formulation.
 
-look for parameter of weight or threshold to tune in other classes
-maybe look for glmnet
+### Tune parameter with no direct link with imbalanced data : 
 
-### tune parameters :
-
-#### RF
-
-Choix optimal des paramètres avec caret :           
+*RF
 
 ```{r}
 # enregistrement d'un cluster avec le package doParallel
@@ -303,7 +329,7 @@ ranger.rf$bestTune
 ranger.rf$finalModel
 ```
 
-#### SVM
+* SVM
 
 ```{r}
 registerDoParallel(cores = 6)
@@ -330,9 +356,9 @@ stopImplicitCluster()
 tuneSvm
 ```
 
-### Unequal case weight 
+### Tune Class weight 
 
-#### SVM
+* SVM
 
 ```{r}
 set.seed(1983)
@@ -351,6 +377,8 @@ predict.svmW <- predict(svmFitW, newdata = datas$test)
 mean(predict.svmW==datas$test$popularity)
 confusionMatrix(predict.svmW,datas$test$popularity )
 ```
+
+* Faire pour 3 autres model
 
 ## Prediction postprocessing : 
 
@@ -372,7 +400,7 @@ predldaseuil <- changeSeuil(predbasic$predLda, datas$test$popularity, datas$test
 perf.measure(predldaseuil, datas$test$popularity, datas$test)
 ```
 
-*alternate cut off logit
+* alternate cut off logit
 
 ```{r}
 evoSeuil(predbasic$predlog$prob, datas$test$popularity, datas$test, "logit")
@@ -416,7 +444,7 @@ svmtest <- svm(
 ```
 
 ```{r}
-testprobsvm <- predict(svmtest, newdata = datas$test, probability = TRUE)
+testprobsvm <- predict(Models$ModSvm, newdata = datas$test, probability = TRUE)
 ```
 
 ```{r}
@@ -432,12 +460,17 @@ AA2 <- changeSeuil(pred = AA, datas$test$popularity, datas$test, 0.19, "logit" )
 ```
 
 ```{r}
-perf.measure(AA2, datas$test$popularity, datas$test)
+perf.measure2(AA2, datas$test$popularity, datas$test)
 ```
+
+```{r}
+perf.measure(AA2, datas$test, "popularity")
+```
+
 
 # Combination of the three remedies step for the best model
 
-# Notes / à voir pr correction
+# Notes / Tests/ à voir pr correction
 
 ```{r}
 # Avec CARET
@@ -453,3 +486,62 @@ rocLDA <- roc(datas[["test"]]$popularity, ordered(predLda$class))
 plot(rocLDA)
 rocLDA$auc
 ```
+
+```{r}
+Dat <- split_standard(spot_B, "popularity")
+```
+
+```{r}
+source("functions_UC.R")
+```
+
+```{r}
+tuneGrid <- data.frame(
+  .mtry = c(2, 3, 7),
+  .splitrule = "gini",
+  .min.node.size = 5
+)
+
+testMod <- train(popularity~.,
+                 data = datas$train,
+                 method = "ranger",
+                 tuneGrid = tuneGrid)
+```
+
+```{r}
+testMod2 <- train(popularity~.,
+                 data = datas$train,
+                 method = "ranger",
+                 tuneGrid = NULL,
+                 tuneLength = 1 ) 
+```
+
+```{r}
+# models2 <- function(y, data, tuneLenght = 1, tuneGridglm = NULL,
+#                     costSvm = 1, kernelSv = "polynomial",
+#                     weights = c(0.5,0.5)){
+#   Modlda <- train(popularity~.,
+#                   data = data,
+#                   method = "LDA",
+#                   tuneLenght = tuneLenght
+#                   )
+#   Modlr <- train(popularity~.,
+#                  method = "glmnet",
+#                  tuneLenght = tuneLenght,
+#                  tuneGrid = tuneGridglm
+#                  )
+#   modSvm <- train(popularity~.,
+#                   method = "svm",
+#                   probability = TRUE,
+#                   cost = costSvm,
+#                   kernel = kernelSvm
+#                   )
+# }
+```
+
+```{r}
+length(datas$train) - 1
+```
+
+weigths pour logit : need pour chaque observation!!! different de classweight
+

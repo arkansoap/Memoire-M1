@@ -1,12 +1,12 @@
 # Fichier contenant les fonctions pour les applications illustrative :
 
-# Split and standardize :
+########## Split and standardize ##########
 
-splitdata <- function(data, dataCl, prop, x) {
-  set.seed(x)
-  split <- createDataPartition(data[[dataCl]], p = prop)[[1]]
-  splitA <- data[-split, ]
-  splitB <- data[split, ]
+splitdata <- function(data, y, prop, seed) {
+  set.seed(seed)
+  split <- createDataPartition(data[[y]], p = prop)[[1]]
+  splitA <- data[-split,]
+  splitB <- data[split,]
   return(list(splitA = splitA, splitB = splitB))
 }
 
@@ -27,98 +27,117 @@ standardize <- function(data1, data2, data3) {
   )
 }
 
-split_standard2 <-
+split_standard <-
   function(data,
-           dataCl,
+           y,
            prop1 = 0.7,
            seed1 = 42,
            prop2 = 1 / 3,
-           seed2 = 42) {
-    data1 <- splitdata(data, dataCl, prop1, seed1)
-    data2 <- splitdata(data1$splitA, "popularity", prop2, seed2)
-    datas <- standardize(data1[["splitB"]],
-                         data2[["splitA"]], data2[["splitB"]])
+           seed2 = 42,
+           mod ) {
+    data1 <- splitdata(data, y, prop1, seed1)
+    data2 <- splitdata(data1$splitA, y, prop2, seed2)
+    if (mod == "standard"){
+      datas <- standardize(data1[["splitB"]],
+                           data2[["splitA"]], data2[["splitB"]])
+    }
+    else if (mod == "nonstandard") {
+      datas <- list(train = data1[["splitB"]],
+                    test = data2[["splitA"]],
+                    eval = data2[["splitB"]])
+    }
+    return (datas)
   }
 
-split_standard <- function(data, dataCl) {
-  set.seed(42)
-  split1 <- createDataPartition(data[[dataCl]],
-                                p = .7)[[1]]
-  other <- data[-split1, ]
-  training <- data[split1, ]
-  set.seed(24)
-  split2 <- createDataPartition(other[[dataCl]],
-                                p = 1 / 3)[[1]]
-  evaluation <- other[split2, ]
-  testing <- other[-split2, ]
-  # Estimate preprocessing parameters
-  preproc.param <- training %>%
-    preProcess(method = c("center", "scale"))
-  # Transform the data using the estimated parameters
-  train.transformed <- preproc.param %>% predict(training)
-  test.transformed <- preproc.param %>% predict(testing)
-  evaluation.transformed <- preproc.param %>%
-    predict(evaluation)
-  return(
-    list(
-      train = train.transformed,
-      test = test.transformed,
-      eval = evaluation.transformed
-    )
-  )
-}
+########## measure performance ##########
 
-# measure performance :
-
-# A modifier avec arguments : pred, real, y ...
-
-perf.measure <- function(pred , realCl, real, beta = 1)
+perf.measure <- function(pred , real, y, beta = 1)
 {
-  MatConf <- table(pred, realCl) %>% addmargins %>%
-    kable(caption = "matrice de confusion") %>% kable_styling
-  P <- sum(realCl == 1)
-  N <- sum(realCl == 0)
+  MatConf <- table(pred, real[[y]]) %>% addmargins 
+  P <- sum(real == 1)
+  N <- sum(real == 0)
   Pp <- sum(pred == 1)
   Np <- sum(pred == 0)
   n <- P + N
   pre <- (Pp/n)*(P/n)+(Np/n)*(N/n)
-  pra <- (sum((pred == 0) & (realCl == 0)) + sum((pred == 1) & (realCl == 1))) / n
+  pra <- (sum((pred == 0) & (real == 0)) + sum((pred == 1) & (real == 1))) / n
   kappa <- (pra - pre) / (1 - pre)
-  error <- sum(pred != realCl) / nrow(real)
+  error <- sum(pred != real[[y]]) / nrow(real)
   FPrate <- sum((pred == 1) & (real == 0)) / N
   TPrate <- sum((pred == 1) & (real == 1)) / P
   TNrate <- sum((pred == 0) & (real == 0)) / N
   PrecisionPPV <- sum((pred == 1) & (real == 1)) / Pp
   accuracy <- 1 - error
   dominance <- TPrate - TNrate
-  Fscore <- (((1+beta)^2)*TPrate*PrecisionPPV)/((beta^2)*(TPrate+PrecisionPPV))
-  out <- c(accuracy, FPrate, TPrate, kappa, dominance, PrecisionPPV, Fscore)
-  names(out) <- c("accuracy", "False Alarm", "Detection Power",
-                  "kappa", "dominance", "precision", "Fscore")
-  perfM <- out %>% kable(caption = "Performance measures",
-                         col.names = "value") %>% kable_styling()
-  return(list(perf = perfM, matconf = MatConf))
+  Fscore <- (1+beta^2)*((TPrate*PrecisionPPV)/(((beta^2)*PrecisionPPV)+TPrate))
+  return(list( matconf = MatConf, accuracy = accuracy, FPrate = FPrate,
+               TPrate = TPrate, kappa = kappa, PrecisionPPV = PrecisionPPV,
+               Fscore = Fscore))
+}
+
+TableMetrics <- function(pred, dat, y){
+  listPred <- list(pred$predrf$cla, pred$predlog$cla,
+                   pred$predLda$class, pred$predSvm)
+  LapPred <- lapply(listPred, perf.measure,
+                    real = dat, y = y)
+  tabloMetric <- NULL
+  for(i in 1:4){
+    tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
+  }
+  row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
+  return(tabloMetric)
 }
 
 # Courbe ROC
 
-RocAuc <- function(pred, realCl, mod) {
-  if (mod == "logit")
+RocCurve <- function(predi, realCl, mod) {
+  if (mod == "log")
   {
-    pred <- prediction(round(pred), realCl)
+    pred <- prediction(round(predi$predlog$prob,3), realCl)
+    colA <- "orange"
   }
-  else
+  else if (mod == "rf")
   {
-    pred <- prediction(pred$posterior[, 2], realCl)
+    pred <- prediction(round(predi$predrf$prob[,2],3), realCl)
+    colA <- "green"
+  }
+  else if (mod == "lda")
+  {
+    pred <- prediction(predi$predLda$posterior[, 2], realCl)
+    colA <- "red"
+  }
+  else if (mod == "svm")
+  {
+    BB <- attr(predi$predSvm, "probabilities")[,2]
+    pred <- prediction(BB, realCl)
+    colA <- "blue"
   }
   perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-  plot(perf, col = rainbow(10))
+  plot(perf, col = colA)
   segments(0, 0, 1, 1)
   perf <- performance(pred, "auc")
-  perf@y.values[[1]]
+  AUC <- perf@y.values[[1]]
 }
 
-# Alternate cutoff
+AllRoc <- function(predic, dataCl) {
+  par()
+  RocCurve(predi = predic, dataCl, mod = "lda")
+  par(new = T)
+  RocCurve(predi = predic, dataCl, mod = "svm")
+  par(new = T)
+  RocCurve(predi = predic, dataCl, mod = "log")
+  par(new = T)
+  RocCurve(predi = predic, dataCl, mod = "rf")
+  legend(
+    'topleft',
+    legend = c("lda", "lr", "rf", "svm"),
+    col = c("red", "orange", "green", "blue"),
+    pch = 15, cex = 0.8
+  )
+  title("Roc Curves")
+}
+
+########## Post-processing Alternate cutoff ##########
 
 evoSeuil <- function(pred, realCl, real, mod) {
   N <- sum(realCl == 0)
@@ -129,11 +148,11 @@ evoSeuil <- function(pred, realCl, real, mod) {
   for (i in 1:101) {
     c <- (i - 1) / 100
     Prediction <- rep(0, nrow(real))
-    if (mod == "logit")
+    if (mod == "autres")
     {
       Prediction[pred > c] <- 1
     }
-    else
+    else if (mod == "posterior")
     {
       Prediction[pred$posterior[, 2] > c] <- 1
     }
@@ -143,88 +162,74 @@ evoSeuil <- function(pred, realCl, real, mod) {
   }
   par(cex = 0.7)
   plot((0:100) / 100,
-       Error,
-       type = "l",
-       xlim = c(0, 1),
-       ylim = c(0, 1),
-       ylab = "Taux d'erreur",
-       xlab = "Seuil"
+       Error, type = "l",
+       xlim = c(0, 1), ylim = c(0, 1),
+       ylab = "Taux d'erreur", xlab = "Seuil"
   )
   par(new = T)
   plot((0:100) / 100,
-       FPr,
-       type = "l",
-       xlim = c(0, 1),
-       ylim = c(0, 1),
-       ylab = "",
-       xlab = "",
-       xaxt = "n",
-       yaxt = "n",
-       col = "orange"
+       FPr, type = "l", xlim = c(0, 1),
+       ylim = c(0, 1), ylab = "", xlab = "",
+       xaxt = "n", yaxt = "n", col = "orange"
   )
   par(new = T)
   plot((0:100) / 100,
-       FNr,
-       type = "l",
-       xlim = c(0, 1),
-       ylim = c(0, 1),
-       ylab = "",
-       xlab = "",
-       xaxt = "n",
-       yaxt = "n",
-       col = "blue",
-       lty = "dashed"
+       FNr, type = "l",
+       xlim = c(0, 1), ylim = c(0, 1), ylab = "", xlab = "",
+       xaxt = "n", yaxt = "n", col = "blue", lty = "dashed"
   )
   legend(
     'topright',
     legend = c("Error ", "FP rate", "FN rate"),
-    col = c("black", "orange", "blue"),
-    pch = 15,
-    bty = "n",
-    pt.cex = 1,
-    cex = 0.8,
-    horiz = FALSE,
-    inset = c(0.1, 0.1)
+    col = c("black", "orange", "blue"), pch = 15,
+    bty = "n", pt.cex = 1,
+    cex = 0.8, horiz = FALSE, inset = c(0.1, 0.1)
   )
   title("Evolution des 3 types d'erreur")
 }
 
 changeSeuil <- function(pred, realCl, real, seuil, mod) {
   change_seuil <- rep(0, nrow(real))
-  if (mod == "logit")
+  if (mod == "autres")
   {
     change_seuil[pred > seuil] <- 1
   }
-  else
+  else if (mod == "posterior")
   {
     change_seuil[pred$posterior[, 2] > seuil] <- 1
   }
-  # table(change_seuil, realCl) %>% addmargins %>%
-  #   kable(caption = "matrice de confusion avec le nouveau seuil") %>%
-  #   kable_styling
   out <- change_seuil
 }
 
-# Fit the models :
-
-models <- function(y, data) {
-  Modlda <- lda(as.formula(paste(y , "~ .")), data = data)
+########## Fit the models ##########
+#set seed entre les mod?
+models <- function(y, data,
+                   prior =c(0.5,0.5), CWSvm = c("0" = 1, "1" = 1),
+                   mtry = length(data)-1, nodesize = 1,
+                   kernSvm = "polynomial", costSvm = 1) {
+  Modlda <- lda(as.formula(paste(y , "~ .")), data = data,
+                prior = prior)
   Modlr <- glm(as.formula(paste(y , "~ .")),
                data = data,
-               family = binomial(link = logit))
+               family = binomial(link = logit)
+               )
   Modrf <- randomForest(
     as.formula(paste(y , "~ .")),
     data = data,
+    type = "classification",
     method = "class",
     parms = list(split = "gini"),
-    na.action = na.roughfix
+    mtry = mtry,
+    nodesize = nodesize,
+    classwt = prior
   )
   ModSvm <- svm(
     as.formula(paste(y , "~ .")),
     data = data,
     scale = FALSE,
-    kernel = "polynomial",
-    cost = 5,
+    kernel = kernSvm,
+    cost = costSvm,
+    class.weights = CWSvm,
     probability = TRUE
   )
   return(list(
@@ -235,8 +240,7 @@ models <- function(y, data) {
   ))
 }
 
-# function predict en developpement
-# !!!!! changer critère d'acceptation pour predrf et predlog
+########## Make Predictions ##########
 
 predictions <- function(models, datas) {
   predLda <- predict(models[["Modlda"]], datas[["test"]])
@@ -244,7 +248,7 @@ predictions <- function(models, datas) {
   predrf$prob <- predict(models[["Modrf"]], datas[["test"]],
                     type = "prob")
   predrf$cla <- ifelse(predrf$prob[, 2] > 0.5, 1, 0)
-  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]])
+  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]], probability = TRUE)
   predlog <- NULL
   predlog$prob <- predict(models[["Modlr"]], newdata = datas[["test"]],
                      type = 'response')
