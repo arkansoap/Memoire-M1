@@ -81,11 +81,29 @@ TableMetrics <- function(pred, dat, y){
   LapPred <- lapply(listPred, perf.measure,
                     real = dat, y = y)
   tabloMetric <- NULL
+  tabloMatconf <- NULL
   for(i in 1:4){
     tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
+    tabloMatconf <- rbind(tabloMatconf, LapPred[[i]][1])
   }
   row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
-  return(tabloMetric)
+  return(list(tabloMetric, tabloMatconf))
+}
+
+KablesPerf <- function(pred, dat, y){
+  Metrics1 <- TableMetrics(pred = pred, dat = dat, y = y)
+  tabloMC <- rbind(
+    c("rf", " ", " ", "log", " " ," "),
+    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[1]]),
+    c("lda", " "," ", "svm"," ",  " "),
+    cbind(Metrics1[[2]][[2]],Metrics1[[2]][[3]])
+  )
+  kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    row_spec(c(1,5), background = "lightgrey")  
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]]), digits = 3) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+  return(list(kableMC, kableMetrics))
 }
 
 # Courbe ROC

@@ -62,10 +62,10 @@
   
 # Notes, questions et à faire : 
 
-- pas de sortie kable ds certaines fonctions pour récupérer données des table ou df
-- cost for svm : The cost of constraints violation (default: 1)—it is the ‘C’-constant of the regularization term in the Lagrange formulation.
-- pertinence de centrer réduire pour rf , ... ??
-- smote only for numeric ?
+- average ds models
+- smote numeric
+- log à opti
+
 # Rappels, liens et phrases clés pour moi :
 
 - [Site Julie Scholler](https://juliescholler.gitlab.io/)

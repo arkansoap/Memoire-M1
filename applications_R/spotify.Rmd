@@ -137,10 +137,6 @@ plot(spot_B$popularity)
 The training and test sets were created using stratiﬁed random sampling. First, split the training set off. Then create the evaluation and test sets. Hence we normalize/standardize the datas. 
 
 ```{r}
-source("functions_UC.R")
-```
-
-```{r}
 #posssibilité de changer les paramètres prop1, prop2, seed1, seed2
 datas <- split_standard(spot_B, "popularity", mod = "standard")
 
@@ -159,17 +155,10 @@ Predictions <- predictions(models = Models, datas = datas)
 ```
 
 ```{r}
-#matconfs
-```
+kab1 <- KablesPerf(pred = Predictions, dat = datas$test, y = "popularity")
 
-```{r}
-Metrics1 <- TableMetrics(pred = Predictions, datas$test, "popularity")
-kable(as.data.frame(Metrics1), digits = 3) %>% kable_styling()
-class(Metrics1)
-```
-
-```{r}
-source("functions_UC.R")
+kab1[[1]]
+kab1[[2]]
 ```
 
 ```{r}
