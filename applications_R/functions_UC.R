@@ -94,9 +94,9 @@ KablesPerf <- function(pred, dat, y){
   Metrics1 <- TableMetrics(pred = pred, dat = dat, y = y)
   tabloMC <- rbind(
     c("rf", " ", " ", "log", " " ," "),
-    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[1]]),
+    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[2]]),
     c("lda", " "," ", "svm"," ",  " "),
-    cbind(Metrics1[[2]][[2]],Metrics1[[2]][[3]])
+    cbind(Metrics1[[2]][[3]],Metrics1[[2]][[4]])
   )
   kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -220,11 +220,21 @@ changeSeuil <- function(pred, realCl, real, seuil, mod) {
 }
 
 ########## Fit the models ##########
+
+priors <- function(dat, y){
+  a = sum(dat[[y]] == 1) / nrow(dat)
+  b = 1 - a
+  return(c(b,a)) 
+}
+
 #set seed entre les mod?
+#prior =c( sum(data$y == 1) / nrow(data) ,1 -((sum(data$y == 1) / nrow(data))))
 models <- function(y, data,
-                   prior =c(0.5,0.5), CWSvm = c("0" = 1, "1" = 1),
+                   prior,
+                   CWSvm = c("0" = 1, "1" = 1),
                    mtry = length(data)-1, nodesize = 1,
                    kernSvm = "polynomial", costSvm = 1) {
+  set.seed(777)
   Modlda <- lda(as.formula(paste(y , "~ .")), data = data,
                 prior = prior)
   Modlr <- glm(as.formula(paste(y , "~ .")),

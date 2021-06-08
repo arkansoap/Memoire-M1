@@ -43,9 +43,9 @@ setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 source("functions_UC.R")
 ```
   
-# Préparation de la base de données ...
+# Preparation of the data base
 
-## En amont 
+## restructuring 
 
 ```{r}
 #On charge la base de donnée. Les variables de types "str" sont recodées en facteurs.
@@ -122,7 +122,7 @@ spot_B$popularity <- recode_factor(spot_B$popularity,
 
 
 # On enlève les variables non pertinentes pour la classification :
-spot_B <- spot_B[, -c(2, 3, 4, 5, 6, 7, 8, 10)]
+spot_B <- spot_B[, -c(2, 3, 4, 5, 6, 7, 8, 10,23)]
 
 # On efface les bases inutiles
 rm(spot1, spotify)
@@ -132,23 +132,37 @@ rm(spot1, spotify)
 plot(spot_B$popularity)
 ```
 
-## Partitionnement : 
+We can observe a high imbalanced repartition on the "popularity" variable.
 
-The training and test sets were created using stratiﬁed random sampling. First, split the training set off. Then create the evaluation and test sets. Hence we normalize/standardize the datas. 
+## Partitioning : 
+
+Training and test sets are created with random sampling. First, we split the training set off. Then whe create the evaluation and test sets. Hence we create two groups of datas, one which is standardize and the other which is not. You can see the functions used in the functions_UCR.R file.
 
 ```{r}
 #posssibilité de changer les paramètres prop1, prop2, seed1, seed2
 datas <- split_standard(spot_B, "popularity", mod = "standard")
-
+datasNS <- split_standard(spot_B, "popularity", mod = "nonstandard")
 # verif
 sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
 ```
 
 # First Models : 
 
+To introduce our problematics, we fit four kind of models withs basics parameters. We choose LDA, RF, LR and SVM (a brief overview of each model is available in the summary document).
+
+The priors of the training set are :
+
 ```{r}
-Models <- models(y = "popularity", data = datas$train)
+priors(dat = datas$train, "popularity")
 ```
+
+```{r}
+Models <- models(y = "popularity", data = datas$train,
+                 prior = priors(dat = datas$train, "popularity"))
+# ModelsNS <- models(y = "popularity", data = datasNS$train)
+```
+
+With current parameter, The SVM model fails to find an hyperplane with non normalize datas. This errors occurs when whe faces imbalance data. 
 
 ```{r}
 Predictions <- predictions(models = Models, datas = datas)
@@ -165,13 +179,26 @@ kab1[[2]]
 AllRoc(Predictions, datas$test$popularity)
 ```
 
-We can emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are not good. 
+We can emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are very bad. 
+Note that RF has pretty good results in comparison of the other models.
+We clearly observe that our models are inefficient. Hence, because of the small size of the positive class, the models tends to classify almost all individuals in the minority class (not enough datas to learn about positive class structure). Linked to the known fact that there is a large majority of individuals in the minority level, We can understand the very good score of accuracy.
 
 # Remedies 
 
+A lot of research have been made concerning this problem. Our goal is not to make an exhaustive review of all the technics to remedies this issue. 
+In this study, we will focus on methods than we can repoduce with our level of competence. It appears to us that it is interesting to separate the choosen methods in three levels :
+- First, some remedies we can use before launching the machine learning algorithm (Preprocessing).
+- Secundly, some remedies we can use during the computation of a fitted models by the machine (learning method tuning).
+- At last, som remedies that can be used after the machine learning algorithm (postprocessing).
+
 ## Datas prepocessing : 
 
-### Random downsample
+
+### CARET up and down sample : 
+
+"downSample will randomly sample a data set so that all classes have the same frequency as the minority class. upSample samples with replacement to make the class distributions equal"
+
+#### Random downsample
 
 ```{r}
 DownSampleRandom <- downSample(spot_B[,-1], spot_B[,1])
@@ -181,7 +208,38 @@ DownSampleRandom <- downSample(spot_B[,-1], spot_B[,1])
 plot(DownSampleRandom$Class)
 ```
 
-### Random upsample
+```{r}
+datasRDS <- split_standard(DownSampleRandom, "Class", mod = "standard")
+```
+
+```{r}
+ModelsRDS <- models(y = "Class", data = datasRDS$train,
+                    prior = priors(datasRDS$train, "Class"))
+```
+
+```{r}
+PredictionsRDS <- predictions(models = ModelsRDS, datas = datasRDS)
+```
+
+```{r}
+KablesPerf(pred = PredictionsRDS, dat = datasRDS$test, y = "Class")
+```
+
+```{r}
+AllRoc(predic = PredictionsRDS, dataCl = datasRDS$test$Class)
+```
+
+A first try with using Random down-resampling. Here we randomly reduce the large class (negative class). The major default of this method is that we significantly reduces the data base which one the algorithm learn. We easily understand than the less cases the machine has, the worst reliable the predictions are.
+
+RF is still the best model, following by SVM. 
+
+A major issue is the False alarm rate (FP rate). 
+
+To get a better compromise beetween sensitivity(TPrate) and specificity(TNrate), we need to pay it in glabal accuracy. It cost in accuracy (and False alarm) to gain a better detection power. 
+
+However, Results are globally better than with the models without resampling.
+
+#### Random upsample
 
 ```{r}
 UpSampleRandom <- upSample(spot_B[,-1], spot_B[,1])
@@ -191,6 +249,29 @@ UpSampleRandom <- upSample(spot_B[,-1], spot_B[,1])
 plot(UpSampleRandom$Class)
 ```
 
+```{r}
+datasRUS <- split_standard(UpSampleRandom, "Class", mod = "standard")
+```
+
+```{r}
+ModelsRUS <- models(y = "Class", data = datasRUS$train,
+                    prior = priors(datasRUS$train, "Class"))
+```
+
+```{r}
+PredictionsRUS <- predictions(models = ModelsRUS, datas = datasRUS)
+```
+
+```{r}
+KablesPerf(pred = PredictionsRUS, dat = datasRUS$test, y = "Class")
+```
+
+```{r}
+AllRoc(predic = PredictionsRUS, dataCl = datasRUS$test$Class)
+```
+
+Excellent results for random forest !! How can we explain it ? Maybe because we standardize the data base?
+
 ### SMOTE 
 
 Synthetic Minority Oversampling Technique
@@ -198,28 +279,29 @@ Synthetic Minority Oversampling Technique
 need numeric data only : 
 
 ```{r}
-datas_num<- spot_B[, -c(2,5,7,15)]
+datas_num<- spot_B[, -c(2,5,7)]
 ```
 
 ```{r}
-smote <- SMOTE(datas_num[,-1],datas_num[,1])
+Smote <- SMOTE(datas_num[,-1],datas_num[,1])
 ```
 
 ```{r}
-Smotedata <- smote$data
+Smotedata <- Smote$data
 Smotedata$class<-as.factor(Smotedata$class)
-str(Smotedata)
+```
+
+```{r}
 plot(Smotedata$class)
-Smotedata$popularity <- Smotedata$class
-Smotedata <- Smotedata[,-11]
 ```
 
 ```{r}
-datasSmote <- split_standard(Smotedata, "popularity")
+datasSmote <- split_standard(Smotedata, "class", mod = "standard")
 ```
 
 ```{r}
-ModelsSmote <- models(y = "popularity", data = datasSmote$train)
+ModelsSmote <- models(y = "class", data = datasSmote$train,
+                      prior = priors(datasSmote$train, "class"))
 ```
 
 ```{r}
@@ -227,12 +309,16 @@ predSmote <- predictions(models = ModelsSmote, datas = datasSmote)
 ```
 
 ```{r}
-listpredSmote <- list(predSmote$predrf$cla, predSmote$predlog$cla,
-                      predSmote$predSvm, predSmote$predLda$class)
-lapply(listpredSmote, perf.measure,
-       real = datasSmote$test,
-       y = "popularity")
+KablesPerf(pred = predSmote, dat = datasSmote$test, y = "class")
 ```
+
+```{r}
+AllRoc(predic = predSmote, dataCl = datasSmote$test$class)
+```
+
+Why the ROC curve is on the wrong side for SVM ??
+
+We are reaching the same conclusion than upsampling. The actual results are less "extreme". Possibly due to the fact that RUS create too much individuals.  Develop ... 
 
 ### BLSmote
 
@@ -242,20 +328,24 @@ lapply(listpredSmote, perf.measure,
 
 Random Over-Sampling Examples
 
-rose.eval ...
+note : look more about rose.eval function.
 
 ```{r}
 rose <- ROSE(popularity~. , spot_B)
 RoseData <- rose$data
+```
+
+```{r}
 plot(RoseData$popularity)
 ```
 
 ```{r}
-datasRose<- split_standard(RoseData, "popularity")
+datasRose<- split_standard(RoseData, "popularity", mod = "standard")
 ```
 
 ```{r}
-ModelsRose <- models(y = "popularity", data = datasRose$train)
+ModelsRose <- models(y = "popularity", data = datasRose$train,
+                     prior = priors(datasRose$train, "popularity"))
 ```
 
 ```{r}
@@ -263,10 +353,11 @@ predRose <- predictions(models = ModelsRose, datas = datasRose)
 ```
 
 ```{r}
-listpredRose <- list(predRose$predrf$cla, predRose$predlog$cla, predRose$predSvm, predRose$predLda$class)
-lapply(listpredRose, perf.measure,
-       real = datasRose$test,
-       y = "popularity")
+KablesPerf(predRose, datasRose$test, "popularity")
+```
+
+```{r}
+AllRoc(predRose, dataCl = datasRose$test$popularity)
 ```
 
 ## Learning method tuning : 
@@ -275,6 +366,12 @@ Note for svm :
   - weight class parameter
   - radial or polynomial, ...
   - cost : The cost of constraints violation (default: 1)—it is the ‘C’-constant of the regularization term in the Lagrange formulation.
+  
+"There are many reasons why this may happen, I'd suggest you to do the following:
+
+- Normalize your data.
+- Make sure your classes are more or less balanced (have similar size). If they don't, use parameter -w to assign them different weights.
+- Try different C and γ. Polynomial kernel in LIBSVM also has parameter 'coef0', as the kernel is γ⋅u′⋅v+coeff degree0"
 
 ### Tune parameter with no direct link with imbalanced data : 
 
@@ -366,8 +463,6 @@ predict.svmW <- predict(svmFitW, newdata = datas$test)
 mean(predict.svmW==datas$test$popularity)
 confusionMatrix(predict.svmW,datas$test$popularity )
 ```
-
-* Faire pour 3 autres model
 
 ## Prediction postprocessing : 
 
