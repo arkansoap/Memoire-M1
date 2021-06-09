@@ -316,9 +316,8 @@ KablesPerf(pred = predSmote, dat = datasSmote$test, y = "class")
 AllRoc(predic = predSmote, dataCl = datasSmote$test$class)
 ```
 
-Why the ROC curve is on the wrong side for SVM ??
-
-We are reaching the same conclusion than upsampling. The actual results are less "extreme". Possibly due to the fact that RUS create too much individuals.  Develop ... 
+We are reaching the same conclusion than upsampling. The actual results are less "extreme". Possibly due to the fact that RUS create too much individuals and just make duplications of cases.  
+Develop ... 
 
 ### BLSmote
 
@@ -514,7 +513,7 @@ perf.measure(predrfseuil, datas$test$popularity, datas$test)
 
 *alternate cutoff svm
 
-Changer fonction predictions pour sortir les prob de svm si possible 
+Changer fonction predictions pour sortir les prob de svm si possible
 
 ```{r}
 svmtest <- svm(
@@ -537,6 +536,16 @@ AA <- attr(testprobsvm, "probabilities")[,2]
 
 ```{r}
 evoSeuil(AA, datas$test$popularity, datas$test, "logit")
+```
+
+```{r}
+evoSeuil(attr(predSmote$predSvm, "probabilities")[,2],
+         datasSmote$test$class, datasSmote$test, "autres")
+```
+
+```{r}
+evoSeuil(attr(Predictions$predSvm, "probabilities")[,2],
+         datas$test$popularity, datas$test, "autres")
 ```
 
 ```{r}
@@ -629,3 +638,73 @@ length(datas$train) - 1
 
 weigths pour logit : need pour chaque observation!!! different de classweight
 
+```{r}
+# Améliorer la fonction evoseuil pour choisir quel taux parmi(TP, FP, FN, TN) on veux afficher
+evoSeuilTPR <- function(pred, realCl, real, mod) {
+  N <- sum(realCl == 0)
+  P <- sum(realCl == 1)
+  Error <- NULL
+  FPr <- NULL
+  TPr <- NULL
+  for (i in 1:101) {
+    c <- (i - 1) / 100
+    Prediction <- rep(0, nrow(real))
+    if (mod == "autres")
+    {
+      Prediction[pred > c] <- 1
+    }
+    else if (mod == "posterior")
+    {
+      Prediction[pred$posterior[, 2] > c] <- 1
+    }
+    Error[i] <- sum(Prediction != realCl) / nrow(real)
+    FPr[i] <- sum((Prediction == 1) & (realCl == 0)) / N
+    TPr[i] <- sum((Prediction == 1) & (realCl == 1)) / P
+  }
+  par(cex = 0.7)
+  plot((0:100) / 100,
+       Error, type = "l",
+       xlim = c(0, 1), ylim = c(0, 1),
+       ylab = "Taux d'erreur", xlab = "Seuil"
+  )
+  par(new = T)
+  plot((0:100) / 100,
+       FPr, type = "l", xlim = c(0, 1),
+       ylim = c(0, 1), ylab = "", xlab = "",
+       xaxt = "n", yaxt = "n", col = "orange"
+  )
+  par(new = T)
+  plot((0:100) / 100,
+       TPr, type = "l",
+       xlim = c(0, 1), ylim = c(0, 1), ylab = "", xlab = "",
+       xaxt = "n", yaxt = "n", col = "green", lty = "dashed"
+  )
+  legend(
+    'topright',
+    legend = c("Error ", "FP rate", "TP rate"),
+    col = c("black", "orange", "green"), pch = 15,
+    bty = "n", pt.cex = 1,
+    cex = 0.8, horiz = FALSE, inset = c(0.1, 0.1)
+  )
+  title("Evolution des taux de TP et FP")
+}
+```
+
+```{r}
+evoSeuilTPR(attr(predSmote$predSvm, "probabilities")[,1],
+         datasSmote$test$class, datasSmote$test, "autres")
+```
+
+This graphics shows that FP rate is always bigger than the TP rate, which confirms the ROC Curve. Results non in adequation with the confusion matrix.
+
+Why the ROC curve is on the wrong side for SVM ??
+
+!!!! 2h pour trouver ça espèce de gros boulet !!!!
+
+```{r}
+str(attr(Predictions$predSvm, "probabilities"))
+str(attr(predSmote$predSvm, "probabilities"))
+attr(predSmote$predSvm, "probabilities")[,"1"]
+```
+
+Answer : levels of attr(Predictions$predSvm, "probabilities") are not in the same order.

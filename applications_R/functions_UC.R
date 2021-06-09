@@ -126,7 +126,7 @@ RocCurve <- function(predi, realCl, mod) {
   }
   else if (mod == "svm")
   {
-    BB <- attr(predi$predSvm, "probabilities")[,2]
+    BB <- attr(predi$predSvm, "probabilities")[,"1"]
     pred <- prediction(BB, realCl)
     colA <- "blue"
   }
