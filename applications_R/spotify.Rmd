@@ -33,6 +33,8 @@ library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
 library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
 library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
 library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
+library(gridExtra) # positionnement graphique
+library(cowplot) # positionnement graphique
 ```
 
 ```{r}
@@ -176,6 +178,7 @@ kab1[[2]]
 ```
 
 ```{r}
+par(mfrow=c(1,1))
 AllRoc(Predictions, datas$test$popularity)
 ```
 
@@ -361,20 +364,11 @@ AllRoc(predRose, dataCl = datasRose$test$popularity)
 
 ## Learning method tuning : 
 
-Note for svm : 
-  - weight class parameter
-  - radial or polynomial, ...
-  - cost : The cost of constraints violation (default: 1)—it is the ‘C’-constant of the regularization term in the Lagrange formulation.
-  
-"There are many reasons why this may happen, I'd suggest you to do the following:
-
-- Normalize your data.
-- Make sure your classes are more or less balanced (have similar size). If they don't, use parameter -w to assign them different weights.
-- Try different C and γ. Polynomial kernel in LIBSVM also has parameter 'coef0', as the kernel is γ⋅u′⋅v+coeff degree0"
-
 ### Tune parameter with no direct link with imbalanced data : 
 
-*RF
+First, we tune parameters with no direct link with imbalanced datas. tuning these may be make us win performance and relut better metrics. 
+
+* RF
 
 ```{r}
 # enregistrement d'un cluster avec le package doParallel
@@ -414,7 +408,14 @@ ranger.rf$bestTune
 ranger.rf$finalModel
 ```
 
+* lr : 
+
+- Remove non significative parameter
+- try glmnet to compromise betwwen lasso and ridge regression
+
 * SVM
+
+note : choice of the better kernel
 
 ```{r}
 registerDoParallel(cores = 6)
@@ -441,129 +442,84 @@ stopImplicitCluster()
 tuneSvm
 ```
 
+* lda
+
+note : interet de changer le prior ? , préférer qda ?
+
+
 ### Tune Class weight 
 
-* SVM
+We can decide to give some weights to the data class in order to give more importance (more weight) to the positive class. Link with cost / benefits. 
+
+note : weights for glm seems to ask a vector of weights for each classes
 
 ```{r}
-set.seed(1983)
-svmFitW <- svm(
-  popularity ~ .,
-  data = datas$train,
-  scale = FALSE,
-  kernel = "radial",
-  cost = 10,
-  class.weights = c("0" = 1, "1" = 4)
-)
+priors(datas$train, "popularity")
 ```
 
 ```{r}
-predict.svmW <- predict(svmFitW, newdata = datas$test)
-mean(predict.svmW==datas$test$popularity)
-confusionMatrix(predict.svmW,datas$test$popularity )
+ModW <- models(y = "popularity", data = datas$train,
+               prior = c(0.5,0.5),
+               CWSvm = c("0" = 1, "1" = 4),
+               CWRf = c(1, 4))
 ```
+
+```{r}
+PredW <- predictions(models = ModW, datas = datas)
+```
+
+```{r}
+KablesPerf(PredW, datas$test, "popularity")
+```
+
+```{r}
+par(mfrow=c(1,2))
+AllRoc(Predictions, datas$test$popularity)
+AllRoc(PredW, datas$test$popularity)
+```
+
 
 ## Prediction postprocessing : 
 
-```{r}
-predbasic <- predictions(models = Models, datas = datas)
-```
-
-* alternate cutoff LDA
+### Visualization of the errors depending threshold for belonging to thepositive class
 
 ```{r}
-evoSeuil(Predictions$predLda, datas$test$popularity, datas$test, "autre")
-```
-
-```{r}
-predldaseuil <- changeSeuil(predbasic$predLda, datas$test$popularity, datas$test, 0.2, "autre")
+# plot_grid(evoSeuil(Predictions$predLda, datas$test$popularity, datas$test, "posterior"),
+#           evoSeuil(Predictions$predlog$prob, datas$test$popularity, datas$test, "autres"),
+#           labels=c("A", "B"), ncol = 2, nrow = 1)
 ```
 
 ```{r}
-perf.measure(predldaseuil, datas$test$popularity, datas$test)
-```
-
-* alternate cut off logit
-
-```{r}
-evoSeuil(predbasic$predlog$prob, datas$test$popularity, datas$test, "logit")
-```
-
-```{r}
-predlogitseuil <- changeSeuil(predbasic$predlog$prob, datas$test$popularity, datas$test, 0.2, "logit")
-```
-
-```{r}
-perf.measure(predlogitseuil, datas$test$popularity, datas$test)
-```
-
-* alternate cutoff rf
-
-```{r}
-evoSeuil(pred = predbasic$predrf$prob[,2], datas$test$popularity, datas$test, "logit")
-```
-
-```{r}
-predrfseuil <- changeSeuil(predbasic$predrf$prob[,2], datas$test$popularity, datas$test, 0.2, "logit")
-```
-
-```{r}
-perf.measure(predrfseuil, datas$test$popularity, datas$test)
-```
-
-*alternate cutoff svm
-
-Changer fonction predictions pour sortir les prob de svm si possible
-
-```{r}
-svmtest <- svm(
-    popularity~.,
-    data = datas$train,
-    scale = FALSE,
-    kernel = "polynomial",
-    cost = 5,
-    probability = TRUE
-)
-```
-
-```{r}
-testprobsvm <- predict(Models$ModSvm, newdata = datas$test, probability = TRUE)
-```
-
-```{r}
-AA <- attr(testprobsvm, "probabilities")[,2]
-```
-
-```{r}
-evoSeuil(AA, datas$test$popularity, datas$test, "logit")
-```
-
-```{r}
-evoSeuil(attr(predSmote$predSvm, "probabilities")[,2],
-         datasSmote$test$class, datasSmote$test, "autres")
-```
-
-```{r}
+par(mfrow=c(2,2))
+evoSeuil(Predictions$predLda, datas$test$popularity, datas$test, "posterior")
+evoSeuil(Predictions$predlog$prob, datas$test$popularity, datas$test, "autres")
 evoSeuil(attr(Predictions$predSvm, "probabilities")[,2],
          datas$test$popularity, datas$test, "autres")
+evoSeuil(Predictions$predrf$prob[,2], datas$test$popularity, datas$test, "autres")
+```
+
+### Predictions with new threshold : 
+
+```{r}
+predldaseuil <- changeSeuil(Predictions$predLda, datas$test$popularity, datas$test, 0.2, "posterior")
+
+predlogseuil <- changeSeuil(Predictions$predlog$prob, datas$test$popularity, datas$test, 0.2, "autres")
+
+predrfseuil <- changeSeuil(Predictions$predrf$prob[,2], datas$test$popularity, datas$test, 0.2, "autres")
+
+predsvmseuil <- changeSeuil(attr(Predictions$predSvm, "probabilities")[,2], datas$test$popularity, datas$test, 0.2, "autres")
+
+listPredseuil <- list(predrfseuil, predlogseuil,
+                      predldaseuil, predsvmseuil)
 ```
 
 ```{r}
-AA2 <- changeSeuil(pred = AA, datas$test$popularity, datas$test, 0.19, "logit" )
+KablesPerf2(pred = Predictions, dat = datas$test, y = "popularity", listPred = listPredseuil)
 ```
-
-```{r}
-perf.measure2(AA2, datas$test$popularity, datas$test)
-```
-
-```{r}
-perf.measure(AA2, datas$test, "popularity")
-```
-
 
 # Combination of the three remedies step for the best model
 
-# Notes / Tests/ à voir pr correction
+# Notes / Tests/ à voir pr correction / fourretout
 
 ```{r}
 # Avec CARET
@@ -708,3 +664,32 @@ attr(predSmote$predSvm, "probabilities")[,"1"]
 ```
 
 Answer : levels of attr(Predictions$predSvm, "probabilities") are not in the same order.
+
+Note for svm : 
+  - weight class parameter
+  - radial or polynomial, ...
+  - cost : The cost of constraints violation (default: 1)—it is the ‘C’-constant of the regularization term in the Lagrange formulation.
+  
+"There are many reasons why this may happen, I'd suggest you to do the following:
+
+- Normalize your data.
+- Make sure your classes are more or less balanced (have similar size). If they don't, use parameter -w to assign them different weights.
+- Try different C and γ. Polynomial kernel in LIBSVM also has parameter 'coef0', as the kernel is γ⋅u′⋅v+coeff degree0"
+
+```{r}
+set.seed(1983)
+svmFitW <- svm(
+  popularity ~ .,
+  data = datas$train,
+  scale = FALSE,
+  kernel = "radial",
+  cost = 10,
+  class.weights = c("0" = 1, "1" = 4)
+)
+```
+
+```{r}
+predict.svmW <- predict(svmFitW, newdata = datas$test)
+mean(predict.svmW==datas$test$popularity)
+confusionMatrix(predict.svmW,datas$test$popularity )
+```

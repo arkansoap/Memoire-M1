@@ -106,6 +106,36 @@ KablesPerf <- function(pred, dat, y){
   return(list(kableMC, kableMetrics))
 }
 
+TableMetrics2 <- function(pred, dat, y, listPred){
+  LapPred <- lapply(listPred, perf.measure,
+                    real = dat, y = y)
+  tabloMetric <- NULL
+  tabloMatconf <- NULL
+  for(i in 1:4){
+    tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
+    tabloMatconf <- rbind(tabloMatconf, LapPred[[i]][1])
+  }
+  row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
+  return(list(tabloMetric, tabloMatconf))
+}
+
+KablesPerf2 <- function(pred, dat, y, listPred){
+  Metrics1 <- TableMetrics2(pred = pred, dat = dat,
+                            y = y, listPred = listPred)
+  tabloMC <- rbind(
+    c("rf", " ", " ", "log", " " ," "),
+    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[2]]),
+    c("lda", " "," ", "svm"," ",  " "),
+    cbind(Metrics1[[2]][[3]],Metrics1[[2]][[4]])
+  )
+  kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    row_spec(c(1,5), background = "lightgrey")  
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]]), digits = 3) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+  return(list(kableMC, kableMetrics))
+}
+
 # Courbe ROC
 
 RocCurve <- function(predi, realCl, mod) {
@@ -232,6 +262,7 @@ priors <- function(dat, y){
 models <- function(y, data,
                    prior,
                    CWSvm = c("0" = 1, "1" = 1),
+                   CWRf = c(1,1),
                    mtry = length(data)-1, nodesize = 1,
                    kernSvm = "polynomial", costSvm = 1) {
   set.seed(777)
@@ -249,7 +280,7 @@ models <- function(y, data,
     parms = list(split = "gini"),
     mtry = mtry,
     nodesize = nodesize,
-    classwt = prior
+    classwt = CWRf
   )
   ModSvm <- svm(
     as.formula(paste(y , "~ .")),
