@@ -275,6 +275,40 @@ AllRoc(predic = PredictionsRUS, dataCl = datasRUS$test$Class)
 
 Excellent results for random forest !! How can we explain it ? Maybe because we standardize the data base?
 
+```{r}
+#doesn't work 
+resamp_res <- function(datas, mod ){
+  if (mod == "US"){
+    Resamp <- upSample(datas[,-1], datas[,1])
+  } else if (mod == "DS"){
+    Resamp <- downSample(datas[,-1], datas[,1])
+  } else if (mod == "Smote"){
+    smote <- SMOTE(datas[,-1], datas[,1])
+    Resamp <- smote$data
+    Resamp$class<-as.factor(resamp$class)
+  } else if (mod == "BLS"){
+    bls <- BLSMOTE(datas[,-1], datas[,1])
+    Resamp <- bls$data
+    Resamp$class<-as.factor(resamp$class)
+  } else if (mod == "Adasyn"){
+    Resamp <- ADAS(datas[,-1], datas[,1])
+  }
+  datasplit <- split_standard(Resamp, "class" , mod = "standard")
+  Models <- models(y = "Class", data = datasplit$train,
+                    prior = priors(datasplit$train, "Class"))
+  Predictions <- predictions(models = Models, datas = datasplit)
+  tablos <- KablesPerf(pred = Predictions, dat = datasplit$test,
+                       y = "Class")
+  Rocs <- AllRoc(predic = Predictions, dataCl = datasplit$test$Class)
+  return(list(tablos, Rocs))
+}
+```
+
+```{r}
+testA <- resamp_res(datas = spot_B, mod = "US" )
+```
+
+
 ### SMOTE 
 
 Synthetic Minority Oversampling Technique
@@ -324,7 +358,38 @@ Develop ...
 
 ### BLSmote
 
+```{r}
+BLSmote <- BLSMOTE(datas_num[,-1],datas_num[,1])
+```
+
+```{r}
+BLSmotedata <- BLSmote$data
+BLSmotedata$class<-as.factor(BLSmotedata$class)
+datasBLSmote <- split_standard(BLSmotedata, "class", mod = "standard")
+```
+
+```{r}
+ModelsBLSmote <- models(data = datasBLSmote$train, y = "class",
+       prior = priors(datasBLSmote$train, "class"))
+```
+
+```{r}
+PredicionsBLSmote <- predictions(ModelsBLSmote, datasBLSmote )
+```
+
+```{r}
+KablesPerf(pred = PredicionsBLSmote, dat = datasBLSmote$test, y = "class")
+```
+
+```{r}
+AllRoc(predic = PredicionsBLSmote, dataCl = datasBLSmote$test$class)
+```
+
 ### ADASYN
+
+note : faire une fonction pour éviter de se retaper tout le code ...
+
+
 
 ### ROSE
 
