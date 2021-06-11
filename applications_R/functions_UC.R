@@ -4,7 +4,7 @@
 
 splitdata <- function(data, y, prop, seed) {
   set.seed(seed)
-  split <- createDataPartition(data[[y]], p = prop)[[1]]
+  split <- createDataPartition(data$y, p = prop)[[1]]
   splitA <- data[-split,]
   splitB <- data[split,]
   return(list(splitA = splitA, splitB = splitB))
@@ -319,4 +319,37 @@ predictions <- function(models, datas) {
     predSvm = predSvm,
     predlog = predlog
   ))
+}
+
+########## Pre Processing ##########
+
+resamp_res <- function(datas, mod ){
+  if (mod == "US"){
+    Resamp <- upSample(datas[,-1], datas[,1])
+  } else if (mod == "DS"){
+    Resamp <- downSample(datas[,-1], datas[,1])
+  } else if (mod == "Smote"){
+    smote <- SMOTE(datas[,-1], datas[,1])
+    Resamp <- smote$data
+    Resamp$class<-as.factor(Resamp$class)
+    names(Resamp)[names(Resamp) == "class"] <- "Class"
+  } else if (mod == "BLS"){
+    bls <- BLSMOTE(datas[,-1], datas[,1])
+    Resamp <- bls$data
+    Resamp$class<-as.factor(Resamp$class)
+    names(Resamp)[names(Resamp) == "class"] <- "Class"
+  } else if (mod == "Adasyn"){
+    adas <- ADAS(datas[,-1], datas[,1])
+    Resamp <- adas$data
+    Resamp$class <- as.factor(Resamp$class)
+    names(Resamp)[names(Resamp) == "class"] <- "Class"
+  }
+  datasplit <- split_standard(Resamp, datas[,1] , mod = "standard")
+  Models <- models(y = "Class", data = datasplit$train,
+                   prior = priors(datasplit$train, "Class"))
+  Predictions <- predictions(models = Models, datas = datasplit)
+  tablos <- KablesPerf(pred = Predictions, dat = datasplit$test,
+                       y = "Class")
+  Rocs <- AllRoc(predic = Predictions, dataCl = datasplit$test$Class)
+  return(list(tablos, Rocs))
 }
