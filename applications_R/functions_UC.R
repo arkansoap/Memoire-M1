@@ -4,7 +4,7 @@
 
 splitdata <- function(data, y, prop, seed) {
   set.seed(seed)
-  split <- createDataPartition(data$y, p = prop)[[1]]
+  split <- createDataPartition(data[[y]], p = prop)[[1]]
   splitA <- data[-split,]
   splitB <- data[split,]
   return(list(splitA = splitA, splitB = splitB))
@@ -325,7 +325,7 @@ predictions <- function(models, datas) {
 
 resamp_res <- function(datas, mod ){
   if (mod == "US"){
-    Resamp <- upSample(datas[,-1], datas[,1])
+    Resamp <- upSample(x =  datas[,-1], y = datas[,1])
   } else if (mod == "DS"){
     Resamp <- downSample(datas[,-1], datas[,1])
   } else if (mod == "Smote"){
@@ -344,7 +344,7 @@ resamp_res <- function(datas, mod ){
     Resamp$class <- as.factor(Resamp$class)
     names(Resamp)[names(Resamp) == "class"] <- "Class"
   }
-  datasplit <- split_standard(Resamp, datas[,1] , mod = "standard")
+  datasplit <- split_standard(Resamp, "Class" , mod = "standard")
   Models <- models(y = "Class", data = datasplit$train,
                    prior = priors(datasplit$train, "Class"))
   Predictions <- predictions(models = Models, datas = datasplit)
@@ -353,3 +353,27 @@ resamp_res <- function(datas, mod ){
   Rocs <- AllRoc(predic = Predictions, dataCl = datasplit$test$Class)
   return(list(tablos, Rocs))
 }
+
+########## Packages ##########
+
+library (tidyverse) # collection of packages for data analysis
+library(caret) # Classification And REgression Training
+library(pROC) # Tools for visualizing, smoothing and comparing ROC.
+library(ROCR) # evaluating and visualizing classifier performance
+library(lubridate) # R commands for date-times
+library(tidymodels) #  collection of packages for modeling and machine learning using tidyverse principles. pre-process/train/validate
+library(MASS) # Modern Applied Statistics with S" for regression and classification
+library(stargazer) # Well-Formatted Regression and Summary Statistics Tables
+library(randomForest) # ensemble learning method with multitude of decision tree 
+library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en créant un cluster de cours.
+library(parallel) # détection du nombre de coeurs
+library(ranger) # A Fast Implementation of Random Forests. (tune rf)
+library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
+library(kableExtra) # Create Awesome HTML Table
+library(smotefamily) # Synthetic Minority Oversampling TEchnique
+library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
+library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
+library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
+library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
+library(gridExtra) # positionnement graphique
+library(cowplot) # positionnement graphique

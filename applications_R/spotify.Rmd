@@ -11,32 +11,6 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Package
-
-```{r}
-library (tidyverse) # collection of packages for data analysis
-library(caret) # Classification And REgression Training
-library(pROC) # Tools for visualizing, smoothing and comparing ROC.
-library(ROCR) # evaluating and visualizing classifier performance
-library(lubridate) # R commands for date-times
-library(tidymodels) #  collection of packages for modeling and machine learning using tidyverse principles. pre-process/train/validate
-library(MASS) # Modern Applied Statistics with S" for regression and classification
-library(stargazer) # Well-Formatted Regression and Summary Statistics Tables
-library(randomForest) # ensemble learning method with multitude of decision tree 
-library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en créant un cluster de cœurs.
-library(parallel) # détection du nombre de coeurs
-library(ranger) # A Fast Implementation of Random Forests. (tune rf)
-library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
-library(kableExtra) # Create Awesome HTML Table
-library(smotefamily) # Synthetic Minority Oversampling TEchnique
-library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
-library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
-library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
-library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
-library(gridExtra) # positionnement graphique
-library(cowplot) # positionnement graphique
-```
-
 ```{r}
 setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 ```
@@ -410,7 +384,7 @@ KablesPerf(predRose, datasRose$test, "popularity")
 AllRoc(predRose, dataCl = datasRose$test$popularity)
 ```
 
-## Learning method tuning : 
+## Learning method parameter : 
 
 ### Tune parameter with no direct link with imbalanced data : 
 
@@ -495,9 +469,9 @@ tuneSvm
 note : interet de changer le prior ? , préférer qda ?
 
 
-### Tune Class weight 
+### cost sensitive learning : Class weight 
 
-We can decide to give some weights to the data class in order to give more importance (more weight) to the positive class. Link with cost / benefits. 
+We can decide to give some weights to the data class in order to give more importance (more weight) to the positive class. Link with cost / benefits. !!!! Class weight argument is the way to handle with cost sensistive
 
 note : weights for glm seems to ask a vector of weights for each classes
 
@@ -526,6 +500,12 @@ AllRoc(Predictions, datas$test$popularity)
 AllRoc(PredW, datas$test$popularity)
 ```
 
+pour deux classes, poids de 1 pour la grande classe et du ratio
+des tailles de classes (grande sur petite) pour la petite classe
+
+Pour les paramètres CW de rf et svm, J'ai essayé plein de configuration mais aucune ne donne de résultats.
+
+Changer les prior pour lda améliore les prévisions mais le kappa reste assez faible. 
 
 ## Prediction postprocessing : 
 

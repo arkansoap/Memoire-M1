@@ -36,20 +36,6 @@
     !!!!!la grande question est "qu'est ce que ça nous coute?!!!! qu est ce qu'on est pret à concéder en terme d'erreur globale (et autres aspect) pour coller au mieux aux préférences de l'utilisateur en termes de performance. Arbitrage !!!!!!
 
 2. Présentations et définitions des Solutions : !!!!!!plan à reformuler autour de pre, during post!!!!!
-
-  - 2.1 Optimiser les paramètres : 
-  
-  - 2.2 Alternate cutt off : 
-  
-  - 2.4 Fonction de coût :
-
-  - 2.3 Unequal case weights :
-
-  - 2.5 Resamplings methods : 
-    - 2.5.1 Over and donw sampling
-    - 2.5.2 SMOTE
-    - 2.5.3 ROSE
-    - 2.5.4 Comparatif des techniques de resampling
     
 3. Applications sur bases de données 
   
@@ -62,9 +48,14 @@
   
 # Notes, questions et à faire : 
 
-- average ds models
-- smote numeric
-- log à opti
+- Developper compréhension de SVM pour mieux comprendre les parametres / error number of iteration
+- Logit et LDA : resultats très proches : dvp explication. 
+- glmnet 
+- cost sensitive : pourquoi rien ne change ou presque quand je modif les class weight / pertinence de changer prior pour lda
+- naives bayes, boosting, ...
+- Changer fonction models pour la faire avec Train 
+- adaptation SMOTE pour variable catégorielle
+
 
 # Rappels, liens et phrases clés pour moi :
 

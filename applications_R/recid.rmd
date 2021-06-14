@@ -12,59 +12,101 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-library(readr)
-```
-
-```{r}
 setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 ```
 
-
 ```{r}
-data <- read_csv("recidivism-COMPAS.csv")
+source("functions_UC.R")
 ```
 
-```{r}
-str(data)
-```
+# prepa datas
 
 ```{r}
-data<- data[,c("id","sex","age_cat","race","juv_fel_count","juv_misd_count","juv_other_count", "priors_count", "c_jail_in","c_jail_out","c_charge_degree","c_charge_desc","is_recid")]
-```
-
-Voc: 
-
-battery : coups et blessure
-
-degree charge : F fellony (crime et délit) / M midemeanor (infraction)
-
-priors : antécédents
-
-```{r}
-str(data)
-```
-
-```{r}
-retype <- function(data)
-  {
-  for (i in col(data))
-    if (class(i))is.numeric:data[,i] <- as.factor(data[,i])
-  }
-```
-
-```{r}
-retype(data)
-```
-
-
-```{r}
-plot(data$is_recid)
+recid <-
+  read.csv(
+    "recidivism.csv",
+    header = TRUE,
+    sep = ",",
+    stringsAsFactors = T
+  )
+data <-   read_csv("recidivism.csv")
 ```
 
 ```{r}
 #temps passé en prison 
 
 data$time_jailed <- data[,"c_jail_out"] - data[,"c_jail_in"]
-str(data$time_jailed)
+recid$time_jailed <- data$time_jailed
 ```
+
+```{r}
+recid<- recid[,c("sex","age_cat","race","juv_fel_count","juv_misd_count","juv_other_count", "priors_count","c_charge_degree","time_jailed","is_recid")]
+```
+
+```{r}
+recid$time_jailed <- recid$time_jailed / (60*24)
+recid$time_jailed <- as.difftime(unlist(recid$time_jailed), units = "days")
+recid$time_jailed <- abs(recid$time_jailed)
+```
+
+```{r}
+sum(is.na(recid$time_jailed))
+sum(is.na(recid))
+recid <- na.omit(recid)
+recid$is_recid <- as.factor(recid$is_recid)
+```
+
+```{r}
+recid <- recid[,c(10, 1:9 )]
+```
+
+# first models
+
+```{r}
+datRecid <- split_standard(data =  recid, y =  "is_recid", mod = "standard")
+```
+
+```{r}
+Modrecid <- models(y = "is_recid", data = datRecid$train,
+                   priors(dat = datRecid$train, "is_recid"))
+```
+
+```{r}
+PredRec1 <- predictions(models = Modrecid, datas = datRecid)
+```
+
+```{r}
+KablesPerf(pred = PredRec1, dat = datRecid$test, y = "is_recid")
+```
+
+```{r}
+par(mfrow=c(1,1))
+AllRoc(predic = PredRec1, dataCl = datRecid$test$is_recid)
+```
+
+# remedies
+
+## Datas prepocessing : 
+
+```{r}
+DatRecUS <- resamp_res(recid, mod = "US")
+```
+
+```{r}
+Resamptest <- upSample(recid[,-1], recid[,1])
+
+```
+
+# Notes 
+
+Voc: 
+
+battery : coups et blessure
+degree charge : F fellony (crime et délit) / M midemeanor (infraction)
+priors : antécédents
+
+tps passé en prision : 
+
+Remplacer NA par moyenne du tps passé. mettre en valeur absolur car parfois inversé. 
+
 
