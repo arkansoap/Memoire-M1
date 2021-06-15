@@ -323,9 +323,10 @@ predictions <- function(models, datas) {
 
 ########## Pre Processing ##########
 
+# return le resamp
 resamp_res <- function(datas, mod ){
   if (mod == "US"){
-    Resamp <- upSample(x =  datas[,-1], y = datas[,1])
+    Resamp <- upSample( datas[,-1], datas[,1])
   } else if (mod == "DS"){
     Resamp <- downSample(datas[,-1], datas[,1])
   } else if (mod == "Smote"){
@@ -342,6 +343,11 @@ resamp_res <- function(datas, mod ){
     adas <- ADAS(datas[,-1], datas[,1])
     Resamp <- adas$data
     Resamp$class <- as.factor(Resamp$class)
+    names(Resamp)[names(Resamp) == "class"] <- "Class"
+  } else if (mod == "SMOTE-NC"){
+    smnc <- SMOTE_NC(datas[,-1], datas[,1])
+    Resamp <- smnc$data
+    Resamp$class<-as.factor(Resamp$class)
     names(Resamp)[names(Resamp) == "class"] <- "Class"
   }
   datasplit <- split_standard(Resamp, "Class" , mod = "standard")
