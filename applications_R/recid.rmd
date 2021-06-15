@@ -97,17 +97,7 @@ DatRecUS <- resamp_res(recid, mod = "US")
 ```
 
 ```{r}
-AAAAA <- upSample(recid[,-1], recid[,1])
-str(AAAAA)
-```
-
-
-```{r}
 DatRecUS[[1]]
-```
-
-```{r}
-library("RSBID")
 ```
 
 ### ROSE
@@ -157,7 +147,8 @@ predRoseRecid <- predictions(models = ModelsRoseRecid,
 ```
 
 ```{r}
-KablesPerf(predRoseRecid, datasRoseRecid$test, "is_violent_recid")
+KablesPerf(pred = predRoseRecid, dat = datasRoseRecid$test,
+            y =  "is_violent_recid")
 ```
 
 ```{r}
@@ -176,7 +167,8 @@ Resamp11 <- SMOTE_NC(data = recid, outcome = "is_violent_recid")
 ```
 
 ```{r}
-plot(Resamp11$is_recid)
+plot(Resamp11$is_violent_recid)
+plot(recid$is_violent_recid)
 ```
 
 ```{r}
@@ -195,7 +187,7 @@ predRecSmc <- predictions(models = ModRecidSMC, datas = datrecSmc)
 ```
 
 ```{r}
-KablesPerf(pred = predRecSmc, dat = datrecSmc$test, y = "is_violent_recid")
+KablesPerf(pred = predRecSmc, dat = datrecSmc$test, y ="is_violent_recid")
 ```
 
 ```{r}

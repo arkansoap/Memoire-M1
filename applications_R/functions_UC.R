@@ -383,3 +383,4 @@ library(naivebayes) #naive Bayes classifiers are a family of simple "probabilist
 library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
 library(gridExtra) # positionnement graphique
 library(cowplot) # positionnement graphique
+library("RSBID") # resampling for imbalanced data (smote-nc, ...)
