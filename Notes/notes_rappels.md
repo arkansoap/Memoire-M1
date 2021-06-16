@@ -48,14 +48,22 @@
   
 # Notes, questions et à faire : 
 
+
+séance 17/06 : d'abord un tour des résultats des fichiers rmd puis notes et questions ci dessous
+
 - Developper compréhension de SVM pour mieux comprendre les parametres / error number of iteration
 - Logit et LDA : resultats très proches : dvp explication. 
 - glmnet 
 - cost sensitive : pourquoi rien ne change ou presque quand je modif les class weight / pertinence de changer prior pour lda
+  - essayer avec package mlr / costsensitive
 - naives bayes, boosting, ...
 - Changer fonction models pour la faire avec Train 
-- adaptation SMOTE pour variable catégorielle
-
+- adaptation SMOTE pour variable 
+- sortie des graphiques pr fonctions et utiliser les packages (grid extra)
+- C50 only for decision tree?
+- cost pour function train ...
+- caret::train_model_list
+- si j'utilise weight (case weight) à la place de class weight, comment je rentre le poids de chacun? avec un if?
 
 # Rappels, liens et phrases clés pour moi :
 

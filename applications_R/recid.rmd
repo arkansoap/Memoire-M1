@@ -19,8 +19,6 @@ setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 source("functions_UC.R")
 ```
 
-!!!!!!!!!! Tout relancer avec is_violent_recid car is_recid n'est pas déséquilibré !!!!!!!!!!!!!!!!!!!!
-
 # prepa datas
 
 ```{r}
@@ -200,20 +198,114 @@ AllRoc(predic = predRecSmc, dataCl = datrecSmc$test$is_violent_recid)
 
 ## Cost sensitive learning
 
+```{r}
+priors(datRecid$train, "is_violent_recid")
+```
+
+```{r}
+ModRecSens <- models(y = "is_violent_recid", data = datRecid$train,
+               prior = priors(datRecid$train, "is_violent_recid"),
+               CWSvm = c("0" = 1, "1" = 10),
+               costSvm = 5,
+               kernSvm = "radial",
+               CWRf = c(1, 10))
+```
+
+```{r}
+PredRecSens <- predictions(models = ModRecSens, datas = datRecid)
+```
+
+```{r}
+KablesPerf(PredRecSens, datRecid$test, "is_violent_recid")
+```
+
+```{r}
+levels(datRecid$train$is_violent_recid)
+datrecidTEST <- datRecid$train
+datrecidTEST$is_violent_recid <-  recode_factor(datrecidTEST$is_violent_recid, "0" = "nonrecid", "1" = "recid")
+```
+
+Autres tests : 
+
+```{r}
+TestCost <- train(is_violent_recid~.,
+                  data = datrecidTEST,
+                  method = "svmRadial",
+                  class.weights = c(nonrecid = 1, recid = 5)
+                  )
+```
+
+```{r}
+predAAAA <- predict(TestCost, datrecidTEST)
+```
+
+```{r}
+perf.measure(predAAAA, datrecidTEST, "is_violent_recid")
+```
+
+Autres test : 
+
+```{r}
+TestCost <- train(is_violent_recid~.,
+                  data = datrecidTEST,
+                  method = "svmRadialWeights",
+                  class.weights = c(nonrecid = 1, recid = 5)
+                  )
+```
+
+```{r}
+caret::train_model_list
+```
+
 # Post processing
 
-## Alterbate cutoff
+## Alternate cutoff
 
 ```{r}
-priors(recid, "is_recid")
+priors(recid, "is_violent_recid")
 ```
 
 ```{r}
-plot(recid$is_recid)
+plot(recid$is_violent_recid)
 ```
 
+### Visualization of the errors depending threshold for belonging to thepositive class
 
+```{r}
+par(mfrow=c(2,2))
+evoSeuil(PredRec1$predLda, datRecid$test$is_violent_recid, datRecid$test, "posterior")
+evoSeuil(PredRec1$predlog$prob, datRecid$test$is_violent_recid, datRecid$test, "autres")
+evoSeuil(attr(PredRec1$predSvm, "probabilities")[,1],
+         datRecid$test$is_violent_recid, datRecid$test, "autres")
+evoSeuil(PredRec1$predrf$prob[,2], datRecid$test$is_violent_recid, datRecid$test, "autres")
+```
 
+```{r}
+ averageRec <- sum(datRecid$train$is_violent_recid=="1")/nrow(datRecid$train)
+```
+
+```{r}
+attr(PredRec1$predSvm, "probabilities")
+```
+
+### Predictions with new threshold : 
+
+```{r}
+predRecldaseuil <- changeSeuil(PredRec1$predLda, datRecid$test$is_violent_recid, datRecid$test, 0.12, "posterior")
+
+predReclogseuil <- changeSeuil(PredRec1$predlog$prob, datRecid$test$is_violent_recid, datRecid$test, 0.12, "autres")
+
+predRecrfseuil <- changeSeuil(PredRec1$predrf$prob[,2], datRecid$test$is_violent_recid, datRecid$test, 0.12, "autres")
+
+predRecsvmseuil <- changeSeuil(attr(PredRec1$predSvm, "probabilities")[,1], datRecid$test$is_violent_recid, datRecid$test, 0.12, "autres")
+
+listPredseuilRec <- list(predRecrfseuil, predReclogseuil,
+                      predRecldaseuil, predRecsvmseuil)
+```
+
+```{r}
+KablesPerf2(pred = PredRec1, dat = datRecid$test, y = "is_violent_recid", listPred = listPredseuilRec)
+```
 
 # Notes 
 
@@ -252,3 +344,22 @@ priors(recid, "is_recid")
 priors(recid, "is_violent_recid")
 ```
 
+*Support Vector Machines with Class Weights (method = 'svmRadialWeights')
+
+For classification using package kernlab with tuning parameters:
+
+Sigma (sigma, numeric)
+
+Cost (C, numeric)
+
+Weight (Weight, numeric)
+
+*Regularized Logistic Regression (method = 'regLogistic')
+
+For classification using package LiblineaR with tuning parameters:
+
+Cost (cost, numeric)
+
+Loss Function (loss, character)
+
+Tolerance (epsilon, numeric)

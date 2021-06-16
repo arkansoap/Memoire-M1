@@ -384,3 +384,4 @@ library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
 library(gridExtra) # positionnement graphique
 library(cowplot) # positionnement graphique
 library("RSBID") # resampling for imbalanced data (smote-nc, ...)
+library(kernlab)
