@@ -345,6 +345,7 @@ names(AdasData)[names(AdasData) == "class"] <- "Class"
 
 ```{r}
 testB <- resamp_res(datas_num, mod = "Adasyn")
+testB[[2]]
 ```
 
 
@@ -469,7 +470,121 @@ tuneSvm
 note : interet de changer le prior ? , préférer qda ?
 
 
-### cost sensitive learning : Class weight 
+### cost sensitive learning : 
+
+#### Direct cost sensitive learning (ICET and cart) : CART
+
+```{r}
+library(C50)
+```
+
+```{r}
+priorSpot <- priors(datas$train, "popularity")
+Ratio <- priorSpot[1]/priorSpot[2]
+```
+
+```{r}
+c5Matrix <- matrix(c(0, 1, Ratio, 0), ncol = 2)
+rownames(c5Matrix) <- levels(datas$train$popularity)
+colnames(c5Matrix) <- levels(datas$train$popularity)
+c5Matrix
+```
+
+```{r}
+modelC5 <- C5.0(popularity~.,
+                data = datas$train,
+                costs = c5Matrix)
+```
+
+```{r}
+# PredC5 <- predict(modelC5, datas$test, type  = "prob")
+```
+
+Erreur : confidence values (i.e. class probabilities) should 
+           not be used with costs
+           
+```{r}
+PredC5b <- predict(modelC5, datas$test)
+```
+
+
+```{r}
+perf.measure(PredC5, datas$test, "popularity")
+```
+
+```{r}
+# function with ratio range from 1 to 20 
+
+Perfs <- NULL
+resTP <- NULL
+resFP <- NULL
+resKAP <- NULL
+for (Ratio in 1:20){
+  c5Matrix <- matrix(c(0, 1, Ratio, 0), ncol = 2)
+  rownames(c5Matrix) <- levels(datas$train$popularity)
+  colnames(c5Matrix) <- levels(datas$train$popularity)
+  modelC5 <- C5.0(popularity~.,
+              data = datas$train,
+              costs = c5Matrix)
+  PredC5 <- predict(modelC5, datas$test)
+  Perfs <- perf.measure(PredC5, datas$test, "popularity")
+  resTP <- rbind(resTP,Perfs$TPrate)
+  resFP <- rbind(resFP,Perfs$FPrate)
+  resTN <- 1-resFP
+  resKAP <- rbind(resKAP, Perfs$kappa)
+}
+
+par(mfrow=c(1,2))
+plot(resTP, xlim = c(0, 20), ylim = c(0, 1),
+     ylab = "", xlab = "cost", type = "b",
+     col = "blue", pch = 4, lty = 2)
+par(new = TRUE)
+plot(resTN,  xlim = c(0, 20), ylim = c(0, 1),
+     ylab = "", xlab = "",
+     col = "red", pch = 3, type = "b")
+plot(resKAP,  xlim = c(0, 20), ylim = c(-1, 1))
+
+```
+
+```{r}
+C5graph <- function(data, y){
+  Perfs <- NULL
+  resTP <- NULL
+  resFP <- NULL
+  resKAP <- NULL
+  for (Ratio in 1:20){
+    c5Matrix <- matrix(c(0, 1, Ratio, 0), ncol = 2)
+    rownames(c5Matrix) <- levels(data$train[[y]])
+    colnames(c5Matrix) <- levels(data$train[[y]])
+    modelC5 <- C5.0(as.formula(paste(y , "~ .")),
+                data = data$train,
+                costs = c5Matrix)
+    PredC5 <- predict(modelC5, data$test)
+    Perfs <- perf.measure(PredC5, data$test, y)
+    resTP <- rbind(resTP,Perfs$TPrate)
+    resFP <- rbind(resFP,Perfs$FPrate)
+    resTN <- 1-resFP
+    resKAP <- rbind(resKAP, Perfs$kappa)
+  }
+  
+  par(mfrow=c(1,2))
+  plot(resTP, xlim = c(0, 20), ylim = c(0, 1),
+       ylab = "", xlab = "cost", type = "b",
+       col = "blue", pch = 4, lty = 2)
+  par(new = TRUE)
+  plot(resTN,  xlim = c(0, 20), ylim = c(0, 1),
+       ylab = "", xlab = "",
+       col = "red", pch = 3, type = "b")
+  plot(resKAP,  xlim = c(0, 20), ylim = c(-1, 1))
+}
+```
+
+```{r}
+C5graph(datas, "popularity")
+```
+
+#### Meta learning : weighting
+
 
 We can decide to give some weights to the data class in order to give more importance (more weight) to the positive class. Link with cost / benefits. !!!! Class weight argument is the way to handle with cost sensistive
 
@@ -483,6 +598,7 @@ priors(datas$train, "popularity")
 ModW <- models(y = "popularity", data = datas$train,
                prior = c(0.5,0.5),
                CWSvm = c("0" = 1, "1" = 4),
+               kernSvm = "radial",
                CWRf = c(1, 4))
 ```
 
@@ -494,11 +610,23 @@ PredW <- predictions(models = ModW, datas = datas)
 KablesPerf(PredW, datas$test, "popularity")
 ```
 
+Ca baisse un peu le taux de fausse alarme mais augmente le diminue également le taux de detection power.
+
 ```{r}
 par(mfrow=c(1,2))
 AllRoc(Predictions, datas$test$popularity)
 AllRoc(PredW, datas$test$popularity)
 ```
+
+```{r}
+# long .....
+TestCostSpot <- train(popularity~.,
+                      data = datas$train,
+                      method = "svmRadial",
+                      class.wieghts = c("0" = 1, "1" = 4)
+                      )
+```
+
 
 pour deux classes, poids de 1 pour la grande classe et du ratio
 des tailles de classes (grande sur petite) pour la petite classe
@@ -721,3 +849,5 @@ predict.svmW <- predict(svmFitW, newdata = datas$test)
 mean(predict.svmW==datas$test$popularity)
 confusionMatrix(predict.svmW,datas$test$popularity )
 ```
+
+The gamma parameter in the RBF kernel determines the reach of a single training instance. If the value of Gamma is low, then every training instance will have a far reach. Conversely, high values of gamma mean that training instances will have a close reach. So, with a high value of gamma, the SVM decision boundary will simply be dependent on just the points that are closest to the decision boundary, effectively ignoring points that are farther away. In comparison, a low value of gamma will result in a decision boundary that will consider points that are further from it. As a result, high values of gamma typically produce highly flexed decision boundaries, and low values of gamma often results in a decision boundary that is more linear.

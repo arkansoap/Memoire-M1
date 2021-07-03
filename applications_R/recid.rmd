@@ -67,7 +67,10 @@ datRecid <- split_standard(data =  recid, y =  "is_violent_recid", mod = "standa
 ```
 
 ```{r}
-Modrecid <- models(y = "is_violent_recid", data = datRecid$train,
+Modrecid <- models(y = "is_violent_recid",
+                   data = datRecid$train,
+                   costSvm = 0.25,
+                   kernSvm = "radial",
                    priors(dat = datRecid$train, "is_violent_recid"))
 ```
 
@@ -205,8 +208,8 @@ priors(datRecid$train, "is_violent_recid")
 ```{r}
 ModRecSens <- models(y = "is_violent_recid", data = datRecid$train,
                prior = priors(datRecid$train, "is_violent_recid"),
-               CWSvm = c("0" = 1, "1" = 10),
-               costSvm = 5,
+               CWSvm = c("0" = 1, "1" = 1),
+               costSvm = 0.25,
                kernSvm = "radial",
                CWRf = c(1, 10))
 ```
@@ -219,42 +222,39 @@ PredRecSens <- predictions(models = ModRecSens, datas = datRecid)
 KablesPerf(PredRecSens, datRecid$test, "is_violent_recid")
 ```
 
-```{r}
-levels(datRecid$train$is_violent_recid)
-datrecidTEST <- datRecid$train
-datrecidTEST$is_violent_recid <-  recode_factor(datrecidTEST$is_violent_recid, "0" = "nonrecid", "1" = "recid")
-```
-
 Autres tests : 
 
 ```{r}
-TestCost <- train(is_violent_recid~.,
-                  data = datrecidTEST,
+TestCost2 <- train(is_violent_recid~.,
+                  data = datRecid$train,
                   method = "svmRadial",
-                  class.weights = c(nonrecid = 1, recid = 5)
+                  class.weights = c("0" = 1, "1" = 10)
                   )
 ```
 
 ```{r}
-predAAAA <- predict(TestCost, datrecidTEST)
+PredTestCost2 <- predict(TestCost2, datRecid$test)
+PredTestCost2
 ```
 
 ```{r}
-perf.measure(predAAAA, datrecidTEST, "is_violent_recid")
+perf.measure(PredTestCost2, datRecid$test, "is_violent_recid")
 ```
 
-Autres test : 
+*test2 
 
 ```{r}
-TestCost <- train(is_violent_recid~.,
-                  data = datrecidTEST,
-                  method = "svmRadialWeights",
-                  class.weights = c(nonrecid = 1, recid = 5)
+TestCost3 <- train(is_violent_recid~.,
+                  data = datRecid$train,
+                  method = "svmRadial",
+                  class.weights = c("0" = 1, "1" = 20)
                   )
 ```
 
 ```{r}
-caret::train_model_list
+PredTestCost3 <- predict(TestCost3, datRecid$test)
+
+perf.measure(PredTestCost3, datRecid$test, "is_violent_recid")
 ```
 
 # Post processing
@@ -363,3 +363,5 @@ Cost (cost, numeric)
 Loss Function (loss, character)
 
 Tolerance (epsilon, numeric)
+
+

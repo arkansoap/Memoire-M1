@@ -54,19 +54,19 @@ split_standard <-
 perf.measure <- function(pred , real, y, beta = 1)
 {
   MatConf <- table(pred, real[[y]]) %>% addmargins 
-  P <- sum(real == 1)
-  N <- sum(real == 0)
+  P <- sum(real[[y]] == 1)
+  N <- sum(real[[y]] == 0)
   Pp <- sum(pred == 1)
   Np <- sum(pred == 0)
   n <- P + N
   pre <- (Pp/n)*(P/n)+(Np/n)*(N/n)
-  pra <- (sum((pred == 0) & (real == 0)) + sum((pred == 1) & (real == 1))) / n
+  pra <- (sum((pred == 0) & (real[[y]] == 0)) + sum((pred == 1) & (real[[y]] == 1))) / n
   kappa <- (pra - pre) / (1 - pre)
   error <- sum(pred != real[[y]]) / nrow(real)
-  FPrate <- sum((pred == 1) & (real == 0)) / N
-  TPrate <- sum((pred == 1) & (real == 1)) / P
-  TNrate <- sum((pred == 0) & (real == 0)) / N
-  PrecisionPPV <- sum((pred == 1) & (real == 1)) / Pp
+  FPrate <- sum((pred == 1) & (real[[y]] == 0)) / N
+  TPrate <- sum((pred == 1) & (real[[y]] == 1)) / P
+  TNrate <- sum((pred == 0) & (real[[y]] == 0)) / N
+  PrecisionPPV <- sum((pred == 1) & (real[[y]] == 1)) / Pp
   accuracy <- 1 - error
   dominance <- TPrate - TNrate
   Fscore <- (1+beta^2)*((TPrate*PrecisionPPV)/(((beta^2)*PrecisionPPV)+TPrate))
@@ -101,7 +101,7 @@ KablesPerf <- function(pred, dat, y){
   kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
     row_spec(c(1,5), background = "lightgrey")  
-  kableMetrics <- kable(as.data.frame(Metrics1[[1]]), digits = 3) %>%
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]])) %>%
     kable_styling(bootstrap_options = c("striped", "hover"))
   return(list(kableMC, kableMetrics))
 }
@@ -385,3 +385,5 @@ library(gridExtra) # positionnement graphique
 library(cowplot) # positionnement graphique
 library("RSBID") # resampling for imbalanced data (smote-nc, ...)
 library(kernlab)
+library(C50) # decision tree with cost
+
