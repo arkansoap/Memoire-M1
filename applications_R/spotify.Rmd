@@ -675,6 +675,64 @@ KablesPerf2(pred = Predictions, dat = datas$test, y = "popularity", listPred = l
 
 # Combination of the three remedies step for the best model
 
+# try glmnet and naives bayes 
+
+## glmnet
+
+```{r}
+HH <- model.matrix(popularity~.,data = datas$train)
+```
+
+```{r}
+Modelglm <- glmnet(x = HH, y = datas$train[,1],
+                   family = "binomial")
+```
+
+```{r}
+predglm <- predict.glmnet(Modelglm,  newx=HH, type = "response")
+```
+
+```{r}
+perf.measure(predglm, datas$test, "popularity")
+```
+
+```{r}
+library(devtools)
+install_github("hongooi73/glmnetUtils")
+library(glmnetUtils)
+```
+
+```{r}
+Modelglm2 <- glmnet(popularity~., data = datas$train , family = "binomial", alpha = 0.5)
+```
+
+```{r}
+predict(Modelglm2, datas$test, type = "class", s=1)
+```
+
+```{r}
+glmnet(popularity~., data = datas$train , family = "multinomial")
+```
+
+```{r}
+table(predict(Modelglm2, datas$test, type = "class", s=1))
+```
+
+## naives bayes
+
+```{r}
+modelNaivebayes <- naive_bayes(popularity~.,data = datas$train, laplace = 0)
+```
+
+```{r}
+PredNaives <- predict(modelNaivebayes, datas$test)
+```
+
+```{r}
+perf.measure(PredNaives, datas$test, "popularity")
+```
+
+
 # Notes / Tests/ à voir pr correction / fourretout
 
 ```{r}

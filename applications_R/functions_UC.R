@@ -1,5 +1,32 @@
 # Fichier contenant les fonctions pour les applications illustrative :
 
+########## Packages ##########
+
+library (tidyverse) # collection of packages for data analysis
+library(caret) # Classification And REgression Training
+library(pROC) # Tools for visualizing, smoothing and comparing ROC.
+library(ROCR) # evaluating and visualizing classifier performance
+library(lubridate) # R commands for date-times
+library(tidymodels) #  collection of packages for modeling and machine learning using tidyverse principles. pre-process/train/validate
+library(MASS) # Modern Applied Statistics with S" for regression and classification
+library(stargazer) # Well-Formatted Regression and Summary Statistics Tables
+library(randomForest) # ensemble learning method with multitude of decision tree 
+library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en créant un cluster de cours.
+library(parallel) # détection du nombre de coeurs
+library(ranger) # A Fast Implementation of Random Forests. (tune rf)
+library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
+library(kableExtra) # Create Awesome HTML Table
+library(smotefamily) # Synthetic Minority Oversampling TEchnique
+library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
+library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
+library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
+library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
+library(gridExtra) # positionnement graphique
+library(cowplot) # positionnement graphique
+library("RSBID") # resampling for imbalanced data (smote-nc, ...)
+library(kernlab)
+library(C50) # decision tree with cost
+
 ########## Split and standardize ##########
 
 splitdata <- function(data, y, prop, seed) {
@@ -360,30 +387,35 @@ resamp_res <- function(datas, mod ){
   return(list(tablos, Rocs))
 }
 
-########## Packages ##########
+########## Direc cost sensitive learning with C50 ##########
 
-library (tidyverse) # collection of packages for data analysis
-library(caret) # Classification And REgression Training
-library(pROC) # Tools for visualizing, smoothing and comparing ROC.
-library(ROCR) # evaluating and visualizing classifier performance
-library(lubridate) # R commands for date-times
-library(tidymodels) #  collection of packages for modeling and machine learning using tidyverse principles. pre-process/train/validate
-library(MASS) # Modern Applied Statistics with S" for regression and classification
-library(stargazer) # Well-Formatted Regression and Summary Statistics Tables
-library(randomForest) # ensemble learning method with multitude of decision tree 
-library(doParallel) # paralléliser le calcul pour que ce soit plus rapide en créant un cluster de cours.
-library(parallel) # détection du nombre de coeurs
-library(ranger) # A Fast Implementation of Random Forests. (tune rf)
-library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group / for svm, tune, predict, ...
-library(kableExtra) # Create Awesome HTML Table
-library(smotefamily) # Synthetic Minority Oversampling TEchnique
-library(ROSE) # Generation of synthetic data by Randomly Over Sampling Examples
-library(gdata) # Various R programming tools for data manipulation / rename object with mv("oldname, newname")
-library(naivebayes) #naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem
-library(glmnet) # Lasso and Elastic-Net Regularized Generalized Linear Models
-library(gridExtra) # positionnement graphique
-library(cowplot) # positionnement graphique
-library("RSBID") # resampling for imbalanced data (smote-nc, ...)
-library(kernlab)
-library(C50) # decision tree with cost
-
+C5graph <- function(data, y){
+  Perfs <- NULL
+  resTP <- NULL
+  resFP <- NULL
+  resKAP <- NULL
+  for (Ratio in 1:20){
+    c5Matrix <- matrix(c(0, 1, Ratio, 0), ncol = 2)
+    rownames(c5Matrix) <- levels(data$train[[y]])
+    colnames(c5Matrix) <- levels(data$train[[y]])
+    modelC5 <- C5.0(as.formula(paste(y , "~ .")),
+                    data = data$train,
+                    costs = c5Matrix)
+    PredC5 <- predict(modelC5, data$test)
+    Perfs <- perf.measure(PredC5, data$test, y)
+    resTP <- rbind(resTP,Perfs$TPrate)
+    resFP <- rbind(resFP,Perfs$FPrate)
+    resTN <- 1-resFP
+    resKAP <- rbind(resKAP, Perfs$kappa)
+  }
+  
+  par(mfrow=c(1,2))
+  plot(resTP, xlim = c(0, 20), ylim = c(0, 1),
+       ylab = "", xlab = "cost", type = "b",
+       col = "blue", pch = 4, lty = 2)
+  par(new = TRUE)
+  plot(resTN,  xlim = c(0, 20), ylim = c(0, 1),
+       ylab = "", xlab = "",
+       col = "red", pch = 3, type = "b")
+  plot(resKAP,  xlim = c(0, 20), ylim = c(-1, 1))
+}
