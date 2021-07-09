@@ -11,7 +11,14 @@ f-measure
 kappa
 roc-curve
 classifiers
+lda
+logistic-regression-glmnet
+svm
+random-forest
+naives-bayes
+remedies
+pre-processing-resampling
+learning-method-tuning
+post-processinf-threesholding
 applications
-example-one
-example-two
-applications-1
+summary

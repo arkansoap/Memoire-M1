@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Metrics for classification tasks | A Minimal Book Example</title>
+  <title>Chapter 4 Remedies | A Minimal Book Example</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Metrics for classification tasks | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 4 Remedies | A Minimal Book Example" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Metrics for classification tasks | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 4 Remedies | A Minimal Book Example" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="classifiers.html"/>
+<link rel="prev" href="classifiers.html"/>
+<link rel="next" href="applications.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -127,118 +127,27 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="metrics-for-classification-tasks" class="section level1" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Metrics for classification tasks</h1>
-<p>Understanding if a model is a good classifier or not require a good comprehension of the predictions he made. We want to know the global effiency but some specific element too. Is he better in predicting one or the other class? What are the strenght and weaknees of the model? Can we be confident towards the results, haw can we know they are not due to chance?</p>
-<p>In order to compare the performance’s models, we use differents “metrics.” The reliability of our tools is higlhy dependant on the structure of our datas. In our case, the imbalanced sample of datas classes has to be take into account in order to find the metrics which allows to give a good evaluation of our models.</p>
-<div id="the-foundation-of-the-metrics-the-confusion-matrix" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> The foundation of the metrics: The Confusion Matrix</h2>
-<p>The confusion matrix presents the results obtained by a given classifier. This table provides the instances that were correctly classified (True Positive and True negative), and the instances that were wrongly classified (False Positive and False negative).
-From this table, we can calculate all the metrics described below</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
-</th>
-<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
-<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-Predicted
+<div id="remedies" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Remedies</h1>
+<p>A lot of research have been made concerning this problem. Our goal is not to make an exhaustive review of all the technics to remedies this issue.
+In this study, we will focus on methods than we can repoduce with our level of competence. It appears to us that it is interesting to separate the choosen methods in three levels :</p>
+<ul>
+<li>First, some remedies we can use before launching the machine learning algorithm (Preprocessing).</li>
+<li>Secundly, some remedies we can use during the computation of a fitted models by the machine (learning method tuning).</li>
+<li>At last, som remedies that can be used after the machine learning algorithm (postprocessing).</li>
+</ul>
+<div id="pre-processing-resampling" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Pre processing resampling</h2>
 </div>
-</th>
-</tr>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-Positive
-</th>
-<th style="text-align:left;">
-Negative
-</th>
-</tr>
-</thead>
-<tbody>
-<tr grouplength="2">
-<td colspan="3" style="border-bottom: 1px solid;">
-<strong>True</strong>
-</td>
-</tr>
-<tr>
-<td style="text-align:left;padding-left: 2em;" indentlevel="1">
-Positive
-</td>
-<td style="text-align:left;">
-TP
-</td>
-<td style="text-align:left;">
-FN
-</td>
-</tr>
-<tr>
-<td style="text-align:left;padding-left: 2em;" indentlevel="1">
-Negative
-</td>
-<td style="text-align:left;">
-FP
-</td>
-<td style="text-align:left;">
-TN
-</td>
-</tr>
-</tbody>
-</table>
+<div id="learning-method-tuning" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Learning method tuning</h2>
+<ul>
+<li>Metaparameters tuning</li>
+<li>direct sensitive learning</li>
+</ul>
 </div>
-<div id="accuracy-and-error-rate" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Accuracy and error rate</h2>
-<p><span class="math display">\[error = \frac{FP + FN}{TN+TP+FP+FN}\]</span></p>
-<p><span class="math display">\[accuracy = 1 - error\]</span>
-The first metrics is obviously the global accuracy and its complement the error rate. It is the most frequently used to estimate the performance of a model. If accuracy is too low, we deduce that our learning algolritm is globally inneficient. However In the context of imbalanced dataset, accuracy is not suitable. Indeed, because of the massive representation of the negative class, and as the classifiers failed to identify the positive class, we reach a high value of accuracy. For instance, if only 10% of the cases belong to the positive class and the classifiers predicts all cases as negative, accuracy will be at 90%.
-This is worthless when users objectives is to predict the rare cases.</p>
-<p>To reflect more closely the users needs and priorities, several performance measure exist.</p>
-</div>
-<div id="true-positive-rate" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> True Positive rate :</h2>
-<p><span class="math display">\[TP_{rate} = \frac{TP}{TP+FN} = \frac{TP}{P_{real}}\]</span></p>
-<p>Also called sensitivity, recall or detection power. I personnaly prefer the term detection power because it is more explicit. It is the ratio of the value predicted as positive and which are actually positive among all the real positive. This is the ability of our classifier to detect the positive cases.</p>
-</div>
-<div id="true-negative-and-flase-positive-rate" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> True Negative and Flase positive rate</h2>
-<p>Also called specificity. It is the ratio of the value predicted as negative and which are actually negative among all the real negative case.</p>
-<p><span class="math display">\[TN_{rate} = \frac{TN}{TN+FP}\]</span></p>
-<p>I prefer its complement, the False positive rate, also called False alarm. Indeed, the terme “False alarm” is more relevant than specificity.</p>
-<p><span class="math display">\[FP_{rate} = \frac{FP}{TN+FP} = 1 - TN_{rate}\]</span>
-TPrate (detection power) and FP rate (False alarm) are often quote in the litterature as benefits and costs, respectively. These terms refers to a central point of our problematic. Indeed, a key point to find good remedies is to make a trade-off between what it cost in terms of False alarm and the benefits gained in terms of detection power.</p>
-</div>
-<div id="positive-prediction-value-precision" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Positive prediction value : Precision</h2>
-<p><span class="math display">\[PP_{value} = \frac{TP}{TP+FP} =  \frac{TP}{P_{pred}} \]</span></p>
-<p>The precision measures the rate of True positive among all cases predicted as positive.</p>
-</div>
-<div id="f-measure" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> F-measure</h2>
-<p>The F-measure is a combiination of both precision and recall. This metric value is high when both recall (a measure of completness) and precision ( a measure of exactness) are high (citation). Hence, this metrics is particuilary suitable on predicting the case that matter to the user.</p>
-<p><span class="math display">\[F_\beta = \frac{(1+\beta^2) \times recall \times precision}{\beta^2 \times recall + precision}\]</span>
-Beta is a coefficient to adjust the weight of recall against precision. In this paper, we choose a value of 1 which give the same weights to recall and precision.</p>
-</div>
-<div id="kappa" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Kappa</h2>
-<p><span class="math display">\[K = \frac{P_{agree}-P_{chance}}{1-P_{chance}}\]</span></p>
-<p><span class="math display">\[P_{agree} = \frac{TP + FN} {number \ of \ cases} \]</span>
-<span class="math display">\[P_{chance} = \frac{P_{pre} \times P_{act}}{number \ of \ cases^2}+\frac{N_{pre} \times N_{act}}{number \ of \ cases^2}\]</span></p>
-<p>Kappa is a very interesting metrics in context of imbalanced datas.
-The calculation is based on the difference between how much agreement(positive) is actually present (“observed”) compared to how much positive would be expected to be present by chance alone (“expected”). We want to know how different the observed positive are from the expected. Kappa is a measure of this difference (citation).</p>
-<p>Kappa Agreement
-&lt; 0 Less than chance agreement
-0.01–0.20 Slight agreement
-0.21– 0.40 Fair agreement
-0.41–0.60 Moderate agreement
-0.61–0.80 Substantial agreement
-0.81–0.99 Almost perfect agreement</p>
-</div>
-<div id="roc-curve" class="section level2" number="2.8">
-<h2><span class="header-section-number">2.8</span> ROC Curve</h2>
-<p>A receiver operating characteristic curve, or ROC curve, is a graphical plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.</p>
-<p>The ROC curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.</p>
+<div id="post-processinf-threesholding" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> post processinf threesholding</h2>
 
 </div>
 </div>
@@ -247,8 +156,8 @@ The calculation is based on the difference between how much agreement(positive) 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="classifiers.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="classifiers.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="applications.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

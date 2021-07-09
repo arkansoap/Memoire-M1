@@ -1,2 +1,17 @@
 # Remedies
 
+A lot of research have been made concerning this problem. Our goal is not to make an exhaustive review of all the technics to remedies this issue. 
+In this study, we will focus on methods than we can repoduce with our level of competence. It appears to us that it is interesting to separate the choosen methods in three levels :
+
+* First, some remedies we can use before launching the machine learning algorithm (Preprocessing).
+* Secundly, some remedies we can use during the computation of a fitted models by the machine (learning method tuning).
+* At last, som remedies that can be used after the machine learning algorithm (postprocessing).
+
+## Pre processing resampling 
+
+## Learning method tuning
+
+* Metaparameters tuning
+* direct sensitive learning
+
+## post processinf threesholding

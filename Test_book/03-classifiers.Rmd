@@ -1,3 +1,11 @@
 # Classifiers 
 
-We describe our classifiers in this chapter.
+## LDA
+
+## logistic regression / glmnet
+
+## SVM 
+
+## random forest
+
+## Naives bayes 
