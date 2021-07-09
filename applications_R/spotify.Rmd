@@ -732,6 +732,18 @@ PredNaives <- predict(modelNaivebayes, datas$test)
 perf.measure(PredNaives, datas$test, "popularity")
 ```
 
+```{r}
+AAAAA <- naiveBayes(popularity~.,data = datas$train, laplace = 0, costs = c5Matrix)
+```
+
+```{r}
+predict(AAAAA, datas$test)
+```
+
+```{r}
+perf.measure(predict(AAAAA, datas$test), real = datas$test, y = "popularity")
+```
+
 
 # Notes / Tests/ à voir pr correction / fourretout
 

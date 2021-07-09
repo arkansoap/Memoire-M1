@@ -1,0 +1,250 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={A Minimal Book Example},
+  pdfauthor={Yihui Xie},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
+
+\title{A Minimal Book Example}
+\author{Yihui Xie}
+\date{2021-07-09}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{introduction}{%
+\chapter{Introduction}\label{introduction}}
+
+\hypertarget{abstract}{%
+\section{Abstract}\label{abstract}}
+
+In data-minig, a frequent and major issue for handling with two-class classification is to make reliable predictions with strongly imbalanced distribution of the target variable. Most of the machine learning algorithms assumes by default that all data are balanced. Empirically, a lot of dataset faces this distorsion (fraud detection, anticipation of catastrophes, donators in case of funding campain, unusual returns on stock markets, \ldots). The majority class represents ``normal cases'', while the minority class represents ``abnormal'' cases. Because The least common values of the target variable are linked with events which are very relevant for users, we considered the minority class as positive and the majority class as negative.
+
+The commun issue with classifiers is that they are unable to learn from the positive class. It results that the predictions are almost only negative class. Algorithms failed to predict the positive class which is properly what the users need.
+
+Nowadays, the imbalanced data sets problem plays a key role in machine learning. During the last decades, literature was very prolific on this subject. Many tools were developped to solve this problem. This paper has neither ambition to give an exhaustive review of the existing solutions nor exploring new solutions. Moreover, we won't go to far in the explanation of the mathematical principle handling the algorithms. Our purpose is to propose some elements of solution to counteract the effect of imbalanced datatset which can be used an uderstanded by people who like data-minig without having a large scale of knowledge in this domain.
+
+\hypertarget{document-format}{%
+\section{Document format}\label{document-format}}
+
+On chapter 1, we introduce some tools which allows to measure the effiency of a model.
+
+Chapter 2 briefly presents the differents models we used. We will touch upon the math behind the classifier and the way the algorithm works.
+
+Chapter 3 introduce some remedies to make our classifiers better predictors.
+
+Chapter 4 is an application on three dataset with wich we can evaluate the submitted remedies.
+
+Chapter 5 stands as a conclusion.
+
+\hypertarget{metrics-for-classification-tasks}{%
+\chapter{Metrics for classification tasks}\label{metrics-for-classification-tasks}}
+
+Understanding if a model is a good classifier or not require a good comprehension of the predictions he made. We want to know the global effiency but some specific element too. Is he better in predicting one or the other class? What are the strenght and weaknees of the model? Can we be confident towards the results, haw can we know they are not due to chance?
+
+In order to compare the performance's models, we use differents ``metrics''. The reliability of our tools is higlhy dependant on the structure of our datas. In our case, the imbalanced sample of datas classes has to be take into account in order to find the metrics which allows to give a good evaluation of our models.
+
+\hypertarget{the-foundation-of-the-metrics-the-confusion-matrix}{%
+\section{The foundation of the metrics: The Confusion Matrix}\label{the-foundation-of-the-metrics-the-confusion-matrix}}
+
+The confusion matrix presents the results obtained by a given classifier. This table provides the instances that were correctly classified (True Positive and True negative), and the instances that were wrongly classified (False Positive and False negative).
+From this table, we can calculate all the metrics described below
+
+\begin{table}
+\centering
+\begin{tabular}{l|l|l}
+\hline
+\multicolumn{1}{c|}{ } & \multicolumn{2}{c}{Predicted} \\
+\cline{2-3}
+  & Positive & Negative\\
+\hline
+\multicolumn{3}{l}{\textbf{True}}\\
+\hline
+\hspace{1em}Positive & TP & FN\\
+\hline
+\hspace{1em}Negative & FP & TN\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{accuracy-and-error-rate}{%
+\section{Accuracy and error rate}\label{accuracy-and-error-rate}}
+
+\[error = \frac{FP + FN}{TN+TP+FP+FN}\]
+
+\[accuracy = 1 - error\]
+The first metrics is obviously the global accuracy and its complement the error rate. It is the most frequently used to estimate the performance of a model. If accuracy is too low, we deduce that our learning algolritm is globally inneficient. However In the context of imbalanced dataset, accuracy is not suitable. Indeed, because of the massive representation of the negative class, and as the classifiers failed to identify the positive class, we reach a high value of accuracy. For instance, if only 10\% of the cases belong to the positive class and the classifiers predicts all cases as negative, accuracy will be at 90\%.
+This is worthless when users objectives is to predict the rare cases.
+
+To reflect more closely the users needs and priorities, several performance measure exist.
+
+\hypertarget{true-positive-rate}{%
+\section{True Positive rate :}\label{true-positive-rate}}
+
+\[TP_{rate} = \frac{TP}{TP+FN} = \frac{TP}{P_{real}}\]
+
+Also called sensitivity, recall or detection power. I personnaly prefer the term detection power because it is more explicit. It is the ratio of the value predicted as positive and which are actually positive among all the real positive. This is the ability of our classifier to detect the positive cases.
+
+\hypertarget{true-negative-and-flase-positive-rate}{%
+\section{True Negative and Flase positive rate}\label{true-negative-and-flase-positive-rate}}
+
+Also called specificity. It is the ratio of the value predicted as negative and which are actually negative among all the real negative case.
+
+\[TN_{rate} = \frac{TN}{TN+FP}\]
+
+I prefer its complement, the False positive rate, also called False alarm. Indeed, the terme ``False alarm'' is more relevant than specificity.
+
+\[FP_{rate} = \frac{FP}{TN+FP} = 1 - TN_{rate}\]
+TPrate (detection power) and FP rate (False alarm) are often quote in the litterature as benefits and costs, respectively. These terms refers to a central point of our problematic. Indeed, a key point to find good remedies is to make a trade-off between what it cost in terms of False alarm and the benefits gained in terms of detection power.
+
+\hypertarget{positive-prediction-value-precision}{%
+\section{Positive prediction value : Precision}\label{positive-prediction-value-precision}}
+
+\[PP_{value} = \frac{TP}{TP+FP} =  \frac{TP}{P_{pred}} \]
+
+The precision measures the rate of True positive among all cases predicted as positive.
+
+\hypertarget{f-measure}{%
+\section{F-measure}\label{f-measure}}
+
+The F-measure is a combiination of both precision and recall. This metric value is high when both recall (a measure of completness) and precision ( a measure of exactness) are high (citation). Hence, this metrics is particuilary suitable on predicting the case that matter to the user.
+
+\[F_\beta = \frac{(1+\beta^2) \times recall \times precision}{\beta^2 \times recall + precision}\]
+Beta is a coefficient to adjust the weight of recall against precision. In this paper, we choose a value of 1 which give the same weights to recall and precision.
+
+\hypertarget{kappa}{%
+\section{Kappa}\label{kappa}}
+
+\[K = \frac{P_{agree}-P_{chance}}{1-P_{chance}}\]
+
+\[P_{agree} = \frac{TP + FN} {number \ of \ cases} \]
+\[P_{chance} = \frac{P_{pre} \times P_{act}}{number \ of \ cases^2}+\frac{N_{pre} \times N_{act}}{number \ of \ cases^2}\]
+
+Kappa is a very interesting metrics in context of imbalanced datas.
+The calculation is based on the difference between how much agreement(positive) is actually present (``observed'') compared to how much positive would be expected to be present by chance alone (``expected''). We want to know how different the observed positive are from the expected. Kappa is a measure of this difference (citation).
+
+Kappa Agreement
+\textless{} 0 Less than chance agreement
+0.01--0.20 Slight agreement
+0.21-- 0.40 Fair agreement
+0.41--0.60 Moderate agreement
+0.61--0.80 Substantial agreement
+0.81--0.99 Almost perfect agreement
+
+\hypertarget{roc-curve}{%
+\section{ROC Curve}\label{roc-curve}}
+
+A receiver operating characteristic curve, or ROC curve, is a graphical plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.
+
+The ROC curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.
+
+\hypertarget{classifiers}{%
+\chapter{Classifiers}\label{classifiers}}
+
+We describe our classifiers in this chapter.
+
+\hypertarget{applications}{%
+\chapter{Applications}\label{applications}}
+
+Some \emph{significant} applications are demonstrated in this chapter.
+
+\hypertarget{example-one}{%
+\section{Example one}\label{example-one}}
+
+\hypertarget{example-two}{%
+\section{Example two}\label{example-two}}
+
+\hypertarget{applications-1}{%
+\chapter{Applications}\label{applications-1}}
+
+  \bibliography{book.bib,packages.bib}
+
+\end{document}

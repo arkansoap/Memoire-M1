@@ -2,7 +2,7 @@
 title: "Metrics"
 author: "Thibault FUCHEZ"
 date: "31/05/2021"
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
 ---

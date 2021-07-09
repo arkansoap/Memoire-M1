@@ -1,0 +1,17 @@
+introduction
+abstract
+document-format
+metrics-for-classification-tasks
+the-foundation-of-the-metrics-the-confusion-matrix
+accuracy-and-error-rate
+true-positive-rate
+true-negative-and-flase-positive-rate
+positive-prediction-value-precision
+f-measure
+kappa
+roc-curve
+classifiers
+applications
+example-one
+example-two
+applications-1

@@ -78,8 +78,6 @@ split_standard <-
 
 ########## measure performance ##########
 
-# rajouter les TN (specificity)
-
 perf.measure <- function(pred , real, y, beta = 1)
 {
   MatConf <- table(pred, real[[y]]) %>% addmargins 
