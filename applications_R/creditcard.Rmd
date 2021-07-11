@@ -1,0 +1,59 @@
+---
+title: "creditcard"
+author: "Thibault FUCHEZ"
+date: "11/07/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+```
+
+```{r}
+source("functions_UC.R")
+```
+
+```{r}
+creditcard <- read.csv("creditcard.csv", header = TRUE, sep = ",")
+```
+
+```{r}
+creditcard$Class <- as.factor(creditcard$Class)
+```
+
+# partitioning
+
+```{r}
+creditcard <- split_standard(creditcard, "Class", mod = "nonstandard")
+```
+
+#First models
+
+```{r}
+priors(dat = creditcard$train, "Class")
+```
+
+```{r}
+plot(creditcard$train$Class)
+```
+
+```{r}
+ModelsCredit <- models(y = "Class", data = creditcard$train,
+                 prior = priors(dat = creditcard$train, "Class"))
+```
+
+```{r}
+PredCredit <- predictions(models = ModelsCredit, datas = creditcard)
+```
+
+```{r}
+KablesPerf(pred = PredCredit, dat = creditcard$test, y = "Class")
+```
+
+Very good results. Maybe we can try to make it better , because our interest is to have a minimum of FP. Is PCA in preprocessing responsible of the good results? Or the size of dataset? (think pca is the reason, try to pca for spotify and recid in preprocess)
+
+!!!!!!! erreur de titre ds perf measure et kable, il s'agit des faux negatifs et non des faux positifs!!!!!!!!!!! A CHANGER
+
+
