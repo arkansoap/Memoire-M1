@@ -1,12 +1,11 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Applications
 
-```{r}
-setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
-```
-
-```{r}
-source("functions_UC.R")
-```
+## Introduction
 
 In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
@@ -24,6 +23,15 @@ Let's briefly presents those datasets:
 * Hacked ...
 
 Table of priors ratio between positive and negative class
+
+## First Models
+
+The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later. 
+
+```{r}
+KablesPerf(Predict2, datas$test, "popularity")[[1]]
+```
+
 
 
 

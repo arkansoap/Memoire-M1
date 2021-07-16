@@ -16,6 +16,13 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+```{r, echo = FALSE, message=FALSE}
+source("functions2.R")
+source("object.R")
+load("alldat.Rdata")
+```
+
 # Introduction
 
 ## Abstract

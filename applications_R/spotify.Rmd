@@ -16,7 +16,8 @@ setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
 ```
 
 ```{r}
-source("functions_UC.R")
+# source("functions_UC.R")
+# source("functions2.R")
 ```
   
 # Preparation of the data base
@@ -137,6 +138,17 @@ Models <- models(y = "popularity", data = datas$train,
                  prior = priors(dat = datas$train, "popularity"))
 # ModelsNS <- models(y = "popularity", data = datasNS$train)
 ```
+
+```{r}
+source("functions2.R")
+Models2 <- models(y = "popularity", data = datas$train,
+                 prior = priors(dat = datas$train, "popularity"))
+
+Predict2 <- predictions(models = Models2, datas = datas)
+KablesPerf(Predict2, datas$test, "popularity")
+
+```
+
 
 With current parameter, The SVM model fails to find an hyperplane with non normalize datas. This errors occurs when whe faces imbalance data. 
 

@@ -169,7 +169,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.2</b> Learning method tuning</a></li>
 <li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.3</b> post processinf threesholding</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -193,8 +197,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="applications" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Applications</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="applications.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;C:/Users/arkan/Desktop/Memoire-M1/applications_R&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="applications.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions_UC.R&quot;</span>)</span></code></pre></div>
+<div id="introduction-1" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Introduction</h2>
 <p>In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.</p>
 <p>Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes’classifier in order to proposed a richer experience. Notice that we firs try to use glmnet instead of glm but it doesn’t deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!</p>
 <p>We don’t introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code.</p>
@@ -207,7 +211,218 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Hacked …</li>
 </ul>
 <p>Table of priors ratio between positive and negative class</p>
+</div>
+<div id="first-models" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> First Models</h2>
+<p>The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="applications.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">KablesPerf</span>(Predict2, datas<span class="sc">$</span>test, <span class="st">&quot;popularity&quot;</span>)[[<span class="dv">1</span>]]</span></code></pre></div>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-4">Table 5.1: </span>Confusion matrix
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+0
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+Sum
+</th>
+<th style="text-align:left;">
+0
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+Sum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+rf
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+bayes
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+4431
+</td>
+<td style="text-align:left;">
+975
+</td>
+<td style="text-align:left;">
+5406
+</td>
+<td style="text-align:left;">
+4373
+</td>
+<td style="text-align:left;">
+983
+</td>
+<td style="text-align:left;">
+5356
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+147
+</td>
+<td style="text-align:left;">
+115
+</td>
+<td style="text-align:left;">
+262
+</td>
+<td style="text-align:left;">
+205
+</td>
+<td style="text-align:left;">
+107
+</td>
+<td style="text-align:left;">
+312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sum
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+lda
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+svm
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+4559
+</td>
+<td style="text-align:left;">
+1078
+</td>
+<td style="text-align:left;">
+5637
+</td>
+<td style="text-align:left;">
+4566
+</td>
+<td style="text-align:left;">
+1075
+</td>
+<td style="text-align:left;">
+5641
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sum
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+</tr>
+</tbody>
+</table>
 
+</div>
 </div>
             </section>
 

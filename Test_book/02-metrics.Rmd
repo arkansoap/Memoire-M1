@@ -1,9 +1,5 @@
 # Metrics for classification tasks
 
-```{r, echo = FALSE, message=FALSE}
-source("functions_UC.R")
-```
-
 Understanding if a model is a good classifier or not require a good comprehension of the predictions he made. We want to know the global effiency but some specific element too. Is he better in predicting one or the other class? What are the strenght and weaknees of the model? Can we be confident towards the results, haw can we know they are not due to chance?
 
 In order to compare the performance's models, we use differents "metrics". The reliability of our tools is higlhy dependant on the structure of our datas. In our case, the imbalanced sample of datas classes has to be take into account in order to find the metrics which allows to give a good evaluation of our models. 
