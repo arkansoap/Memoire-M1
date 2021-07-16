@@ -170,6 +170,36 @@ In this study, we will focus on methods than we can repoduce with our level of c
 
 ## Datas prepocessing : 
 
+### Try Preprocessing PCA
+
+```{r}
+
+PCAspot <- PCA(datas_num[,-1])
+PCAspot$eig
+
+PCAspotRes <- as.data.frame(PCAspot$ind$coord)
+PCAspotRes1 <- cbind(datas_num[,"popularity"],PCAspotRes[,1:4])
+colnames(PCAspotRes1)[1] <- "popularity"
+
+priors(dat = PCAspotRes1, "popularity")
+```
+
+```{r}
+DatSpotPca <- split_standard(data = PCAspotRes1, y = "popularity",mod = "nonstandard")
+```
+
+```{r}
+ModPCAspot <- models(y = "popularity", data = DatSpotPca$train,
+                 prior = priors(dat = DatSpotPca$train, "popularity"))
+```
+
+```{r}
+PredSpotPca <- predictions(models = ModPCAspot, datas = DatSpotPca)
+```
+
+```{r}
+KablesPerf(PredSpotPca, DatSpotPca$test, "popularity")
+```
 
 ### CARET up and down sample : 
 
@@ -252,6 +282,7 @@ Excellent results for random forest !! How can we explain it ? Maybe because we 
 ```{r}
 testA <- resamp_res(datas = spot_B, mod = "US")
 ```
+
 
 ### SMOTE 
 
@@ -677,7 +708,7 @@ KablesPerf2(pred = Predictions, dat = datas$test, y = "popularity", listPred = l
 
 # try glmnet and naives bayes 
 
-## glmnet
+## glmnet !!!
 
 ```{r}
 HH <- model.matrix(popularity~.,data = datas$train)
@@ -703,19 +734,24 @@ library(glmnetUtils)
 ```
 
 ```{r}
-Modelglm2 <- glmnet(popularity~., data = datas$train , family = "binomial", alpha = 0.5)
+Modelglm2 <- glmnet(popularity~., data = datas$train , family = "binomial", alpha = 1)
+```
+
+
+```{r}
+Modelglm2 <- glmnet(popularity~., data = datas$train , family = "binomial", alpha = 1)
 ```
 
 ```{r}
-predict(Modelglm2, datas$test, type = "class", s=1)
+KKK <- predict(Modelglm2, datas$test, type = "class")
 ```
 
 ```{r}
-glmnet(popularity~., data = datas$train , family = "multinomial")
+table(predict(Modelglm2, datas$test, type = "class", s = 19))
 ```
 
 ```{r}
-table(predict(Modelglm2, datas$test, type = "class", s=1))
+perf.measure(KKK,  datas$test, "popularity")
 ```
 
 ## naives bayes

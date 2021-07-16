@@ -1,0 +1,53 @@
+---
+title: "hacked"
+author: "Thibault FUCHEZ"
+date: "16/07/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Hacked <-  read.csv("hackedTr.csv", header = TRUE, sep = ",")
+```
+
+```{r}
+Hacked <- Hacked[,-c(1,2)]
+Hacked$MULTIPLE_OFFENSE <- as.factor(Hacked$MULTIPLE_OFFENSE)
+Hacked$MULTIPLE_OFFENSE <- recode_factor(Hacked$MULTIPLE_OFFENSE,
+                                   "1" = "0", "0" = "1")
+```
+
+```{r}
+sum(is.na(Hacked))
+```
+
+```{r}
+Hacked <- na.omit(Hacked)
+```
+
+```{r}
+datHacked <- split_standard(Hacked, "MULTIPLE_OFFENSE", mod = "standard")
+```
+
+```{r}
+priors(dat = datHacked$train, "MULTIPLE_OFFENSE")
+```
+
+```{r}
+ModHacked <- models(y = "MULTIPLE_OFFENSE", data = datHacked$train,
+                 prior = priors(dat = datHacked$train, "MULTIPLE_OFFENSE"))
+```
+
+```{r}
+PredHacked <- predictions(models = ModHacked, datas = datHacked)
+```
+
+```{r}
+KablesPerf(pred = PredHacked, dat = datHacked$test, y = "MULTIPLE_OFFENSE")
+```
+

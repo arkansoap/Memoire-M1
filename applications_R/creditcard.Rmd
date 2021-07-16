@@ -54,6 +54,8 @@ KablesPerf(pred = PredCredit, dat = creditcard$test, y = "Class")
 
 Very good results. Maybe we can try to make it better , because our interest is to have a minimum of FP. Is PCA in preprocessing responsible of the good results? Or the size of dataset? (think pca is the reason, try to pca for spotify and recid in preprocess)
 
+conclusion : Pca is not the reason because pca didn't change spot reseults
+
 !!!!!!! erreur de titre ds perf measure et kable, il s'agit des faux negatifs et non des faux positifs!!!!!!!!!!! A CHANGER
 
 

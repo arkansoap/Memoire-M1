@@ -291,6 +291,8 @@ priors <- function(dat, y){
 #prior =c( sum(data$y == 1) / nrow(data) ,1 -((sum(data$y == 1) / nrow(data))))
 models <- function(y, data,
                    prior,
+                   alpha = 0.5,
+                   laplace = 0,
                    CWSvm = c("0" = 1, "1" = 1),
                    CWRf = c(1,1),
                    mtry = length(data)-1, nodesize = 1,
@@ -298,10 +300,11 @@ models <- function(y, data,
   set.seed(777)
   Modlda <- lda(as.formula(paste(y , "~ .")), data = data,
                 prior = prior)
-  Modlr <- glm(as.formula(paste(y , "~ .")),
+  Modlr <- glmnet(as.formula(paste(y , "~ .")),
                data = data,
-               family = binomial(link = logit)
-               )
+               family = "binomial",
+               alpha = alpha
+  )
   Modrf <- randomForest(
     as.formula(paste(y , "~ .")),
     data = data,
@@ -321,11 +324,17 @@ models <- function(y, data,
     class.weights = CWSvm,
     probability = TRUE
   )
+  ModBayes <- naive_bayes(
+    as.formula(paste(y , "~ .")),
+    data = data,
+    laplace = laplace
+  )
   return(list(
     Modlda = Modlda,
     Modlr = Modlr,
     Modrf = Modrf,
-    ModSvm = ModSvm
+    ModSvm = ModSvm,
+    ModBayes = ModBayes
   ))
 }
 
@@ -335,19 +344,21 @@ predictions <- function(models, datas) {
   predLda <- predict(models[["Modlda"]], datas[["test"]])
   predrf <- NULL
   predrf$prob <- predict(models[["Modrf"]], datas[["test"]],
-                    type = "prob")
+                         type = "prob")
   predrf$cla <- ifelse(predrf$prob[, 2] > 0.5, 1, 0)
   predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]], probability = TRUE)
   predlog <- NULL
   predlog$prob <- predict(models[["Modlr"]], newdata = datas[["test"]],
-                     type = 'response')
+                          type = 'response')
   # average <- sum(datas$train$popularity=="1")/nrow(datas$train)
   predlog$cla <- ifelse(predlog$prob > 0.5, 1, 0)
+  predBayes <- predict(models[["Modbayes"]], datas[["test"]])
   return(list(
     predLda = predLda,
     predrf = predrf,
     predSvm = predSvm,
-    predlog = predlog
+    predlog = predlog,
+    predBayes = predBayes
   ))
 }
 

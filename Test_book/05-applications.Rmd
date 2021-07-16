@@ -1,1 +1,32 @@
 # Applications
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+```
+
+```{r}
+source("functions_UC.R")
+```
+
+In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
+
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience. Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+
+We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. 
+
+We choose four dataset with different level of imabalanced. 
+
+Let's briefly presents those datasets:
+
+* Spotify ...
+* Recidivism ...
+* Creditcard ...
+* Hacked ...
+
+Table of priors ratio between positive and negative class
+
+
+
+
+
+
