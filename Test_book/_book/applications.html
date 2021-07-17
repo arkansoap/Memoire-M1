@@ -24,7 +24,7 @@
 <meta name="author" content="Yihui Xie" />
 
 
-<meta name="date" content="2021-07-16" />
+<meta name="date" content="2021-07-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -200,8 +200,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="introduction-1" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Introduction</h2>
 <p>In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.</p>
-<p>Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes’classifier in order to proposed a richer experience. Notice that we firs try to use glmnet instead of glm but it doesn’t deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!</p>
-<p>We don’t introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code.</p>
+<p>Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes’classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn’t deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!</p>
+<p>About the code : We don’t introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need.</p>
 <p>We choose four dataset with different level of imabalanced.</p>
 <p>Let’s briefly presents those datasets:</p>
 <ul>
@@ -215,7 +215,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="first-models" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> First Models</h2>
 <p>The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="applications.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">KablesPerf</span>(Predict2, datas<span class="sc">$</span>test, <span class="st">&quot;popularity&quot;</span>)[[<span class="dv">1</span>]]</span></code></pre></div>
 <table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-4">Table 5.1: </span>Confusion matrix
@@ -421,6 +420,139 @@ Sum
 </tr>
 </tbody>
 </table>
+<p>The table … shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics sharps this observation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="applications.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">KablesPerf</span>(Predict2, datas<span class="sc">$</span>test, <span class="st">&quot;popularity&quot;</span>)[[<span class="dv">2</span>]]</span></code></pre></div>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+accuracy
+</th>
+<th style="text-align:left;">
+FNrate
+</th>
+<th style="text-align:left;">
+TPrate
+</th>
+<th style="text-align:left;">
+kappa
+</th>
+<th style="text-align:left;">
+PrecisionPPV
+</th>
+<th style="text-align:left;">
+Fscore
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rf
+</td>
+<td style="text-align:left;">
+0.8020466
+</td>
+<td style="text-align:left;">
+0.03211009
+</td>
+<td style="text-align:left;">
+0.1055046
+</td>
+<td style="text-align:left;">
+0.1032829
+</td>
+<td style="text-align:left;">
+0.4389313
+</td>
+<td style="text-align:left;">
+0.1701183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bayes
+</td>
+<td style="text-align:left;">
+0.7904023
+</td>
+<td style="text-align:left;">
+0.04477938
+</td>
+<td style="text-align:left;">
+0.09816514
+</td>
+<td style="text-align:left;">
+0.07332293
+</td>
+<td style="text-align:left;">
+0.3429487
+</td>
+<td style="text-align:left;">
+0.1526391
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lda
+</td>
+<td style="text-align:left;">
+0.8064573
+</td>
+<td style="text-align:left;">
+0.004150284
+</td>
+<td style="text-align:left;">
+0.01100917
+</td>
+<td style="text-align:left;">
+0.01088917
+</td>
+<td style="text-align:left;">
+0.3870968
+</td>
+<td style="text-align:left;">
+0.02140946
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+svm
+</td>
+<td style="text-align:left;">
+0.8082216
+</td>
+<td style="text-align:left;">
+0.002621232
+</td>
+<td style="text-align:left;">
+0.01376147
+</td>
+<td style="text-align:left;">
+0.01772557
+</td>
+<td style="text-align:left;">
+0.5555556
+</td>
+<td style="text-align:left;">
+0.02685765
+</td>
+</tr>
+</tbody>
+</table>
+<p>First we note that accuracy is very good, wigch confirms accuracy is not a relaible metrics concerning imbalance dataset. a simple view on Detection power(TPr) shows that we don’t achieve to predict what songs are very un popular. FN rate is obviously good because of the imblalanced ratio. Here FN won’t be a good metrics.</p>
+<p>Let see the plot curve for all datasets.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="applications.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb2-2"><a href="applications.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">AllRoc</span>(Predictions, datas<span class="sc">$</span>test<span class="sc">$</span>popularity)</span>
+<span id="cb2-3"><a href="applications.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">AllRoc</span>(PredRec1, datRecid<span class="sc">$</span>test<span class="sc">$</span>is_violent_recid)</span>
+<span id="cb2-4"><a href="applications.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">AllRoc</span>(PredCredit, creditcard<span class="sc">$</span>test<span class="sc">$</span>Class)</span>
+<span id="cb2-5"><a href="applications.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">AllRoc</span>(PredHacked, datHacked<span class="sc">$</span>test<span class="sc">$</span>MULTIPLE_OFFENSE)</span></code></pre></div>
+<p><img src="Test_book_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>!!! discuss the better results for creditcard and hacked !!!
+- from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ?</p>
+<p>Even if creditcard and hacked seems not to need remedies to counteract imbalanced data, let see the detection power. We can argue that 3/4 of detection power is not enough to reassure users. In a professional use, we can wish at leat 90% of TPr.</p>
 
 </div>
 </div>

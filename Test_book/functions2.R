@@ -131,7 +131,8 @@ KablesPerf <- function(pred, dat, y){
   kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
     row_spec(c(1,5), background = "lightgrey")  
-  kableMetrics <- kable(as.data.frame(Metrics1[[1]])) %>%
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]]),
+                        caption = "performance measures") %>%
     kable_styling(bootstrap_options = c("striped", "hover"))
   return(list(kableMC, kableMetrics))
 }
@@ -174,9 +175,9 @@ RocCurve <- function(predi, realCl, mod) {
     pred <- prediction(round(predi$predlog$prob,3), realCl)
     colA <- "orange"
   }
-  else if (mod == "rf")
+  else if (mod == "bayes")
   {
-    pred <- prediction(round(predi$predrf$prob[,2],3), realCl)
+    pred <- prediction(round(predi$predBayes, realCl))
     colA <- "green"
   }
   else if (mod == "lda")

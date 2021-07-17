@@ -132,7 +132,7 @@
 
 \title{A Minimal Book Example}
 \author{Yihui Xie}
-\date{2021-07-16}
+\date{2021-07-17}
 
 \begin{document}
 \maketitle
@@ -326,9 +326,9 @@ In this study, we will focus on methods than we can repoduce with our level of c
 
 In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
-Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience. Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
 
-We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code.
+About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need.
 
 We choose four dataset with different level of imabalanced.
 
@@ -352,12 +352,6 @@ Table of priors ratio between positive and negative class
 \section{First Models}\label{first-models}}
 
 The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{KablesPerf}\NormalTok{(Predict2, datas}\SpecialCharTok{$}\NormalTok{test, }\StringTok{"popularity"}\NormalTok{)[[}\DecValTok{1}\NormalTok{]]}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 
@@ -385,6 +379,52 @@ Sum & 4578 & 1090 & 5668 & 4578 & 1090 & 5668\\
 \hline
 \end{tabular}
 \end{table}
+
+The table \ldots{} shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics sharps this observation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{KablesPerf}\NormalTok{(Predict2, datas}\SpecialCharTok{$}\NormalTok{test, }\StringTok{"popularity"}\NormalTok{)[[}\DecValTok{2}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}{l|l|l|l|l|l|l}
+\hline
+  & accuracy & FNrate & TPrate & kappa & PrecisionPPV & Fscore\\
+\hline
+rf & 0.8020466 & 0.03211009 & 0.1055046 & 0.1032829 & 0.4389313 & 0.1701183\\
+\hline
+Bayes & 0.7904023 & 0.04477938 & 0.09816514 & 0.07332293 & 0.3429487 & 0.1526391\\
+\hline
+lda & 0.8064573 & 0.004150284 & 0.01100917 & 0.01088917 & 0.3870968 & 0.02140946\\
+\hline
+svm & 0.8082216 & 0.002621232 & 0.01376147 & 0.01772557 & 0.5555556 & 0.02685765\\
+\hline
+\end{tabular}
+\end{table}
+
+First we note that accuracy is very good, wigch confirms accuracy is not a relaible metrics concerning imbalance dataset. a simple view on Detection power(TPr) shows that we don't achieve to predict what songs are very un popular. FN rate is obviously good because of the imblalanced ratio. Here FN won't be a good metrics.
+
+Let see the plot curve for all datasets.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{AllRoc}\NormalTok{(Predictions, datas}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{popularity)}
+\FunctionTok{AllRoc}\NormalTok{(PredRec1, datRecid}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{is\_violent\_recid)}
+\FunctionTok{AllRoc}\NormalTok{(PredCredit, creditcard}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{Class)}
+\FunctionTok{AllRoc}\NormalTok{(PredHacked, datHacked}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{MULTIPLE\_OFFENSE)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+!!! discuss the better results for creditcard and hacked !!!
+- from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ?
+
+Even if creditcard and hacked seems not to need remedies to counteract imbalanced data, let see the detection power. We can argue that 3/4 of detection power is not enough to reassure users. In a professional use, we can wish at leat 90\% of TPr.
 
 \hypertarget{summary}{%
 \chapter{Summary}\label{summary}}

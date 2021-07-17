@@ -11,6 +11,8 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# prepare datasets
+
 ```{r}
 Hacked <-  read.csv("hackedTr.csv", header = TRUE, sep = ",")
 ```
@@ -34,6 +36,8 @@ Hacked <- na.omit(Hacked)
 datHacked <- split_standard(Hacked, "MULTIPLE_OFFENSE", mod = "standard")
 ```
 
+# first models
+
 ```{r}
 priors(dat = datHacked$train, "MULTIPLE_OFFENSE")
 ```
@@ -50,4 +54,7 @@ PredHacked <- predictions(models = ModHacked, datas = datHacked)
 ```{r}
 KablesPerf(pred = PredHacked, dat = datHacked$test, y = "MULTIPLE_OFFENSE")
 ```
+
+
+
 
