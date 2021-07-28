@@ -132,7 +132,7 @@
 
 \title{A Minimal Book Example}
 \author{Yihui Xie}
-\date{2021-07-28}
+\date{2021-07-29}
 
 \begin{document}
 \maketitle
@@ -684,7 +684,7 @@ Interesting if :
 \hypertarget{introduction-1}{%
 \section{Introduction}\label{introduction-1}}
 
-In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
+In order \citep{xie2015} to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
 Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
 
@@ -715,7 +715,7 @@ The function models compute our four models. We show the function in order to sh
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-4}Confusion matrix spotify}
+\caption{\label{tab:unnamed-chunk-3}Confusion matrix spotify}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -744,7 +744,7 @@ The table \ldots{} shows the confusion matrix resulting to the four classifiers 
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-5}Spotify metrics}
+\caption{\label{tab:unnamed-chunk-4}Spotify metrics}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -765,7 +765,7 @@ First we note that accuracy is very good, wigch confirms accuracy is not a relai
 
 Let see the plot curve for all datasets.
 
-\includegraphics{Test_book_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-5-1.pdf}
 
 !!! discuss the better results for creditcard and hacked !!!
 - from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ?
@@ -776,7 +776,7 @@ At last, it is sure that all explicative variable are dependent to the variable 
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-7}Hacked metrics}
+\caption{\label{tab:unnamed-chunk-6}Hacked metrics}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -807,7 +807,7 @@ On this one, we can see that only rf has very good results. Detection power and 
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Test_book_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-7-1.pdf}
 
 \hypertarget{post-processing-threesholding}{%
 \section{Post processing Threesholding}\label{post-processing-threesholding}}
@@ -815,14 +815,6 @@ On this one, we can see that only rf has very good results. Detection power and 
 \hypertarget{summary}{%
 \chapter{Summary}\label{summary}}
 
-ref :
-
-\begin{itemize}
-\tightlist
-\item
-  max kukn, \ldots{}
-\end{itemize}
-
-  \bibliography{book.bib,packages.bib}
+  \bibliography{references.bib}
 
 \end{document}
