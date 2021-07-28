@@ -1,0 +1,86 @@
+---
+title: "recidV1"
+author: "Thibault FUCHEZ"
+date: "24/07/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Test_bookV1/datasets")
+source("FuncLib.R")
+```
+
+# prepa datas
+
+```{r}
+recid <-
+  read.csv(
+    "recidivism.csv",
+    header = TRUE,
+    sep = ",",
+    stringsAsFactors = T
+  )
+data <-   read_csv("recidivism.csv")
+
+#temps passé en prison 
+
+data$time_jailed <- data[,"c_jail_out"] - data[,"c_jail_in"]
+recid$time_jailed <- data$time_jailed
+
+recid<- recid[,c("sex","age_cat","race","juv_fel_count","juv_misd_count","juv_other_count", "priors_count","c_charge_degree","time_jailed","is_violent_recid")]
+
+recid$time_jailed <- recid$time_jailed / (60*24)
+recid$time_jailed <- as.difftime(unlist(recid$time_jailed), units = "days")
+recid$time_jailed <- abs(recid$time_jailed)
+
+sum(is.na(recid$time_jailed))
+sum(is.na(recid))
+recid <- na.omit(recid)
+recid$is_violent_recid <- as.factor(recid$is_violent_recid)
+
+recid <- recid[,c(10, 1:9 )]
+```
+
+```{r}
+Recid <- split_standard(data =  recid, y =  "is_violent_recid", mod = "standard")
+rm(recid, data)
+```
+
+# first models
+
+```{r}
+modRecid <- models(y = "is_violent_recid",
+                   data = Recid$train,
+                   costSvm = 0.25,
+                   kernSvm = "radial",
+                   priors(dat = Recid$train, "is_violent_recid"),
+                   mod = "lr")
+```
+
+```{r}
+predRecid <- predictions(models = modRecid, datas = Recid, mod = "lr")
+```
+
+```{r}
+source("FuncLib.R")
+KablesPerf(pred = predRecid, dat = Recid$test,
+               y = "is_violent_recid",
+               captionCM = "Confusion matrix recid",
+               captionPerf = "redid metrics",
+               listPred = "lr", mod = "lr")
+```
+
+```{r}
+par(mfrow=c(1,1))
+AllRoc(predRecid, Recid$test$is_violent_recid, mod2 = "lr")
+```
+
+# Remedies
+
+## Datas prepocessing : 

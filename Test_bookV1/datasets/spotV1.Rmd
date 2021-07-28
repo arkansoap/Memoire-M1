@@ -1,0 +1,223 @@
+---
+title: "spotV1"
+author: "Thibault FUCHEZ"
+date: "24/07/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Test_bookV1/datasets")
+source("FuncLib.R")
+```
+  
+# Preparation of the data base
+
+## restructuring 
+
+```{r}
+#On charge la base de donnée. Les variables de types "str" sont recodées en facteurs.
+spotify <-
+  read.csv(
+    "spotify_songs.csv",
+    header = TRUE,
+    sep = ",",
+    stringsAsFactors = T
+  )
+
+# Etant données qu'il n'y a que 15 valeurs manquantes, on décide de supprimer les individus contenant ces valeurs.
+sum(is.na(spotify))
+spotify = na.omit(spotify)
+
+# Lignes dupliquées :
+spot1 <- spotify[!duplicated(spotify$track_id), ]
+# spot2 <- spotify
+# spot2 %>% distinct(track_id)
+# spot3 <- spotify[duplicated(spot2$track_id),]
+# spot4 <- spotify[!duplicated(spotify$track_name),]
+
+#Changement du nom des levels:
+spot1$key <- recode_factor(
+  spot1$key,
+  "0" = "C",
+  "1" = "Db",
+  "2" = "D",
+  "3" = "Eb",
+  "4" = "E",
+  "5" = "F",
+  "6" = "Gb",
+  "7" = "G",
+  "8" = "Ab",
+  "9" = "A",
+  "10" = "Bb",
+  "11" = "B"
+)
+
+spot1$mode <-
+  recode_factor(spot1$mode, "0" = "mineur", "1" = "majeur")
+
+# recodage de la date / regroupement par tranches :
+spot1$track_album_release_date <-
+  as.Date(spot1$track_album_release_date , format = "%Y")
+spot1 <- spot1 %>% mutate(year = year(track_album_release_date))
+spot1$years <-
+  cut(
+    spot1$year,
+    breaks = c(1956, 2000, 2010, 2015, 2018, 2020),
+    diag.lab = 0,
+    labels = c(
+      "1956-2000",
+      "2001-2010",
+      "2011-2015",
+      "2016-2018",
+      "2019-2020"
+    )
+  )
+
+# Suppression de instrumentalness mal codé :
+spot1 <- spot1[, -c(7, 19)]
+
+# Recodage de track-popularity / regroupement basse/autres :
+popularity <- cut(spot1$track_popularity, c(-1, 12.5, 100))
+spot_B = cbind(popularity, spot1)
+spot_B <- spot_B[, -5]
+# spot_B$popularity <- recode_factor(spot_B$popularity,
+#                                      "(12.5,100]" = "Autre",
+#                                      "(-1,12.5]" = "basse")
+spot_B$popularity <- recode_factor(spot_B$popularity,
+                                   "(12.5,100]" = 0,
+                                   "(-1,12.5]" = 1)
+
+
+# On enlève les variables non pertinentes pour la classification :
+spot_B <- spot_B[, -c(2, 3, 4, 5, 6, 7, 8, 10,23)]
+
+# On efface les bases inutiles
+rm(spot1, spotify)
+```
+
+```{r}
+plot(spot_B$popularity)
+```
+
+We can observe a high imbalanced repartition on the "popularity" variable.
+
+## Partitioning : 
+
+Training and test sets are created with random sampling. First, we split the training set off. Then whe create the evaluation and test sets. Hence we create two groups of datas, one which is standardize and the other which is not. You can see the functions used in the functions_UCR.R file.
+
+```{r}
+#posssibilité de changer les paramètres prop1, prop2, seed1, seed2
+Spot <- split_standard(spot_B, "popularity", mod = "standard")
+SpotNS <- split_standard(spot_B, "popularity", mod = "nonstandard")
+mv("spot_B", "Spot0")
+```
+
+# First Models : 
+
+```{r}
+priors(dat = Spot$train, "popularity")
+```
+
+```{r}
+source("FuncLib.R")
+modSpot <- models(y = "popularity", data = Spot$train,
+                 prior = priors(dat = Spot$train, "popularity"),
+                 mod = "bayes")
+```
+
+```{r}
+predSpot <- predictions(models = modSpot, datas = Spot, 
+                        mod = "bayes")
+```
+
+```{r}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", captionCM = "Confusion matrix spotify", captionPerf = "Spotify metrics", mod = "bayes", listPred = "bayes")
+```
+
+```{r}
+par(mfrow=c(1,1))
+AllRoc(predSpot, Spot$test$popularity, mod2 = "bayes", caption = "First models ROC Curves")
+```
+
+# Remedies
+
+## Datas prepocessing : 
+
+```{r}
+SpotDS <- resamp_res(datas = Spot0 , mod = "DS", mod2 = "bayes", captionCM = "matrix confusion", captionPerf = "Metrics", captionROC = "ROC Curves test")
+```
+
+```{r}
+SpotSmoteNC <- resamp_res(datas = Spot0 , mod = "SMOTE-NC", mod2 = "bayes", captionCM = "matrix confusion", captionPerf = "Metrics", captionROC = "ROC Curves test")
+```
+
+```{r}
+test <- SMOTE_NC(Spot0, "popularity")
+str(Spot0)
+```
+
+## Direct cost sensitive learning
+
+#### Direct cost sensitive learning (ICET and cart) : CART
+
+```{r}
+priorSpot <- priors(Spot$train, "popularity")
+RatioSpot <- priorSpot[1]/priorSpot[2]
+c5Matrix <- matrix(c(0, 1, RatioSpot, 0), ncol = 2)
+rownames(c5Matrix) <- levels(Spot$train$popularity)
+colnames(c5Matrix) <- levels(Spot$train$popularity)
+c5Matrix
+```
+
+```{r}
+modelC5 <- C5.0(popularity~.,
+                data = Spot$train,
+                costs = c5Matrix)
+```
+
+```{r}
+PredC5b <- predict(modelC5, Spot$test)
+```
+
+```{r}
+C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity")
+```
+
+## Postprocessing Threesholding
+
+```{r}
+par(mfrow=c(2,2))
+evoSeuil(predSpot$predLda, Spot$test$popularity, Spot$test, "posterior", caption = "lda")
+evoSeuil(predSpot$predOpt$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "bayes")
+evoSeuil(attr(predSpot$predSvm, "probabilities")[,2],
+         Spot$test$popularity, Spot$test, "autres", caption = "svm")
+evoSeuil(predSpot$predrf$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "rf")
+```
+
+### Predictions with new threshold : 
+
+```{r}
+predldaseuil <- changeSeuil(predSpot$predLda, Spot$test$popularity, Spot$test, 0.2, "posterior")
+
+predOptseuil <- changeSeuil(predSpot$predOpt$prob[,2], Spot$test$popularity, Spot$test, 0.2, "autres")
+
+predrfseuil <- changeSeuil(predSpot$predrf$prob[,2], Spot$test$popularity, Spot$test, 0.2, "autres")
+
+predsvmseuil <- changeSeuil(attr(predSpot$predSvm, "probabilities")[,2], Spot$test$popularity, Spot$test, 0.2, "autres")
+
+listPredseuil <- list(predrfseuil, predOptseuil,
+                      predldaseuil, predsvmseuil)
+```
+
+```{r}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", listPred = listPredseuil, captionCM = "plop" ,captionPerf= "perfplop", mod = "bayes")
+```
+
+

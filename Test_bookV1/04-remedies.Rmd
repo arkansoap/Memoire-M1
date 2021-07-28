@@ -1,0 +1,213 @@
+# Remedies
+
+A lot of research have been made concerning this problem. Our goal is not to make an exhaustive review of all the technics to remedies this issue. 
+In this study, we will focus on methods than we can repoduce with our level of competence. It appears to us that it is interesting to separate the choosen methods in three levels :
+
+* First, some remedies we can use before launching the machine learning algorithm (Preprocessing).
+* Secundly, some remedies we can use during the computation of a fitted models by the machine (learning method tuning).
+* At last, som remedies that can be used after the machine learning algorithm (postprocessing).
+
+## different strategies : 
+- Special-purpose learning method : Modifications of the learning algorithm
+    - advantages : 
+        - users goals are incorporated directly into the models 
+        - model obtained more comprehensive for the users
+    - disadvantages : 
+        - user is restricted in his algorithmm choices or have to developp new algorithm
+        - if the target of the loss function changes, model must be relearned
+        - requires deep knowlegde of the learning algorithm implementation
+- Data Pre-processing : changes on the data before the learning process takes place
+    - advantages:
+        - can be applied to any existing tools 
+        - choosen models are biased to the goals of the users 
+    - inconevnient:
+        - difficult to relate modification of the data wit the loss function
+    - methods :
+         - weighting data spaces
+         - re sampling
+         - active learning
+- Prediction Post-processing : transformations applied to the predictions of the learned model
+    - advantages :
+        - not necessary to know user preference biases at learning time
+        - any standard learning tool can be used
+    - drawbavks : 
+        - models do not reflect user preferences
+        - models interpretability is meaningless because loss function was not optimized following user preference bias
+    - methods : 
+        - threeshold methods
+        - cost sensitive
+- Hybrid solutions
+
+
+## Pre processing resampling 
+
+resampling dataset method:
+
+from smote pdf (chawla)
+
+  about over and down sampling
+  
+Japkowicz (2000 )discussed the effect of imbalance in a dataset.  She evaluated threestrategies: under-sampling, resampling and a recognition-based induction scheme. We focuson her sampling approaches.  She experimented on artificial 1D data in order to easilymeasure and construct concept complexity.  Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consistedof as many samples as the majority class and “focused resampling” consisted of resamplingonly those minority examples that occurred on the boundary between the minority andmajority classes. Random under-sampling was considered, which involved under-samplingthe majority class samples at random until their numbers matched the number of minorityclass samples; focused under-sampling involved under-sampling the majority class sampleslying further away. She noted that both the sampling approaches were effective, and she alsoobserved that using the sophisticated sampling techniques did not give any clear advantagein the domain considered (Japkowicz, 2000)
+
+One approach that is particularly relevant to our work is that of Ling and Li (1998).They combined over-sampling of the minority class with under-sampling of the majorityclass
+
+### CARET up and down sample : 
+
+"downSample will randomly sample a data set so that all classes have the same frequency as the minority class. upSample samples with replacement to make the class distributions equal"
+
+### ROSE
+
+Creates a sample of synthetic  data by enlarging the features space of minority and majority class examples. Operationally, the new examples are down from a conditionnal kernel density estimate of the two classes as describe in Menardi and torelli (2013)
+
+The ROSE strategy to deal with class imbalance
+ROSE (Menardi and Torelli, 2014) provides a unified framework to deal simultaneously with the two
+above-mentioned problems of model estimation and accuracy evaluation in imbalanced learning. It
+builds on the generation of new artificial examples from the classes, according to a smoothed bootstrap
+approach (see, e.g., Efron and Tibshirani, 1993).
+Consider a training set Tn, of size n, whose generic row is the pair (xi, yi), i = 1, . . . , n. The class
+labels yi belong to the set fY0, Y1g, and xi are some related attributes supposed to be realizations of a
+random vector x defined on Rd, with an unknown probability density function f (x). Let the number of
+units in class Yj, j = 0, 1, be denoted by nj < n. The ROSE procedure for generating one new artificial
+example consists of the following steps:
+1. Select y = Yj with probability pj.
+2. Select (xi, yi) 2 Tn, such that yi = y, with probability 1
+nj
+.
+3. Sample x from KHj (, xi), with KHj a probability distribution centered at xi and covariance
+matrix Hj.
+Essentially, we draw from the training set an observation belonging to one of the two classes, and generate
+a new example (x, y) in its neighborhood, where the shape of the neighborhood is determined
+by the shape of the contour sets of K and its width is governed by Hj.
+It can be easily shown that, given selection of the class label Yj, the generation of new examples
+from Yj, according to ROSE, corresponds to the generation of data from the kernel density estimate of
+f (xjYj), with kernel K and smoothing matrix Hj (Menardi and Torelli, 2014). The choices of K and
+Hj may be then addressed by the large specialized literature on kernel density estimation (see, e.g.
+Bowman and Azzalini, 1997). It is worthwhile to note that, for Hj ! 0, ROSE collapses to a standard
+combination of over- and under-sampling.
+Repeating steps 1 to 3 m times produces a new synthetic training set T
+m, of size m, where the
+imbalance level is defined by the probabilities pj (if pj = 1/2, then approximately the same number of
+examples belong to the two classes). The size m may be set to the original training set size n or chosen
+in any way
+
+### Smote family (smoteNC, BLSMOTE, ADASYN)
+
+smote chawla quote :
+
+We propose an over-sampling approach in which the minority class is over-sampled by cre-ating “synthetic” examples rather than by over-sampling with replacement. This approachis inspired by a technique that proved successful in handwritten character recognition (Ha& Bunke, 1997).  They created extra training data by performing certain operations onreal data.  In their case, operations like rotation and skew were natural ways to perturbthe training data. We generate synthetic examples in a less application-specific manner, byoperating in “feature space” rather than “data space”. The minority class is over-sampledby taking each minority class sample and introducing synthetic examples along the linesegments joining any/all of thekminority class nearest neighbors.  Depending upon theamount of over-sampling required, neighbors from theknearest neighbors are randomlychosen.  Our implementation currently uses five nearest neighbors.  For instance, if theamount of over-sampling needed is 200%, only two neighbors from the five nearest neigh-bors are chosen and one sample is generated in the direction of each.  Synthetic samplesare generated in the following way: Take the difference between the feature vector (sample)under consideration and its nearest neighbor. Multiply this difference by a random numberbetween 0 and 1, and add it to the feature vector under consideration.  This causes theselection of a random point along the line segment between two specific features.  Thisapproach effectively forces the decision region of the minority class to become more general
+
+SMOTE (Chawla et. al. 2002) is a well-known algorithm to fight this problem. The general idea of this method is to artificially generate new examples of the minority class using the nearest neighbors of these cases. Furthermore, the majority class examples are also under-sampled, leading to a more balanced dataset.
+
+The SMOTE function oversamples your rare event by using bootstrapping and k-nearest neighbor to synthetically create additional observations of that event. The definition of rare event is usually attributed to any outcome/dependent/target/response variable that happens less than 15% of the time. For more details about this algorithm, read the original white paper, SMOTE: Synthetic Minority Over-sampling Technique, from its creators.
+
+- references
+    - Chawla, N. V., Bowyer, K. W., Hall, L. O., and Kegelmeyer, W. P. (2002). Smote: Synthetic minority over-sampling technique. Journal of Artificial Intelligence Research, 16:321-357.
+    - Torgo, L. (2010) Data Mining using R: learning with case studies, CRC Press (ISBN: 9781439810187).
+
+!!!! a lot of new techniques directly derived from this one as ADASYN
+
+## Learning method tuning
+
+### Metaparameters tuning
+### direct sensitive learning with cart classifer
+
+The incorporation of beneﬁts and/or costs (negative beneﬁts) in existing algorithms, as a way to express the utility of diﬀerent predictions, is one of the known approaches to cope with imbalanced domains.
+
+Instead of optimizing the typical performance measure, such as accuracy or impurity, some models can alternatively optimize a cost or loss function that diﬀerentially weights speciﬁc types of errors. (no results with weighted data but cart works)
+
+Theory
+We summarize the theory of cost-sensitive learning, published mostly in (Elkan, 2001; Zadrozny
+and Elkan, 2001). The theory describes how the misclassification cost plays its essential role in
+various cost-sensitive learning algorithms.
+Without loss of generality, we assume binary classification (i.e., positive and negative class) in
+this paper. In cost-sensitive learning, the costs of false positive (actual negative but predicted as
+positive; denoted as FP), false negative (FN), true positive (TP) and true negative (TN) can be
+given in a cost matrix, as shown in Table 1. In the table, we also use the notation C(i, j) to
+represent the misclassification cost of classifying an instance from its actual class j into the
+predicted class i. (We use 1 for positive, and 0 for negative). These misclassification cost values
+can be given by domain experts, or learned via other approaches. In cost-sensitive learning, it is
+usually assume that such a cost matrix is given and known. For multiple classes, the cost matrix
+can be easily extended by adding more rows and more columns.
+Table 1. An example of cost matrix for binary classification.
+Actual negative Actual positive
+Predict negative C(0,0), or TN C(0,1), or FN
+Predict positive C(1,0), or FP C(1,1), or TP
+Note that C(i, i) (TP and TN) is usually regarded as the “benefit” (i.e., negated cost) when an
+instance is predicted correctly. In addition, cost-sensitive learning is often used to deal with
+datasets with very imbalanced class distribution (Japkowicz and Stephen, 2002). Usually (and
+without loss of generality), the minority or rare class is regarded as the positive class, and it is
+often more expensive to misclassify an actual positive example into negative, than an actual
+negative example into positive. That is, the value of FN or C(0,1) is usually larger than that of
+FP or C(1,0). This is true for the cancer example mentioned earlier (cancer patients are usually
+rare in the population, but predicting an actual cancer patient as negative is usually very costly)
+and the bomb example (terrorists are rare).
+Given the cost matrix, an example should be classified into the class that has the minimum
+expected cost. This is the minimum expected cost principle. The expected cost R(i|x) of
+classifying an instance x into class i (by a classifier) can be expressed as:
+ 
+j
+R(i | x) P( j | x)C(i, j) , (1)
+where P(j|x) is the probability estimation of classifying an instance into class j. That is, the
+classifier will classify an instance x into positive class if and only if:
+P(0|x)C(1,0) + P(1|x)C(1,1) ≤ P(0|x)C(0,0) + P(1|x)C(0,1)
+This is equivalent to:
+P(0|x)(C(1,0) – C(0,0)) ≤ P(1|x)(C(0,1) – C(1,1))
+Thus, the decision (of classifying an example into positive) will not be changed if a constant is
+added into a column of the original cost matrix. Thus, the original cost matrix can always be
+converted to a simpler one by subtracting C(0,0) to the first column, and C(1,1) to the second
+column. After such conversion, the simpler cost matrix is shown in Table 2. Thus, any given
+cost-matrix can be converted to one with C(0,0) = C(1,1) = 0. 1 In the rest of the paper, we will
+assume that C(0,0) = C(1,1) = 0. Under this assumption, the classifier will classify an instance x
+into positive class if and only if:
+P(0|x)C(1,0) ≤ P(1|x)C(0,1)
+Table 2. A simpler cost matrix with an equivalent optimal classification.
+True negative True positive
+Predict negative 0 C(0,1) – C(1,1)
+Predict positive C(1,0) – C(0,0) 0
+As P(0|x)=1 – P(1|x), we can obtain a threshold p* for the classifier to classify an instance x into
+positive if P(1|x) ≥ p*, where
+.
+(1,0) (0,1)
+* (1,0)
+FP FN
+FP
+C C
+p C
+
+
+
+ (2)
+Thus, if a cost-insensitive classifier can produce a posterior probability estimation p(1|x) for test
+examples x, we can make it cost-sensitive by simply choosing the classification threshold
+according to (2), and classify any example to be positive whenever P(1|x) ≥ p*. This is what
+several cost-sensitive meta-learning algorithms, such as Relabeling, are based on (see later for
+details). However, some cost-insensitive classifiers, such as C4.5, may not be able to produce
+accurate probability estimation; they are designed to predict the class correctly. Empirical
+Thresholding (Sheng and Ling, 2006) does not require accurate estimation of probabilities – an
+accurate ranking is sufficient. It simply uses cross-validation to search the best probability from
+the training instances as the threshold.
+
+## post processinf threesholding
+
+Alternate Cutoffs
+
+Not efficient in my spotify works
+
+> When there are two possible outcome categories, another method for increasing the prediction accuracy of the minority class samples is to determine alternative cutoﬀs for the predicted probabilities
+
+Not a real solution for our issue because it changes our definition classes 
+
+> which eﬀectively changes the deﬁnition of a predicted event. 
+
+Unless we do it with care / i don't think it is a good solution
+
+> There may be situations where the sensitivity/speciﬁcity trade-oﬀ can be accomplished without severely compromising the accuracy of the majority class (which, of course, depends on the context of the problem)
+
+Interesting if : 
+
+- focus on a compromise beetween sensityvioty and specificity.
+> particular target that must be met for the sensitivity or speciﬁcity,
+- we want to maximise accuracy.
+> Find the point on the ROC curve that is closest (i.e., the shortest distance) to the perfect model (with 100 % sensitivity and 100 % speciﬁcity)
+- use of Youden's J index ???
+> (see Sect. 11.2), which measures the proportion of correctly predicted samples

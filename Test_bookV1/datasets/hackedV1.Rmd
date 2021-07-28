@@ -1,0 +1,75 @@
+---
+title: "hackedV1"
+author: "Thibault FUCHEZ"
+date: "24/07/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Test_bookV1/datasets")
+source("FuncLib.R")
+```
+
+# prepare datasets
+
+```{r}
+Hacked <-  read.csv("hackedTr.csv", header = TRUE, sep = ",")
+Hacked <- Hacked[,-c(1,2)]
+Hacked$MULTIPLE_OFFENSE <- as.factor(Hacked$MULTIPLE_OFFENSE)
+Hacked$MULTIPLE_OFFENSE <- recode_factor(Hacked$MULTIPLE_OFFENSE,
+                                   "1" = "0", "0" = "1")
+sum(is.na(Hacked))
+
+Hacked <- na.omit(Hacked)
+```
+
+```{r}
+Hacked <- split_standard(Hacked, "MULTIPLE_OFFENSE", mod = "standard")
+```
+
+# first models
+
+```{r}
+priors(dat = Hacked$train, "MULTIPLE_OFFENSE")
+```
+
+```{r}
+modHacked <- models(y = "MULTIPLE_OFFENSE", data = Hacked$train,
+                 prior = priors(dat = Hacked$train,
+                                "MULTIPLE_OFFENSE"),
+                 mod = "bayes")
+```
+
+```{r}
+predHacked <- predictions(models = modHacked, datas = Hacked, mod = "bayes")
+```
+
+```{r}
+KablesPerf(pred = predHacked, dat = Hacked$test, y = "MULTIPLE_OFFENSE", captionCM = "Confusion matrix Hacked", captionPerf = "Hacked metrics", listPred = "bayes", mod = "bayes")
+```
+
+```{r}
+par(mfrow=c(1,1))
+AllRoc(predHacked, Hacked$test$MULTIPLE_OFFENSE, mod2 = "bayes")
+```
+
+# Remedies
+
+## Datas prepocessing : 
+
+## cart
+
+kable du cart!!
+
+```{r}
+C5graph(Hacked, "MULTIPLE_OFFENSE", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b = 100, ylim = c(0.8,1))
+```
+
+## post processing
+

@@ -1,0 +1,88 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Applications
+
+## Introduction
+
+In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
+
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+
+About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need. 
+
+We choose four dataset with different level of imabalanced. 
+
+Let's briefly presents those datasets:
+
+* Spotify ...
+* Recidivism ...
+* Creditcard ...
+* Hacked ...
+
+Table of priors ratio between positive and negative class
+
+## First Models
+
+The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later. 
+
+```{r, echo = FALSE}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", captionCM = "Confusion matrix spotify", captionPerf = "Spotify metrics", mod = "bayes", listPred = "bayes")[[1]]
+```
+
+The table ... shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics sharps this observation.
+
+```{r, echo = FALSE}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", captionCM = "Confusion matrix spotify", captionPerf = "Spotify metrics", mod = "bayes", listPred = "bayes")[[2]]
+```
+
+First we note that accuracy is very good, wigch confirms accuracy is not a relaible metrics concerning imbalance dataset. a simple view on Detection power(TPr) shows that we don't achieve to predict what songs are very un popular. FN rate is obviously good because of the imblalanced ratio. Here FN won't be a good metrics.
+
+Let see the plot curve for all datasets. 
+
+```{r, echo = FALSE}
+par(mfrow = c(2,2))
+AllRoc(predSpot, Spot$test$popularity, mod2 = "bayes", caption = "spotify ROC Curves")
+AllRoc(predRecid, Recid$test$is_violent_recid, mod2 = "lr",
+       caption = "Recid ROC Curves")
+AllRoc(predHacked, Hacked$test$MULTIPLE_OFFENSE, mod2 = "bayes",
+       caption = "Hacked ROC Curves")
+```
+
+!!! discuss the better results for creditcard and hacked !!!
+- from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ? 
+
+Even if creditcard and hacked seems not to need remedies to counteract imbalanced data, let see the detection power. We can argue that 3/4 of detection power is not enough to reassure users. In a professional use, we can wish at leat 90% of TPr.
+
+At last, it is sure that all explicative variable are dependent to the variable to predict and and non colinear between them. for spotify we can'b sure that these variable can explain popularity, mayb there's no link between them. As the variable for recid, are they really a good choice.
+
+```{r, echo = FALSE}
+KablesPerf(pred = predHacked, dat = Hacked$test, y = "MULTIPLE_OFFENSE", captionCM = "Confusion matrix Hacked", captionPerf = "Hacked metrics", listPred = "bayes", mod = "bayes")[[2]]
+```
+On this one, we can see that only rf has very good results. Detection power and Fscore allows to judge the performance classifiers, contrarly to accuracy or FNr which are not usefull here. Rf has the better results, In second position comes svm, even if he detects only a third among True positive, its quite a good results for a first try with an imbalanced data set, and Fscore ank kappa are not so bad. 
+
+## Preprocessing : Resampling methods
+
+## Direct cost sensisitive learnig
+
+```{r}
+C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b=20, ylim = c(0,1))
+```
+
+## Post processing Threesholding
+
+
+
+
+
+
+
+
+
+
+
+
+
+

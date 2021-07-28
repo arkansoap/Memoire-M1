@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Remedies | A Minimal Book Example</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Remedies | A Minimal Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Remedies | A Minimal Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Yihui Xie" />
+
+
+<meta name="date" content="2021-07-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="classifiers.html"/>
+<link rel="next" href="applications.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#document-format"><i class="fa fa-check"></i><b>1.2</b> Document format</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html"><i class="fa fa-check"></i><b>2</b> Metrics for classification tasks</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#the-foundation-of-the-metrics-the-confusion-matrix"><i class="fa fa-check"></i><b>2.1</b> The foundation of the metrics: The Confusion Matrix</a></li>
+<li class="chapter" data-level="2.2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#accuracy-and-error-rate"><i class="fa fa-check"></i><b>2.2</b> Accuracy and error rate</a></li>
+<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate :</a></li>
+<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-flase-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and Flase positive rate</a></li>
+<li class="chapter" data-level="2.5" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#positive-prediction-value-precision"><i class="fa fa-check"></i><b>2.5</b> Positive prediction value : Precision</a></li>
+<li class="chapter" data-level="2.6" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#f-measure"><i class="fa fa-check"></i><b>2.6</b> F-measure</a></li>
+<li class="chapter" data-level="2.7" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#kappa"><i class="fa fa-check"></i><b>2.7</b> Kappa</a></li>
+<li class="chapter" data-level="2.8" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#roc-curve"><i class="fa fa-check"></i><b>2.8</b> ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classifiers.html"><a href="classifiers.html"><i class="fa fa-check"></i><b>3</b> Classifiers</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classifiers.html"><a href="classifiers.html#lda"><i class="fa fa-check"></i><b>3.1</b> LDA</a></li>
+<li class="chapter" data-level="3.2" data-path="classifiers.html"><a href="classifiers.html#logistic-regression"><i class="fa fa-check"></i><b>3.2</b> logistic regression</a></li>
+<li class="chapter" data-level="3.3" data-path="classifiers.html"><a href="classifiers.html#svm"><i class="fa fa-check"></i><b>3.3</b> SVM</a></li>
+<li class="chapter" data-level="3.4" data-path="classifiers.html"><a href="classifiers.html#classification-tree"><i class="fa fa-check"></i><b>3.4</b> classification tree</a></li>
+<li class="chapter" data-level="3.5" data-path="classifiers.html"><a href="classifiers.html#random-forest"><i class="fa fa-check"></i><b>3.5</b> random forest</a></li>
+<li class="chapter" data-level="3.6" data-path="classifiers.html"><a href="classifiers.html#naives-bayes"><i class="fa fa-check"></i><b>3.6</b> Naives bayes</a></li>
+<li class="chapter" data-level="3.7" data-path="classifiers.html"><a href="classifiers.html#plan-pr-chaque-sous-partie-ci-dessus"><i class="fa fa-check"></i><b>3.7</b> plan pr chaque sous partie ci dessus</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#different-strategies"><i class="fa fa-check"></i><b>4.1</b> different strategies :</a></li>
+<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.2</b> Pre processing resampling</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#caret-up-and-down-sample"><i class="fa fa-check"></i><b>4.2.1</b> CARET up and down sample :</a></li>
+<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.2.2</b> ROSE</a></li>
+<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.2.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
+<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.2</b> direct sensitive learning with cart classifer</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
+<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing : Resampling methods</a></li>
+<li class="chapter" data-level="5.4" data-path="applications.html"><a href="applications.html#direct-cost-sensisitive-learnig"><i class="fa fa-check"></i><b>5.4</b> Direct cost sensisitive learnig</a></li>
+<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="remedies" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Remedies</h1>
+<p>A lot of research have been made concerning this problem. Our goal is not to make an exhaustive review of all the technics to remedies this issue.
+In this study, we will focus on methods than we can repoduce with our level of competence. It appears to us that it is interesting to separate the choosen methods in three levels :</p>
+<ul>
+<li>First, some remedies we can use before launching the machine learning algorithm (Preprocessing).</li>
+<li>Secundly, some remedies we can use during the computation of a fitted models by the machine (learning method tuning).</li>
+<li>At last, som remedies that can be used after the machine learning algorithm (postprocessing).</li>
+</ul>
+<div id="different-strategies" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> different strategies :</h2>
+<ul>
+<li>Special-purpose learning method : Modifications of the learning algorithm
+<ul>
+<li>advantages :
+<ul>
+<li>users goals are incorporated directly into the models</li>
+<li>model obtained more comprehensive for the users</li>
+</ul></li>
+<li>disadvantages :
+<ul>
+<li>user is restricted in his algorithmm choices or have to developp new algorithm</li>
+<li>if the target of the loss function changes, model must be relearned</li>
+<li>requires deep knowlegde of the learning algorithm implementation</li>
+</ul></li>
+</ul></li>
+<li>Data Pre-processing : changes on the data before the learning process takes place
+<ul>
+<li>advantages:
+<ul>
+<li>can be applied to any existing tools</li>
+<li>choosen models are biased to the goals of the users</li>
+</ul></li>
+<li>inconevnient:
+<ul>
+<li>difficult to relate modification of the data wit the loss function</li>
+</ul></li>
+<li>methods :
+<ul>
+<li>weighting data spaces</li>
+<li>re sampling</li>
+<li>active learning</li>
+</ul></li>
+</ul></li>
+<li>Prediction Post-processing : transformations applied to the predictions of the learned model
+<ul>
+<li>advantages :
+<ul>
+<li>not necessary to know user preference biases at learning time</li>
+<li>any standard learning tool can be used</li>
+</ul></li>
+<li>drawbavks :
+<ul>
+<li>models do not reflect user preferences</li>
+<li>models interpretability is meaningless because loss function was not optimized following user preference bias</li>
+</ul></li>
+<li>methods :
+<ul>
+<li>threeshold methods</li>
+<li>cost sensitive</li>
+</ul></li>
+</ul></li>
+<li>Hybrid solutions</li>
+</ul>
+</div>
+<div id="pre-processing-resampling" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Pre processing resampling</h2>
+<p>resampling dataset method:</p>
+<p>from smote pdf (chawla)</p>
+<p>about over and down sampling</p>
+<p>Japkowicz (2000 )discussed the effect of imbalance in a dataset. She evaluated threestrategies: under-sampling, resampling and a recognition-based induction scheme. We focuson her sampling approaches. She experimented on artificial 1D data in order to easilymeasure and construct concept complexity. Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consistedof as many samples as the majority class and “focused resampling” consisted of resamplingonly those minority examples that occurred on the boundary between the minority andmajority classes. Random under-sampling was considered, which involved under-samplingthe majority class samples at random until their numbers matched the number of minorityclass samples; focused under-sampling involved under-sampling the majority class sampleslying further away. She noted that both the sampling approaches were effective, and she alsoobserved that using the sophisticated sampling techniques did not give any clear advantagein the domain considered (Japkowicz, 2000)</p>
+<p>One approach that is particularly relevant to our work is that of Ling and Li (1998).They combined over-sampling of the minority class with under-sampling of the majorityclass</p>
+<div id="caret-up-and-down-sample" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> CARET up and down sample :</h3>
+<p>“downSample will randomly sample a data set so that all classes have the same frequency as the minority class. upSample samples with replacement to make the class distributions equal”</p>
+</div>
+<div id="rose" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> ROSE</h3>
+<p>Creates a sample of synthetic data by enlarging the features space of minority and majority class examples. Operationally, the new examples are down from a conditionnal kernel density estimate of the two classes as describe in Menardi and torelli (2013)</p>
+<p>The ROSE strategy to deal with class imbalance
+ROSE (Menardi and Torelli, 2014) provides a unified framework to deal simultaneously with the two
+above-mentioned problems of model estimation and accuracy evaluation in imbalanced learning. It
+builds on the generation of new artificial examples from the classes, according to a smoothed bootstrap
+approach (see, e.g., Efron and Tibshirani, 1993).
+Consider a training set Tn, of size n, whose generic row is the pair (xi, yi), i = 1, . . . , n. The class
+labels yi belong to the set fY0, Y1g, and xi are some related attributes supposed to be realizations of a
+random vector x defined on Rd, with an unknown probability density function f (x). Let the number of
+units in class Yj, j = 0, 1, be denoted by nj &lt; n. The ROSE procedure for generating one new artificial
+example consists of the following steps:
+1. Select y = Yj with probability pj.
+2. Select (xi, yi) 2 Tn, such that yi = y, with probability 1
+nj
+.
+3. Sample x from KHj (, xi), with KHj a probability distribution centered at xi and covariance
+matrix Hj.
+Essentially, we draw from the training set an observation belonging to one of the two classes, and generate
+a new example (x, y) in its neighborhood, where the shape of the neighborhood is determined
+by the shape of the contour sets of K and its width is governed by Hj.
+It can be easily shown that, given selection of the class label Yj, the generation of new examples
+from Yj, according to ROSE, corresponds to the generation of data from the kernel density estimate of
+f (xjYj), with kernel K and smoothing matrix Hj (Menardi and Torelli, 2014). The choices of K and
+Hj may be then addressed by the large specialized literature on kernel density estimation (see, e.g.
+Bowman and Azzalini, 1997). It is worthwhile to note that, for Hj ! 0, ROSE collapses to a standard
+combination of over- and under-sampling.
+Repeating steps 1 to 3 m times produces a new synthetic training set T
+m, of size m, where the
+imbalance level is defined by the probabilities pj (if pj = 1/2, then approximately the same number of
+examples belong to the two classes). The size m may be set to the original training set size n or chosen
+in any way</p>
+</div>
+<div id="smote-family-smotenc-blsmote-adasyn" class="section level3" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Smote family (smoteNC, BLSMOTE, ADASYN)</h3>
+<p>smote chawla quote :</p>
+<p>We propose an over-sampling approach in which the minority class is over-sampled by cre-ating “synthetic” examples rather than by over-sampling with replacement. This approachis inspired by a technique that proved successful in handwritten character recognition (Ha&amp; Bunke, 1997). They created extra training data by performing certain operations onreal data. In their case, operations like rotation and skew were natural ways to perturbthe training data. We generate synthetic examples in a less application-specific manner, byoperating in “feature space” rather than “data space.” The minority class is over-sampledby taking each minority class sample and introducing synthetic examples along the linesegments joining any/all of thekminority class nearest neighbors. Depending upon theamount of over-sampling required, neighbors from theknearest neighbors are randomlychosen. Our implementation currently uses five nearest neighbors. For instance, if theamount of over-sampling needed is 200%, only two neighbors from the five nearest neigh-bors are chosen and one sample is generated in the direction of each. Synthetic samplesare generated in the following way: Take the difference between the feature vector (sample)under consideration and its nearest neighbor. Multiply this difference by a random numberbetween 0 and 1, and add it to the feature vector under consideration. This causes theselection of a random point along the line segment between two specific features. Thisapproach effectively forces the decision region of the minority class to become more general</p>
+<p>SMOTE (Chawla et. al. 2002) is a well-known algorithm to fight this problem. The general idea of this method is to artificially generate new examples of the minority class using the nearest neighbors of these cases. Furthermore, the majority class examples are also under-sampled, leading to a more balanced dataset.</p>
+<p>The SMOTE function oversamples your rare event by using bootstrapping and k-nearest neighbor to synthetically create additional observations of that event. The definition of rare event is usually attributed to any outcome/dependent/target/response variable that happens less than 15% of the time. For more details about this algorithm, read the original white paper, SMOTE: Synthetic Minority Over-sampling Technique, from its creators.</p>
+<ul>
+<li>references
+<ul>
+<li>Chawla, N. V., Bowyer, K. W., Hall, L. O., and Kegelmeyer, W. P. (2002). Smote: Synthetic minority over-sampling technique. Journal of Artificial Intelligence Research, 16:321-357.</li>
+<li>Torgo, L. (2010) Data Mining using R: learning with case studies, CRC Press (ISBN: 9781439810187).</li>
+</ul></li>
+</ul>
+<p>!!!! a lot of new techniques directly derived from this one as ADASYN</p>
+</div>
+</div>
+<div id="learning-method-tuning" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Learning method tuning</h2>
+<div id="metaparameters-tuning" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Metaparameters tuning</h3>
+</div>
+<div id="direct-sensitive-learning-with-cart-classifer" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> direct sensitive learning with cart classifer</h3>
+<p>The incorporation of beneﬁts and/or costs (negative beneﬁts) in existing algorithms, as a way to express the utility of diﬀerent predictions, is one of the known approaches to cope with imbalanced domains.</p>
+<p>Instead of optimizing the typical performance measure, such as accuracy or impurity, some models can alternatively optimize a cost or loss function that diﬀerentially weights speciﬁc types of errors. (no results with weighted data but cart works)</p>
+<p>Theory
+We summarize the theory of cost-sensitive learning, published mostly in (Elkan, 2001; Zadrozny
+and Elkan, 2001). The theory describes how the misclassification cost plays its essential role in
+various cost-sensitive learning algorithms.
+Without loss of generality, we assume binary classification (i.e., positive and negative class) in
+this paper. In cost-sensitive learning, the costs of false positive (actual negative but predicted as
+positive; denoted as FP), false negative (FN), true positive (TP) and true negative (TN) can be
+given in a cost matrix, as shown in Table 1. In the table, we also use the notation C(i, j) to
+represent the misclassification cost of classifying an instance from its actual class j into the
+predicted class i. (We use 1 for positive, and 0 for negative). These misclassification cost values
+can be given by domain experts, or learned via other approaches. In cost-sensitive learning, it is
+usually assume that such a cost matrix is given and known. For multiple classes, the cost matrix
+can be easily extended by adding more rows and more columns.
+Table 1. An example of cost matrix for binary classification.
+Actual negative Actual positive
+Predict negative C(0,0), or TN C(0,1), or FN
+Predict positive C(1,0), or FP C(1,1), or TP
+Note that C(i, i) (TP and TN) is usually regarded as the “benefit” (i.e., negated cost) when an
+instance is predicted correctly. In addition, cost-sensitive learning is often used to deal with
+datasets with very imbalanced class distribution (Japkowicz and Stephen, 2002). Usually (and
+without loss of generality), the minority or rare class is regarded as the positive class, and it is
+often more expensive to misclassify an actual positive example into negative, than an actual
+negative example into positive. That is, the value of FN or C(0,1) is usually larger than that of
+FP or C(1,0). This is true for the cancer example mentioned earlier (cancer patients are usually
+rare in the population, but predicting an actual cancer patient as negative is usually very costly)
+and the bomb example (terrorists are rare).
+Given the cost matrix, an example should be classified into the class that has the minimum
+expected cost. This is the minimum expected cost principle. The expected cost R(i|x) of
+classifying an instance x into class i (by a classifier) can be expressed as:
+ 
+j
+R(i | x) P( j | x)C(i, j) , (1)
+where P(j|x) is the probability estimation of classifying an instance into class j. That is, the
+classifier will classify an instance x into positive class if and only if:
+P(0|x)C(1,0) + P(1|x)C(1,1) ≤ P(0|x)C(0,0) + P(1|x)C(0,1)
+This is equivalent to:
+P(0|x)(C(1,0) – C(0,0)) ≤ P(1|x)(C(0,1) – C(1,1))
+Thus, the decision (of classifying an example into positive) will not be changed if a constant is
+added into a column of the original cost matrix. Thus, the original cost matrix can always be
+converted to a simpler one by subtracting C(0,0) to the first column, and C(1,1) to the second
+column. After such conversion, the simpler cost matrix is shown in Table 2. Thus, any given
+cost-matrix can be converted to one with C(0,0) = C(1,1) = 0. 1 In the rest of the paper, we will
+assume that C(0,0) = C(1,1) = 0. Under this assumption, the classifier will classify an instance x
+into positive class if and only if:
+P(0|x)C(1,0) ≤ P(1|x)C(0,1)
+Table 2. A simpler cost matrix with an equivalent optimal classification.
+True negative True positive
+Predict negative 0 C(0,1) – C(1,1)
+Predict positive C(1,0) – C(0,0) 0
+As P(0|x)=1 – P(1|x), we can obtain a threshold p* for the classifier to classify an instance x into
+positive if P(1|x) ≥ p<em>, where
+.
+(1,0) (0,1)
+</em> (1,0)
+FP FN
+FP
+C C
+p C
+
+
+
+ (2)
+Thus, if a cost-insensitive classifier can produce a posterior probability estimation p(1|x) for test
+examples x, we can make it cost-sensitive by simply choosing the classification threshold
+according to (2), and classify any example to be positive whenever P(1|x) ≥ p*. This is what
+several cost-sensitive meta-learning algorithms, such as Relabeling, are based on (see later for
+details). However, some cost-insensitive classifiers, such as C4.5, may not be able to produce
+accurate probability estimation; they are designed to predict the class correctly. Empirical
+Thresholding (Sheng and Ling, 2006) does not require accurate estimation of probabilities – an
+accurate ranking is sufficient. It simply uses cross-validation to search the best probability from
+the training instances as the threshold.</p>
+</div>
+</div>
+<div id="post-processinf-threesholding" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> post processinf threesholding</h2>
+<p>Alternate Cutoffs</p>
+<p>Not efficient in my spotify works</p>
+<blockquote>
+<p>When there are two possible outcome categories, another method for increasing the prediction accuracy of the minority class samples is to determine alternative cutoﬀs for the predicted probabilities</p>
+</blockquote>
+<p>Not a real solution for our issue because it changes our definition classes</p>
+<blockquote>
+<p>which eﬀectively changes the deﬁnition of a predicted event.</p>
+</blockquote>
+<p>Unless we do it with care / i don’t think it is a good solution</p>
+<blockquote>
+<p>There may be situations where the sensitivity/speciﬁcity trade-oﬀ can be accomplished without severely compromising the accuracy of the majority class (which, of course, depends on the context of the problem)</p>
+</blockquote>
+<p>Interesting if :</p>
+<ul>
+<li>focus on a compromise beetween sensityvioty and specificity.
+&gt; particular target that must be met for the sensitivity or speciﬁcity,</li>
+<li>we want to maximise accuracy.
+&gt; Find the point on the ROC curve that is closest (i.e., the shortest distance) to the perfect model (with 100 % sensitivity and 100 % speciﬁcity)</li>
+<li>use of Youden’s J index ???
+&gt; (see Sect. 11.2), which measures the proportion of correctly predicted samples</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="classifiers.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="applications.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Test_book.pdf", "Test_book.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+---
+title: "creditcardV1"
+author: "Thibault FUCHEZ"
+date: "24/07/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/arkan/Desktop/Test_bookV1/datasets")
+source("FuncLib.R")
+```
+
+# prepa datas
+
+```{r}
+Creditcard <- read.csv("creditcard.csv", header = TRUE, sep = ",")
+
+Creditcard$Class <- as.factor(Creditcard$Class)
+
+Creditcard <- split_standard(Creditcard, "Class", mod = "nonstandard")
+```

@@ -12,12 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
-```
-
-```{r}
-# source("functions_UC.R")
-# source("functions2.R")
+setwd("C:/Users/arkan/Desktop/Test_bookV1")
+source("FuncLib.R")
 ```
   
 # Preparation of the data base
@@ -133,24 +129,13 @@ The priors of the training set are :
 priors(dat = datas$train, "popularity")
 ```
 
+## An exemple to show the similar resukts between lr and lda.
+
 ```{r}
 Models <- models(y = "popularity", data = datas$train,
                  prior = priors(dat = datas$train, "popularity"))
 # ModelsNS <- models(y = "popularity", data = datasNS$train)
 ```
-
-```{r}
-source("functions2.R")
-Models2 <- models(y = "popularity", data = datas$train,
-                 prior = priors(dat = datas$train, "popularity"))
-
-Predict2 <- predictions(models = Models2, datas = datas)
-KablesPerf(Predict2, datas$test, "popularity")
-
-```
-
-
-With current parameter, The SVM model fails to find an hyperplane with non normalize datas. This errors occurs when whe faces imbalance data. 
 
 ```{r}
 Predictions <- predictions(models = Models, datas = datas)
@@ -167,6 +152,21 @@ kab1[[2]]
 par(mfrow=c(1,1))
 AllRoc(Predictions, datas$test$popularity)
 ```
+
+## First results
+
+```{r}
+source("functions2.R")
+Models2 <- models(y = "popularity", data = datas$train,
+                 prior = priors(dat = datas$train, "popularity"))
+
+Predict2 <- predictions(models = Models2, datas = datas)
+KablesPerf(Predict2, datas$test, "popularity")
+
+```
+
+
+With current parameter, The SVM model fails to find an hyperplane with non normalize datas. This errors occurs when whe faces imbalance data. 
 
 We can emphasize the low efficiency of accuracy when we faces imblanced sample. Hence, depsite a very good accuracy, we can see than false alarm and detection power are very bad. 
 Note that RF has pretty good results in comparison of the other models.

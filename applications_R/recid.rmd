@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications.R")
 ```
 
 ```{r}

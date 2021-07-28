@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Applications | A Minimal Book Example</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Applications | A Minimal Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Applications | A Minimal Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Yihui Xie" />
+
+
+<meta name="date" content="2021-07-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="remedies.html"/>
+<link rel="next" href="summary.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#document-format"><i class="fa fa-check"></i><b>1.2</b> Document format</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html"><i class="fa fa-check"></i><b>2</b> Metrics for classification tasks</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#the-foundation-of-the-metrics-the-confusion-matrix"><i class="fa fa-check"></i><b>2.1</b> The foundation of the metrics: The Confusion Matrix</a></li>
+<li class="chapter" data-level="2.2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#accuracy-and-error-rate"><i class="fa fa-check"></i><b>2.2</b> Accuracy and error rate</a></li>
+<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate :</a></li>
+<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-flase-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and Flase positive rate</a></li>
+<li class="chapter" data-level="2.5" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#positive-prediction-value-precision"><i class="fa fa-check"></i><b>2.5</b> Positive prediction value : Precision</a></li>
+<li class="chapter" data-level="2.6" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#f-measure"><i class="fa fa-check"></i><b>2.6</b> F-measure</a></li>
+<li class="chapter" data-level="2.7" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#kappa"><i class="fa fa-check"></i><b>2.7</b> Kappa</a></li>
+<li class="chapter" data-level="2.8" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#roc-curve"><i class="fa fa-check"></i><b>2.8</b> ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classifiers.html"><a href="classifiers.html"><i class="fa fa-check"></i><b>3</b> Classifiers</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classifiers.html"><a href="classifiers.html#lda"><i class="fa fa-check"></i><b>3.1</b> LDA</a></li>
+<li class="chapter" data-level="3.2" data-path="classifiers.html"><a href="classifiers.html#logistic-regression"><i class="fa fa-check"></i><b>3.2</b> logistic regression</a></li>
+<li class="chapter" data-level="3.3" data-path="classifiers.html"><a href="classifiers.html#svm"><i class="fa fa-check"></i><b>3.3</b> SVM</a></li>
+<li class="chapter" data-level="3.4" data-path="classifiers.html"><a href="classifiers.html#classification-tree"><i class="fa fa-check"></i><b>3.4</b> classification tree</a></li>
+<li class="chapter" data-level="3.5" data-path="classifiers.html"><a href="classifiers.html#random-forest"><i class="fa fa-check"></i><b>3.5</b> random forest</a></li>
+<li class="chapter" data-level="3.6" data-path="classifiers.html"><a href="classifiers.html#naives-bayes"><i class="fa fa-check"></i><b>3.6</b> Naives bayes</a></li>
+<li class="chapter" data-level="3.7" data-path="classifiers.html"><a href="classifiers.html#plan-pr-chaque-sous-partie-ci-dessus"><i class="fa fa-check"></i><b>3.7</b> plan pr chaque sous partie ci dessus</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#different-strategies"><i class="fa fa-check"></i><b>4.1</b> different strategies :</a></li>
+<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.2</b> Pre processing resampling</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#caret-up-and-down-sample"><i class="fa fa-check"></i><b>4.2.1</b> CARET up and down sample :</a></li>
+<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.2.2</b> ROSE</a></li>
+<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.2.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
+<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.2</b> direct sensitive learning with cart classifer</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
+<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing : Resampling methods</a></li>
+<li class="chapter" data-level="5.4" data-path="applications.html"><a href="applications.html#direct-cost-sensisitive-learnig"><i class="fa fa-check"></i><b>5.4</b> Direct cost sensisitive learnig</a></li>
+<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="applications" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Applications</h1>
+<div id="introduction-1" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Introduction</h2>
+<p>In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.</p>
+<p>Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes’classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn’t deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!</p>
+<p>About the code : We don’t introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need.</p>
+<p>We choose four dataset with different level of imabalanced.</p>
+<p>Let’s briefly presents those datasets:</p>
+<ul>
+<li>Spotify …</li>
+<li>Recidivism …</li>
+<li>Creditcard …</li>
+<li>Hacked …</li>
+</ul>
+<p>Table of priors ratio between positive and negative class</p>
+</div>
+<div id="first-models" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> First Models</h2>
+<p>The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later.</p>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-4">Table 5.1: </span>Confusion matrix spotify
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+0
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+Sum
+</th>
+<th style="text-align:left;">
+0
+</th>
+<th style="text-align:left;">
+1
+</th>
+<th style="text-align:left;">
+Sum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+rf
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+bayes
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+4431
+</td>
+<td style="text-align:left;">
+975
+</td>
+<td style="text-align:left;">
+5406
+</td>
+<td style="text-align:left;">
+4373
+</td>
+<td style="text-align:left;">
+983
+</td>
+<td style="text-align:left;">
+5356
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+147
+</td>
+<td style="text-align:left;">
+115
+</td>
+<td style="text-align:left;">
+262
+</td>
+<td style="text-align:left;">
+205
+</td>
+<td style="text-align:left;">
+107
+</td>
+<td style="text-align:left;">
+312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sum
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+</tr>
+<tr>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+lda
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+svm
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+<td style="text-align:left;background-color: lightgrey !important;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+4559
+</td>
+<td style="text-align:left;">
+1078
+</td>
+<td style="text-align:left;">
+5637
+</td>
+<td style="text-align:left;">
+4566
+</td>
+<td style="text-align:left;">
+1075
+</td>
+<td style="text-align:left;">
+5641
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sum
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+<td style="text-align:left;">
+4578
+</td>
+<td style="text-align:left;">
+1090
+</td>
+<td style="text-align:left;">
+5668
+</td>
+</tr>
+</tbody>
+</table>
+<p>The table … shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics sharps this observation.</p>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-5">Table 5.2: </span>Spotify metrics
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+accuracy
+</th>
+<th style="text-align:left;">
+FNrate
+</th>
+<th style="text-align:left;">
+TPrate
+</th>
+<th style="text-align:left;">
+kappa
+</th>
+<th style="text-align:left;">
+PrecisionPPV
+</th>
+<th style="text-align:left;">
+Fscore
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rf
+</td>
+<td style="text-align:left;">
+0.8020466
+</td>
+<td style="text-align:left;">
+0.8944954
+</td>
+<td style="text-align:left;">
+0.1055046
+</td>
+<td style="text-align:left;">
+0.1032829
+</td>
+<td style="text-align:left;">
+0.4389313
+</td>
+<td style="text-align:left;">
+0.1701183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bayes
+</td>
+<td style="text-align:left;">
+0.7904023
+</td>
+<td style="text-align:left;">
+0.9018349
+</td>
+<td style="text-align:left;">
+0.09816514
+</td>
+<td style="text-align:left;">
+0.07332293
+</td>
+<td style="text-align:left;">
+0.3429487
+</td>
+<td style="text-align:left;">
+0.1526391
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lda
+</td>
+<td style="text-align:left;">
+0.8064573
+</td>
+<td style="text-align:left;">
+0.9889908
+</td>
+<td style="text-align:left;">
+0.01100917
+</td>
+<td style="text-align:left;">
+0.01088917
+</td>
+<td style="text-align:left;">
+0.3870968
+</td>
+<td style="text-align:left;">
+0.02140946
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+svm
+</td>
+<td style="text-align:left;">
+0.8082216
+</td>
+<td style="text-align:left;">
+0.9862385
+</td>
+<td style="text-align:left;">
+0.01376147
+</td>
+<td style="text-align:left;">
+0.01772557
+</td>
+<td style="text-align:left;">
+0.5555556
+</td>
+<td style="text-align:left;">
+0.02685765
+</td>
+</tr>
+</tbody>
+</table>
+<p>First we note that accuracy is very good, wigch confirms accuracy is not a relaible metrics concerning imbalance dataset. a simple view on Detection power(TPr) shows that we don’t achieve to predict what songs are very un popular. FN rate is obviously good because of the imblalanced ratio. Here FN won’t be a good metrics.</p>
+<p>Let see the plot curve for all datasets.</p>
+<p><img src="Test_book_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>!!! discuss the better results for creditcard and hacked !!!
+- from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ?</p>
+<p>Even if creditcard and hacked seems not to need remedies to counteract imbalanced data, let see the detection power. We can argue that 3/4 of detection power is not enough to reassure users. In a professional use, we can wish at leat 90% of TPr.</p>
+<p>At last, it is sure that all explicative variable are dependent to the variable to predict and and non colinear between them. for spotify we can’b sure that these variable can explain popularity, mayb there’s no link between them. As the variable for recid, are they really a good choice.</p>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-7">Table 5.3: </span>Hacked metrics
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+accuracy
+</th>
+<th style="text-align:left;">
+FNrate
+</th>
+<th style="text-align:left;">
+TPrate
+</th>
+<th style="text-align:left;">
+kappa
+</th>
+<th style="text-align:left;">
+PrecisionPPV
+</th>
+<th style="text-align:left;">
+Fscore
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rf
+</td>
+<td style="text-align:left;">
+0.9949815
+</td>
+<td style="text-align:left;">
+0.05813953
+</td>
+<td style="text-align:left;">
+0.9418605
+</td>
+<td style="text-align:left;">
+0.9419781
+</td>
+<td style="text-align:left;">
+0.9473684
+</td>
+<td style="text-align:left;">
+0.9446064
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bayes
+</td>
+<td style="text-align:left;">
+0.9477021
+</td>
+<td style="text-align:left;">
+0.872093
+</td>
+<td style="text-align:left;">
+0.127907
+</td>
+<td style="text-align:left;">
+0.1597342
+</td>
+<td style="text-align:left;">
+0.3142857
+</td>
+<td style="text-align:left;">
+0.1818182
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+lda
+</td>
+<td style="text-align:left;">
+0.9537771
+</td>
+<td style="text-align:left;">
+0.7732558
+</td>
+<td style="text-align:left;">
+0.2267442
+</td>
+<td style="text-align:left;">
+0.287576
+</td>
+<td style="text-align:left;">
+0.4814815
+</td>
+<td style="text-align:left;">
+0.3083004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+svm
+</td>
+<td style="text-align:left;">
+0.9635499
+</td>
+<td style="text-align:left;">
+0.7034884
+</td>
+<td style="text-align:left;">
+0.2965116
+</td>
+<td style="text-align:left;">
+0.4098061
+</td>
+<td style="text-align:left;">
+0.75
+</td>
+<td style="text-align:left;">
+0.425
+</td>
+</tr>
+</tbody>
+</table>
+<p>On this one, we can see that only rf has very good results. Detection power and Fscore allows to judge the performance classifiers, contrarly to accuracy or FNr which are not usefull here. Rf has the better results, In second position comes svm, even if he detects only a third among True positive, its quite a good results for a first try with an imbalanced data set, and Fscore ank kappa are not so bad.</p>
+</div>
+<div id="preprocessing-resampling-methods" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Preprocessing : Resampling methods</h2>
+</div>
+<div id="direct-cost-sensisitive-learnig" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Direct cost sensisitive learnig</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="applications.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">C5graph</span>(Spot, <span class="st">&quot;popularity&quot;</span>, <span class="at">captest =</span> <span class="st">&quot;Kappa depending cost&quot;</span>, <span class="at">captest2 =</span> <span class="st">&quot;Sensitivity </span><span class="sc">\n</span><span class="st"> and specificity&quot;</span>, <span class="at">b=</span><span class="dv">20</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
+<p><img src="Test_book_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="post-processing-threesholding" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Post processing Threesholding</h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="remedies.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="summary.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Test_book.pdf", "Test_book.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

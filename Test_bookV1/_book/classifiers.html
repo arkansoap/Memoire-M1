@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Classifiers | A Minimal Book Example</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Classifiers | A Minimal Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Classifiers | A Minimal Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Yihui Xie" />
+
+
+<meta name="date" content="2021-07-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="metrics-for-classification-tasks.html"/>
+<link rel="next" href="remedies.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#document-format"><i class="fa fa-check"></i><b>1.2</b> Document format</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html"><i class="fa fa-check"></i><b>2</b> Metrics for classification tasks</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#the-foundation-of-the-metrics-the-confusion-matrix"><i class="fa fa-check"></i><b>2.1</b> The foundation of the metrics: The Confusion Matrix</a></li>
+<li class="chapter" data-level="2.2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#accuracy-and-error-rate"><i class="fa fa-check"></i><b>2.2</b> Accuracy and error rate</a></li>
+<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate :</a></li>
+<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-flase-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and Flase positive rate</a></li>
+<li class="chapter" data-level="2.5" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#positive-prediction-value-precision"><i class="fa fa-check"></i><b>2.5</b> Positive prediction value : Precision</a></li>
+<li class="chapter" data-level="2.6" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#f-measure"><i class="fa fa-check"></i><b>2.6</b> F-measure</a></li>
+<li class="chapter" data-level="2.7" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#kappa"><i class="fa fa-check"></i><b>2.7</b> Kappa</a></li>
+<li class="chapter" data-level="2.8" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#roc-curve"><i class="fa fa-check"></i><b>2.8</b> ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classifiers.html"><a href="classifiers.html"><i class="fa fa-check"></i><b>3</b> Classifiers</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classifiers.html"><a href="classifiers.html#lda"><i class="fa fa-check"></i><b>3.1</b> LDA</a></li>
+<li class="chapter" data-level="3.2" data-path="classifiers.html"><a href="classifiers.html#logistic-regression"><i class="fa fa-check"></i><b>3.2</b> logistic regression</a></li>
+<li class="chapter" data-level="3.3" data-path="classifiers.html"><a href="classifiers.html#svm"><i class="fa fa-check"></i><b>3.3</b> SVM</a></li>
+<li class="chapter" data-level="3.4" data-path="classifiers.html"><a href="classifiers.html#classification-tree"><i class="fa fa-check"></i><b>3.4</b> classification tree</a></li>
+<li class="chapter" data-level="3.5" data-path="classifiers.html"><a href="classifiers.html#random-forest"><i class="fa fa-check"></i><b>3.5</b> random forest</a></li>
+<li class="chapter" data-level="3.6" data-path="classifiers.html"><a href="classifiers.html#naives-bayes"><i class="fa fa-check"></i><b>3.6</b> Naives bayes</a></li>
+<li class="chapter" data-level="3.7" data-path="classifiers.html"><a href="classifiers.html#plan-pr-chaque-sous-partie-ci-dessus"><i class="fa fa-check"></i><b>3.7</b> plan pr chaque sous partie ci dessus</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#different-strategies"><i class="fa fa-check"></i><b>4.1</b> different strategies :</a></li>
+<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.2</b> Pre processing resampling</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#caret-up-and-down-sample"><i class="fa fa-check"></i><b>4.2.1</b> CARET up and down sample :</a></li>
+<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.2.2</b> ROSE</a></li>
+<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.2.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
+<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.2</b> direct sensitive learning with cart classifer</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
+<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing : Resampling methods</a></li>
+<li class="chapter" data-level="5.4" data-path="applications.html"><a href="applications.html#direct-cost-sensisitive-learnig"><i class="fa fa-check"></i><b>5.4</b> Direct cost sensisitive learnig</a></li>
+<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classifiers" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Classifiers</h1>
+<div id="lda" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> LDA</h2>
+<p>Linear discriminant analysis (LDA), normal discriminant analysis (NDA), or discriminant function analysis is a generalization of Fisher’s linear discriminant, a method used in statistics and other fields, to find a linear combination of features that characterizes or separates two or more classes of objects or events.</p>
+<p>In this approach, Fishers sought to ﬁnd the linear combination of the predictors such that the between-group variance was maximized relative to the within-group variance. In other words, he wanted to ﬁnd the combination of the predictors that gave maximum separation between the centers of the data while at the same time minimizing the variation within each group of data.</p>
+</div>
+<div id="logistic-regression" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> logistic regression</h2>
+<p>In statistics, the logistic model (or logit model) is used to model the probability of a certain class or event existing such as pass/fail, win/lose, alive/dead or healthy/sick. This can be extended to model several classes of events such as determining whether an image contains a cat, dog, lion, etc. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)</p>
+</div>
+<div id="svm" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> SVM</h2>
+<p>definition: There are many hyperplanes that might classify the data. One reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
+More formally, a support-vector machine constructs a hyperplane or set of hyperplanes in a high- or infinite-dimensional space, which can be used for classification, regression, or other tasks like outliers detection. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin, the lower the generalization error of the classifier.</p>
+<p>the original problem may be stated in a finite-dimensional space, it often happens that the sets to discriminate are not linearly separable in that space. For this reason, it was proposed[5] that the original finite-dimensional space be mapped into a much higher-dimensional space, presumably making the separation easier in that space</p>
+<p>The support vector machines create an optimum hyperplane that separates the training data by the maximum margin. However, sometimes we would like to allow some misclassifications while separating categories. The SVM model has a cost function, which controls training errors and margins. For example, a small cost creates a large margin (a soft margin) and allows more misclassifications. On the other hand, a large cost creates a narrow margin (a hard margin) and permits fewer misclassifications. In this recipe, we will illustrate how the large and small cost will affect the SVM classifier.</p>
+<p>Concerning the gamma value in the SVM, gamma says how far the ‘reach’ of each training example is (<a href="http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html" class="uri">http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html</a>), but can be just thought of as a regularization parameter. The higher the gamma, the more local the reach, and you have to watch out that your model keeps a general behavior since it is prone to adjust too much to the training examples.</p>
+</div>
+<div id="classification-tree" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> classification tree</h2>
+<p>Tree-based models consist of one or more nested if-then statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.</p>
+<p>if Predictor A &gt;= 1.7 then</p>
+<pre><code>| if Predictor B &gt;= 202.1 then Outcome = 1.3
+
+| else Outcome = 5.6</code></pre>
+<p>else Outcome = 2.5
+In this case, two-dimensional predictor space is cut into three regions (or terminal nodes) and, within each region, the outcome categorized into either “Class 1” or “Class 2.” Figure 14.1 presents the tree in the predictor space. Just like in the regression setting, the nested if-then statements could be collapsed into rules such as</p>
+<p>if Predictor A &gt;= 0.13 and Predictor B &gt;= 0.197 then Class = 1
+if Predictor A &gt;= 0.13 and Predictor B &lt; 0.197 then Class = 2
+if Predictor A &lt; 0.13 then Class = 2</p>
+</div>
+<div id="random-forest" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> random forest</h2>
+<p>parameters :</p>
+<p>mtry : number of variables randomy sampled at each split
+ntree : number of tree to grow
+nodesize : minimum number of observation in a terminal node. setting it lower heads to trees with a larger depth which means that more splits are performed until the terminal nodes. (default value is 1 for classification and 5 for regression -diaz urirarte and de andres 2006).</p>
+</div>
+<div id="naives-bayes" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Naives bayes</h2>
+<p>basics of formula : <span class="math display">\[P(A ∩ B) = P(A) P(B|A) \iff P(B|A) = \frac{P(A ∩ B)}{P(A)}\]</span></p>
+<p>def wiki: In statistics, naive Bayes classifiers are a family of simple “probabilistic classifiers” based on applying Bayes’ theorem with strong (naïve) independence assumptions between the features</p>
+<p>Naives : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)</p>
+<p>Laplace correction will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)</p>
+<p>numeric data use bins to regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)</p>
+</div>
+<div id="plan-pr-chaque-sous-partie-ci-dessus" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> plan pr chaque sous partie ci dessus</h2>
+<ul>
+<li>présentation</li>
+<li>concept mathématique</li>
+<li>paramètres du classifier</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="metrics-for-classification-tasks.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="remedies.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Test_book.pdf", "Test_book.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
