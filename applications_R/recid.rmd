@@ -98,7 +98,7 @@ DatRecUS <- resamp_res(recid, mod = "US")
 ```
 
 ```{r}
-DatRecUS[[1]]
+DatRecUS[[1]][[2]]
 ```
 
 ### ROSE
@@ -153,7 +153,7 @@ KablesPerf(pred = predRoseRecid, dat = datasRoseRecid$test,
 ```
 
 ```{r}
-AllRoc(predRose, dataCl = datasRose$test$popularity)
+AllRoc(predRoseRecid, dataCl = datasRoseRecid$test$is_violent_recid) 
 ```
 
 ### SMOTE-NC
@@ -188,7 +188,7 @@ predRecSmc <- predictions(models = ModRecidSMC, datas = datrecSmc)
 ```
 
 ```{r}
-KablesPerf(pred = predRecSmc, dat = datrecSmc$test, y ="is_violent_recid")
+KablesPerf(pred = predRecSmc, dat = datrecSmc$test, y ="is_violent_recid", listPred = "lr", captionCM = "test", captionPerf = "test", mod = "lr")
 ```
 
 ```{r}

@@ -154,15 +154,41 @@ AllRoc(predSpot, Spot$test$popularity, mod2 = "bayes", caption = "First models R
 SpotDS <- resamp_res(datas = Spot0 , mod = "DS", mod2 = "bayes", captionCM = "matrix confusion", captionPerf = "Metrics", captionROC = "ROC Curves test")
 ```
 
+
+
 ```{r}
 SpotSmoteNC <- resamp_res(datas = Spot0 , mod = "SMOTE-NC", mod2 = "bayes", captionCM = "matrix confusion", captionPerf = "Metrics", captionROC = "ROC Curves test")
 ```
 
 ```{r}
 test <- SMOTE_NC(Spot0, "popularity")
-str(Spot0)
 ```
 
+```{r}
+datasSmote <- split_standard(test, "popularity", mod = "standard")
+```
+
+```{r}
+ModelsSmote <- models(y = "popularity",
+                      data = datasSmote$train,
+                      prior = priors(datasSmote$train,
+                                     "popularity"),
+                      mod = "bayes")
+```
+
+```{r}
+SpotSmoteNC <- predictions(models = ModelsSmote, datas = datasSmote, mod = "bayes")
+```
+
+```{r}
+KablesPerf(pred = SpotSmoteNC, dat = datasSmote$test,
+           y = "popularity", listPred = "bayes",
+           captionCM ="test" ,captionPerf = "test", mod = "bayes")
+```
+
+```{r}
+AllRoc(predic = SpotSmoteNC, dataCl = datasSmote$test$popularity, mod2 = "bayes", caption = "test" ) 
+```
 ## Direct cost sensitive learning
 
 #### Direct cost sensitive learning (ICET and cart) : CART
@@ -187,7 +213,7 @@ PredC5b <- predict(modelC5, Spot$test)
 ```
 
 ```{r}
-C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity")
+C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b = 20, ylim = c(0,1))
 ```
 
 ## Postprocessing Threesholding

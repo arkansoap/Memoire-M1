@@ -9,9 +9,9 @@ editor_options:
 
 In order [@xie2015] to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
-Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we first try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
 
-About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need. 
+Few words About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need. 
 
 We choose four dataset with different level of imabalanced. 
 
@@ -65,17 +65,63 @@ On this one, we can see that only rf has very good results. Detection power and 
 
 ## Preprocessing : Resampling methods
 
-## Direct cost sensisitive learnig
+As we can see with the function 'resamp'in the funclin.R and the .rmd , we try many resampling with different method. As the smote methods seems to us pertinent with this approach of oversampling with some logic, we try some develepment as adasyn or BLSMOTE.
+Note that the original smote algorithm is only for numerical variable. Some databases have few or no numerical variable so it is not an issue but a dataset as recid (with many caterogicla variable) asks to act on this variable. We could try to transform them as numerical but we choose to use SMoteNC, which is developped to deal with bot numerical and caterogical variable. 
+
+an example of downsampling with spotify
+
+
+Here another example with smoteNC spotify
+
+```{r,  echo = FALSE}
+KablesPerf(pred = SpotSmoteNC, dat = datasSmote$test,
+           y = "popularity", listPred = "bayes",
+           captionCM ="test" ,captionPerf = "test",
+           mod = "bayes")[[2]]
+```
+
+Lets compare RocCurve before and after smote resampling
+
+```{r, echo = FALSE}
+par(mfrow=c(1,2))
+AllRoc(predSpot, Spot$test$popularity, mod2 = "bayes", caption = "spotify ROC Curves")
+AllRoc(predic = SpotSmoteNC, dataCl = datasSmote$test$popularity, mod2 = "bayes", caption = "test" ) 
+```
+
 
 ```{r}
+par(mfrow=c(2,2))
+AllRoc0(predic = PredRec1, dataCl = datRecid$test$is_violent_recid,
+        caption = "first models")
+AllRoc0(predRoseRecid, dataCl = datasRoseRecid$test$is_violent_recid, caption = "Rose resampling") 
+AllRoc0(predic = predRecSmc, dataCl = datrecSmc$test$is_violent_recid, caption = "SMote-NC resampling")
+```
+
+
+## Direct cost sensisitive learnig
+
+```{r, echo = FALSE}
 C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b=20, ylim = c(0,1))
+```
+
+```{r}
+C5graph(Hacked, "MULTIPLE_OFFENSE", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b = 100, ylim = c(0.8,1))
 ```
 
 ## Post processing Threesholding
 
+```{r, echo = FALSE}
+par(mfrow=c(2,2))
+evoSeuil(predSpot$predLda, Spot$test$popularity, Spot$test, "posterior", caption = "lda")
+evoSeuil(predSpot$predOpt$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "bayes")
+evoSeuil(attr(predSpot$predSvm, "probabilities")[,2],
+         Spot$test$popularity, Spot$test, "autres", caption = "svm")
+evoSeuil(predSpot$predrf$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "rf")
+```
 
-
-
+```{r, echo = FALSE}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", listPred = listPredseuil, captionCM = "plop" ,captionPerf= "perfplop", mod = "bayes")[[2]]
+```
 
 
 

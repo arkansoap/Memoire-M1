@@ -56,7 +56,7 @@ KablesPerf(pred = predHacked, dat = Hacked$test, y = "MULTIPLE_OFFENSE", caption
 
 ```{r}
 par(mfrow=c(1,1))
-AllRoc(predHacked, Hacked$test$MULTIPLE_OFFENSE, mod2 = "bayes")
+AllRoc(PredHacked, Hacked$test$MULTIPLE_OFFENSE, mod2 = "bayes")
 ```
 
 # Remedies

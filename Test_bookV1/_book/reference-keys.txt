@@ -1,6 +1,8 @@
-tab:unnamed-chunk-3
 tab:unnamed-chunk-4
-tab:unnamed-chunk-6
+tab:unnamed-chunk-5
+tab:unnamed-chunk-7
+tab:unnamed-chunk-8
+tab:unnamed-chunk-14
 introduction
 abstract
 document-format
@@ -15,12 +17,13 @@ kappa
 roc-curve
 classifiers
 lda
+presentation
+learning-lda-model
 logistic-regression
 svm
 classification-tree
 random-forest
 naives-bayes
-plan-pr-chaque-sous-partie-ci-dessus
 remedies
 different-strategies
 pre-processing-resampling
@@ -29,6 +32,7 @@ rose
 smote-family-smotenc-blsmote-adasyn
 learning-method-tuning
 metaparameters-tuning
+weighted-class
 direct-sensitive-learning-with-cart-classifer
 post-processinf-threesholding
 applications

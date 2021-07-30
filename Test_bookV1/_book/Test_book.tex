@@ -132,7 +132,7 @@
 
 \title{A Minimal Book Example}
 \author{Yihui Xie}
-\date{2021-07-29}
+\date{2021-07-31}
 
 \begin{document}
 \maketitle
@@ -252,13 +252,35 @@ Beta is a coefficient to adjust the weight of recall against precision. In this 
 Kappa is a very interesting metrics in context of imbalanced datas.
 The calculation is based on the difference between how much agreement(positive) is actually present (``observed'') compared to how much positive would be expected to be present by chance alone (``expected''). We want to know how different the observed positive are from the expected. Kappa is a measure of this difference (citation).
 
-Kappa Agreement
-\textless{} 0 Less than chance agreement
-0.01--0.20 Slight agreement
-0.21-- 0.40 Fair agreement
-0.41--0.60 Moderate agreement
-0.61--0.80 Substantial agreement
-0.81--0.99 Almost perfect agreement
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{score }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{} 0"}\NormalTok{, }\StringTok{"0.01{-}0.20"}\NormalTok{,}\StringTok{"0.21– 0.40"}\NormalTok{, }\StringTok{"0.41–0.60"}\NormalTok{, }\StringTok{"0.61–0.80"}\NormalTok{,}\StringTok{"0.81–0.99"}\NormalTok{)}
+\NormalTok{app }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Less than chance agreement"}\NormalTok{, }\StringTok{"slight agreement"}\NormalTok{,}\StringTok{"Fair agreement"}\NormalTok{,}\StringTok{"Moderate agreement"}\NormalTok{, }\StringTok{"Substantial agreement"}\NormalTok{,}\StringTok{"Almost perfect agreement"}\NormalTok{)}
+\NormalTok{gg }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(score, app)}
+\FunctionTok{kable}\NormalTok{(gg) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable\_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}{l|l}
+\hline
+score & app\\
+\hline
+< 0 & Less than chance agreement\\
+\hline
+0.01-0.20 & slight agreement\\
+\hline
+0.21– 0.40 & Fair agreement\\
+\hline
+0.41–0.60 & Moderate agreement\\
+\hline
+0.61–0.80 & Substantial agreement\\
+\hline
+0.81–0.99 & Almost perfect agreement\\
+\hline
+\end{tabular}
+\end{table}
 
 \hypertarget{roc-curve}{%
 \section{ROC Curve}\label{roc-curve}}
@@ -273,49 +295,86 @@ The ROC curve is created by plotting the true positive rate (TPR) against the fa
 \hypertarget{lda}{%
 \section{LDA}\label{lda}}
 
-Linear discriminant analysis (LDA), normal discriminant analysis (NDA), or discriminant function analysis is a generalization of Fisher's linear discriminant, a method used in statistics and other fields, to find a linear combination of features that characterizes or separates two or more classes of objects or events.
+\hypertarget{presentation}{%
+\section{Presentation}\label{presentation}}
+
+The Linear Discriminant analysis classifier is used to predict the probability of belonging to a given class based on one or multiple predictor variables. It works with continuous and/or categorical predictor variables.
+
+Linear discriminant analysis is a generalization of Fisher's linear discriminant, a method used in statistics to find a linear combination of features that characterizes or separates two or more classes of objects.
 
 In this approach, Fishers sought to ﬁnd the linear combination of the predictors such that the between-group variance was maximized relative to the within-group variance. In other words, he wanted to ﬁnd the combination of the predictors that gave maximum separation between the centers of the data while at the same time minimizing the variation within each group of data.
+
+\hypertarget{learning-lda-model}{%
+\subsection{Learning LDA model}\label{learning-lda-model}}
+
+\(\mu_k\) and \(\sigma_k\) the mean and variance for the k-class.
+LDA makes predictions by estimating the probability that a new set of inputs belongs to each class.
+LDA makes some simplifiying assumptions about your data:
+- that your data are gaussian
+- that each distribute the same variance, so \(\sigma_0 = \sigma_1 = \sigma\)
+The model uses Bayes Theorem to estimate the probabilities
+\[P(Y=c|X=x) = \frac{\pi_c f_c(x)}{\sum_{j=1}^k \pi_j f_j(x)}\]
+Where \(\pi_c\) refers to the base probability of each class (c) observed in your training data (e.g.~0.5 for a 50-50 split in a two class problem). In Bayes' Theorem this is called the prior probability.
+\[\pi_c=\frac{n_c}{n}\]
+Estimation of \(f_c\) is more delicate, it is the estimated probability of \(x\) belonging to the class. A Gaussian distribution function is used for \(f_c\). Plugging the Gaussian into the above equation and simplifying we end up with the equation below. This is called a discriminate function and the class is calculated as having the largest value will be the output classification :
+
+x will be affected to the class c for which:
+\[\hat\delta_c(x) = \ln \hat\pi_c - \frac{\hat\mu_c^2}{2\hat\sigma^2} + x\frac{\hat\mu_c}{\hat\sigma^2}\] is maximum.
+
+Dk(x) = x * (muk/siga\^{}2) -- (muk\^{}2/(2*sigma\^{}2)) + ln(PIk)
+
+\(\hat\delta_c(x)\) is the discriminate function for class c given input x, the \(mu_k\), \(sigma^2\) and \(\pi_c\) are all estimated from your data.
 
 \hypertarget{logistic-regression}{%
 \section{logistic regression}\label{logistic-regression}}
 
-In statistics, the logistic model (or logit model) is used to model the probability of a certain class or event existing such as pass/fail, win/lose, alive/dead or healthy/sick. This can be extended to model several classes of events such as determining whether an image contains a cat, dog, lion, etc. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)
+In statistics, the logistic model (or logit model) is used to model the probability of a certain class. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)
+
+Binary Logistic Regression Major Assumptions
+The dependent variable should be dichotomous in nature (e.g., presence vs.~absent).
+There should be no outliers in the data, which can be assessed by converting the continuous predictors to standardized scores, and removing values below -3.29 or greater than 3.29.
+There should be no high correlations (multicollinearity) among the predictors. This can be assessed by a correlation matrix among the predictors. Tabachnick and Fidell (2013) suggest that as long correlation coefficients among independent variables are less than 0.90 the assumption is met.
+At the center of the logistic regression analysis is the task estimating the log odds of an event. Mathematically, logistic regression estimates a multiple linear regression function defined as:
+
+\[logit(p)= \log \frac{p(y=1)}{1-p(y=1)}= \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_ix_i\]
+for i = 1\ldots n .
+
+Overfitting. When selecting the model for the logistic regression analysis, another important consideration is the model fit. Adding independent variables to a logistic regression model will always increase the amount of variance explained in the log odds (typically expressed as R²). However, adding more and more variables to the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit.
 
 \hypertarget{svm}{%
 \section{SVM}\label{svm}}
 
-definition: There are many hyperplanes that might classify the data. One reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
+Support vector machine try to make a reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
 More formally, a support-vector machine constructs a hyperplane or set of hyperplanes in a high- or infinite-dimensional space, which can be used for classification, regression, or other tasks like outliers detection. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin, the lower the generalization error of the classifier.
-
-the original problem may be stated in a finite-dimensional space, it often happens that the sets to discriminate are not linearly separable in that space. For this reason, it was proposed{[}5{]} that the original finite-dimensional space be mapped into a much higher-dimensional space, presumably making the separation easier in that space
 
 The support vector machines create an optimum hyperplane that separates the training data by the maximum margin. However, sometimes we would like to allow some misclassifications while separating categories. The SVM model has a cost function, which controls training errors and margins. For example, a small cost creates a large margin (a soft margin) and allows more misclassifications. On the other hand, a large cost creates a narrow margin (a hard margin) and permits fewer misclassifications. In this recipe, we will illustrate how the large and small cost will affect the SVM classifier.
 
-Concerning the gamma value in the SVM, gamma says how far the `reach' of each training example is (\url{http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html}), but can be just thought of as a regularization parameter. The higher the gamma, the more local the reach, and you have to watch out that your model keeps a general behavior since it is prone to adjust too much to the training examples.
+image
 
 \hypertarget{classification-tree}{%
 \section{classification tree}\label{classification-tree}}
 
 Tree-based models consist of one or more nested if-then statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.
 
-if Predictor A \textgreater= 1.7 then
+Choosing the trees split points
+Technically, for regression modeling, the split cutoff is defined so that the residual sum of squared error (RSS) is minimized across the training samples that fall within the subpartition.
 
-\begin{verbatim}
-| if Predictor B >= 202.1 then Outcome = 1.3
+Recall that, the RSS is the sum of the squared difference between the observed outcome values and the predicted ones, RSS = sum((Observeds - Predicteds)\^{}2). See Chapter \citet{ref}(linear-regression)
 
-| else Outcome = 5.6
-\end{verbatim}
+In classification settings, the split point is defined so that the population in subpartitions are pure as much as possible. Two measures of purity are generally used, including the Gini index and the entropy (or information gain).
 
-else Outcome = 2.5
-In this case, two-dimensional predictor space is cut into three regions (or terminal nodes) and, within each region, the outcome categorized into either ``Class 1'' or ``Class 2.'' Figure 14.1 presents the tree in the predictor space. Just like in the regression setting, the nested if-then statements could be collapsed into rules such as
+For a given subpartition, Gini = sum(p(1-p)) and entropy = -1\emph{sum(p}log(p)), where p is the proportion of misclassified observations within the subpartition.
 
-if Predictor A \textgreater= 0.13 and Predictor B \textgreater= 0.197 then Class = 1
-if Predictor A \textgreater= 0.13 and Predictor B \textless{} 0.197 then Class = 2
-if Predictor A \textless{} 0.13 then Class = 2
+The sum is computed across the different categories or classes in the outcome variable. The Gini index and the entropy varie from 0 (greatest purity) to 1 (maximum degree of impurity)
+
+image
 
 \hypertarget{random-forest}{%
 \section{random forest}\label{random-forest}}
+
+RF classifier is an ensemble method that trains several decision trees in parallel with bootstrapping followed by aggregation, jointly referred as bagging (Fig. 9.17). Bootstrapping indicates that several individual decision trees are trained in parallel on various subsets of the training dataset using different subsets of available features. Bootstrapping ensures that each individual decision tree in the random forest is unique, which reduces the overall variance of the RF classifier. For the final decision, RF classifier aggregates the decisions of individual trees; consequently, RF classifier exhibits good generalization.
+
+image
 
 parameters :
 
@@ -328,7 +387,7 @@ nodesize : minimum number of observation in a terminal node. setting it lower he
 
 basics of formula : \[P(A ∩ B) = P(A) P(B|A) \iff P(B|A) = \frac{P(A ∩ B)}{P(A)}\]
 
-def wiki: In statistics, naive Bayes classifiers are a family of simple ``probabilistic classifiers'' based on applying Bayes' theorem with strong (naïve) independence assumptions between the features
+In statistics, naive Bayes classifiers are a family of simple ``probabilistic classifiers'' based on applying Bayes' theorem with strong (naïve) independence assumptions between the features
 
 Naives : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)
 
@@ -336,18 +395,7 @@ Laplace correction will allow a small chance for these types of unforeseen circu
 
 numeric data use bins to regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)
 
-\hypertarget{plan-pr-chaque-sous-partie-ci-dessus}{%
-\section{plan pr chaque sous partie ci dessus}\label{plan-pr-chaque-sous-partie-ci-dessus}}
-
-\begin{itemize}
-\tightlist
-\item
-  présentation
-\item
-  concept mathématique
-\item
-  paramètres du classifier
-\end{itemize}
+image
 
 \hypertarget{remedies}{%
 \chapter{Remedies}\label{remedies}}
@@ -419,19 +467,7 @@ In this study, we will focus on methods than we can repoduce with our level of c
     \begin{itemize}
     \tightlist
     \item
-      difficult to relate modification of the data wit the loss function
-    \end{itemize}
-  \item
-    methods :
-
-    \begin{itemize}
-    \tightlist
-    \item
-      weighting data spaces
-    \item
-      re sampling
-    \item
-      active learning
+      difficult to relate modification of the data with the loss function
     \end{itemize}
   \end{itemize}
 \item
@@ -459,33 +495,22 @@ In this study, we will focus on methods than we can repoduce with our level of c
     \item
       models interpretability is meaningless because loss function was not optimized following user preference bias
     \end{itemize}
-  \item
-    methods :
-
-    \begin{itemize}
-    \tightlist
-    \item
-      threeshold methods
-    \item
-      cost sensitive
-    \end{itemize}
   \end{itemize}
-\item
-  Hybrid solutions
 \end{itemize}
 
 \hypertarget{pre-processing-resampling}{%
 \section{Pre processing resampling}\label{pre-processing-resampling}}
 
+A lot of method exists in order to rebalanced a sample. Since the begin of the 21th century, a lot of studies appears in order to manage and discuss about resampling. Some methods are more sophisticated than other and might give better results, but they have no consensus on a technic whive have better results. Globally we can say it is the most commun and popular remedies to counteract imbalanced data for two key reasons : we can us the resample datas with all classisfiers and it gives generally pretty goods results.
+
+The first ``basic'' try of resampling is obviously try to make random over sampling or down sampling. Over sampling consists in duplicate randomly positive cases in order to reach two class with approximatively the qame number of case. Downsampling consists in randomly enlever some negative cases in order to diminush the negative classes. Then we can easily imagine other way to select the cases otted or duplicate. Moreover, we can mix try to mix the two methods. Some try
 resampling dataset method:
 
-from smote pdf (chawla)
-
-about over and down sampling
-
-Japkowicz (2000 )discussed the effect of imbalance in a dataset. She evaluated threestrategies: under-sampling, resampling and a recognition-based induction scheme. We focuson her sampling approaches. She experimented on artificial 1D data in order to easilymeasure and construct concept complexity. Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consistedof as many samples as the majority class and ``focused resampling'' consisted of resamplingonly those minority examples that occurred on the boundary between the minority andmajority classes. Random under-sampling was considered, which involved under-samplingthe majority class samples at random until their numbers matched the number of minorityclass samples; focused under-sampling involved under-sampling the majority class sampleslying further away. She noted that both the sampling approaches were effective, and she alsoobserved that using the sophisticated sampling techniques did not give any clear advantagein the domain considered (Japkowicz, 2000)
+Japkowicz (2000 )discussed the effect of imbalance in a dataset. Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consisted of as many samples as the majority class and ``focused resampling'' consisted of resampling only those minority examples that occurred on the boundary between the minority and majority classes. Random under-sampling was considered, which involved under-sampling the majority class samples at random until their numbers matched the number of minority class samples; focused under-sampling involved under-sampling the majority class samples lying further away. She noted that both the sampling approaches were effective, and she also observed that using the sophisticated sampling techniques did not give any clear advantage in the domain considered (Japkowicz, 2000)
 
 One approach that is particularly relevant to our work is that of Ling and Li (1998).They combined over-sampling of the minority class with under-sampling of the majorityclass
+
+in order to try and discuss those resamplig procedees, the part ``application'' shows examples of random up and down sampling in order to make comparison with more sophisticated method as SMOTE and ROSE.
 
 \hypertarget{caret-up-and-down-sample}{%
 \subsection{CARET up and down sample :}\label{caret-up-and-down-sample}}
@@ -555,11 +580,22 @@ The SMOTE function oversamples your rare event by using bootstrapping and k-near
 
 !!!! a lot of new techniques directly derived from this one as ADASYN
 
+image
+
 \hypertarget{learning-method-tuning}{%
 \section{Learning method tuning}\label{learning-method-tuning}}
 
 \hypertarget{metaparameters-tuning}{%
 \subsection{Metaparameters tuning}\label{metaparameters-tuning}}
+
+A first try can be to handle the parameters of the classifiers used. Empirycally we'll see part 5 application that it don't give some significants results. We coul wait for this results because parameters of classifiers are not ax on it.
+
+\hypertarget{weighted-class}{%
+\subsection{Weighted class}\label{weighted-class}}
+
+We try to attribute some weights to our class but the results was not convinced. We try different ways and look for serious or significant results with this methods but it seems that it don't give results. Maybe the algorithm incorporing these results must be reshaped.
+
+The best try trying to handle with classifiers during the learning phase was to incorporate a cost matrix. We choose to use it with decision tree because the algorithm CART shows good results in the literrature.
 
 \hypertarget{direct-sensitive-learning-with-cart-classifer}{%
 \subsection{direct sensitive learning with cart classifer}\label{direct-sensitive-learning-with-cart-classifer}}
@@ -572,73 +608,26 @@ Theory
 We summarize the theory of cost-sensitive learning, published mostly in (Elkan, 2001; Zadrozny
 and Elkan, 2001). The theory describes how the misclassification cost plays its essential role in
 various cost-sensitive learning algorithms.
-Without loss of generality, we assume binary classification (i.e., positive and negative class) in
-this paper. In cost-sensitive learning, the costs of false positive (actual negative but predicted as
-positive; denoted as FP), false negative (FN), true positive (TP) and true negative (TN) can be
-given in a cost matrix, as shown in Table 1. In the table, we also use the notation C(i, j) to
-represent the misclassification cost of classifying an instance from its actual class j into the
-predicted class i. (We use 1 for positive, and 0 for negative). These misclassification cost values
-can be given by domain experts, or learned via other approaches. In cost-sensitive learning, it is
-usually assume that such a cost matrix is given and known. For multiple classes, the cost matrix
-can be easily extended by adding more rows and more columns.
-Table 1. An example of cost matrix for binary classification.
-Actual negative Actual positive
-Predict negative C(0,0), or TN C(0,1), or FN
-Predict positive C(1,0), or FP C(1,1), or TP
-Note that C(i, i) (TP and TN) is usually regarded as the ``benefit'' (i.e., negated cost) when an
-instance is predicted correctly. In addition, cost-sensitive learning is often used to deal with
-datasets with very imbalanced class distribution (Japkowicz and Stephen, 2002). Usually (and
-without loss of generality), the minority or rare class is regarded as the positive class, and it is
-often more expensive to misclassify an actual positive example into negative, than an actual
-negative example into positive. That is, the value of FN or C(0,1) is usually larger than that of
-FP or C(1,0). This is true for the cancer example mentioned earlier (cancer patients are usually
-rare in the population, but predicting an actual cancer patient as negative is usually very costly)
-and the bomb example (terrorists are rare).
-Given the cost matrix, an example should be classified into the class that has the minimum
-expected cost. This is the minimum expected cost principle. The expected cost R(i\textbar x) of
-classifying an instance x into class i (by a classifier) can be expressed as:
- 
-j
-R(i \textbar{} x) P( j \textbar{} x)C(i, j) , (1)
-where P(j\textbar x) is the probability estimation of classifying an instance into class j. That is, the
-classifier will classify an instance x into positive class if and only if:
-P(0\textbar x)C(1,0) + P(1\textbar x)C(1,1) ≤ P(0\textbar x)C(0,0) + P(1\textbar x)C(0,1)
-This is equivalent to:
-P(0\textbar x)(C(1,0) -- C(0,0)) ≤ P(1\textbar x)(C(0,1) -- C(1,1))
-Thus, the decision (of classifying an example into positive) will not be changed if a constant is
-added into a column of the original cost matrix. Thus, the original cost matrix can always be
-converted to a simpler one by subtracting C(0,0) to the first column, and C(1,1) to the second
-column. After such conversion, the simpler cost matrix is shown in Table 2. Thus, any given
-cost-matrix can be converted to one with C(0,0) = C(1,1) = 0. 1 In the rest of the paper, we will
-assume that C(0,0) = C(1,1) = 0. Under this assumption, the classifier will classify an instance x
-into positive class if and only if:
-P(0\textbar x)C(1,0) ≤ P(1\textbar x)C(0,1)
-Table 2. A simpler cost matrix with an equivalent optimal classification.
-True negative True positive
-Predict negative 0 C(0,1) -- C(1,1)
-Predict positive C(1,0) -- C(0,0) 0
-As P(0\textbar x)=1 -- P(1\textbar x), we can obtain a threshold p* for the classifier to classify an instance x into
-positive if P(1\textbar x) ≥ p\emph{, where
-.
-(1,0) (0,1)
-} (1,0)
-FP FN
-FP
-C C
-p C
-
-
-
- (2)
-Thus, if a cost-insensitive classifier can produce a posterior probability estimation p(1\textbar x) for test
-examples x, we can make it cost-sensitive by simply choosing the classification threshold
-according to (2), and classify any example to be positive whenever P(1\textbar x) ≥ p*. This is what
-several cost-sensitive meta-learning algorithms, such as Relabeling, are based on (see later for
-details). However, some cost-insensitive classifiers, such as C4.5, may not be able to produce
-accurate probability estimation; they are designed to predict the class correctly. Empirical
-Thresholding (Sheng and Ling, 2006) does not require accurate estimation of probabilities -- an
-accurate ranking is sufficient. It simply uses cross-validation to search the best probability from
-the training instances as the threshold.
+
+Cost Matrix: A matrix that assigns a cost to each cell in the confusion matrix.
+The example below is a cost matrix where we use the notation C() to indicate the cost, the first value represented as the predicted class and the second value represents the actual class. The names of each cell from the confusion matrix are also listed as acronyms, e.g.~False Positive is FP.
+
+table
+
+We can see that the cost of a False Positive is C(1,0) and the cost of a False Negative is C(0,1).
+
+This formulation and notation of the cost matrix comes from Charles Elkan's seminal 2001 paper on the topic titled ``The Foundations of Cost-Sensitive Learning.''
+
+An intuition from this matrix is that the cost of misclassification is always higher than correct classification, otherwise, cost can be minimized by predicting one class.
+
+Conceptually, the cost of labeling an example incorrectly should always be greater than the cost of labeling it correctly.
+
+--- The Foundations Of Cost-sensitive Learning, 2001.
+
+Total Cost = C(0,1) * False Negatives + C(1,0) * False Positives
+This is the value that we seek to minimize in cost-sensitive learning, at least conceptually.
+
+This cost matrix method can be used in different ways (\ldots), in our applications part 5, we'll focus on cart.
 
 \hypertarget{post-processinf-threesholding}{%
 \section{post processinf threesholding}\label{post-processinf-threesholding}}
@@ -686,9 +675,9 @@ Interesting if :
 
 In order \citep{xie2015} to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
-Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we firs try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we first try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
 
-About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need.
+Few words About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need.
 
 We choose four dataset with different level of imabalanced.
 
@@ -715,7 +704,7 @@ The function models compute our four models. We show the function in order to sh
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-3}Confusion matrix spotify}
+\caption{\label{tab:unnamed-chunk-4}Confusion matrix spotify}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -744,7 +733,7 @@ The table \ldots{} shows the confusion matrix resulting to the four classifiers 
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-4}Spotify metrics}
+\caption{\label{tab:unnamed-chunk-5}Spotify metrics}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -765,7 +754,7 @@ First we note that accuracy is very good, wigch confirms accuracy is not a relai
 
 Let see the plot curve for all datasets.
 
-\includegraphics{Test_book_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-6-1.pdf}
 
 !!! discuss the better results for creditcard and hacked !!!
 - from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ?
@@ -776,7 +765,7 @@ At last, it is sure that all explicative variable are dependent to the variable 
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-6}Hacked metrics}
+\caption{\label{tab:unnamed-chunk-7}Hacked metrics}
 \centering
 \begin{tabular}[t]{l|l|l|l|l|l|l}
 \hline
@@ -798,19 +787,94 @@ On this one, we can see that only rf has very good results. Detection power and 
 \hypertarget{preprocessing-resampling-methods}{%
 \section{Preprocessing : Resampling methods}\label{preprocessing-resampling-methods}}
 
-\hypertarget{direct-cost-sensisitive-learnig}{%
-\section{Direct cost sensisitive learnig}\label{direct-cost-sensisitive-learnig}}
+As we can see with the function 'resamp'in the funclin.R and the .rmd , we try many resampling with different method. As the smote methods seems to us pertinent with this approach of oversampling with some logic, we try some develepment as adasyn or BLSMOTE.
+Note that the original smote algorithm is only for numerical variable. Some databases have few or no numerical variable so it is not an issue but a dataset as recid (with many caterogicla variable) asks to act on this variable. We could try to transform them as numerical but we choose to use SMoteNC, which is developped to deal with bot numerical and caterogical variable.
+
+an example of downsampling with spotify
+
+Here another example with smoteNC spotify
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-8}test}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l}
+\hline
+  & accuracy & FNrate & TPrate & kappa & PrecisionPPV & Fscore\\
+\hline
+rf & 0.8278724 & 0.2075142 & 0.7924858 & 0.6557449 & 0.8528444 & 0.821558\\
+\hline
+Bayes & 0.6241809 & 0.2647444 & 0.7352556 & 0.2483617 & 0.6016086 & 0.6617517\\
+\hline
+lda & 0.6021188 & 0.3934032 & 0.6065968 & 0.2042377 & 0.6012124 & 0.6038926\\
+\hline
+svm & 0.7035824 & 0.2505461 & 0.7494539 & 0.4071647 & 0.6864746 & 0.7165831\\
+\hline
+\end{tabular}
+\end{table}
+
+Lets compare RocCurve before and after smote resampling
+
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-9-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{C5graph}\NormalTok{(Spot, }\StringTok{"popularity"}\NormalTok{, }\AttributeTok{captest =} \StringTok{"Kappa depending cost"}\NormalTok{, }\AttributeTok{captest2 =} \StringTok{"Sensitivity }\SpecialCharTok{\textbackslash{}n}\StringTok{ and specificity"}\NormalTok{, }\AttributeTok{b=}\DecValTok{20}\NormalTok{, }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{AllRoc0}\NormalTok{(}\AttributeTok{predic =}\NormalTok{ PredRec1, }\AttributeTok{dataCl =}\NormalTok{ datRecid}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{is\_violent\_recid,}
+        \AttributeTok{caption =} \StringTok{"first models"}\NormalTok{)}
+\FunctionTok{AllRoc0}\NormalTok{(predRoseRecid, }\AttributeTok{dataCl =}\NormalTok{ datasRoseRecid}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{is\_violent\_recid, }\AttributeTok{caption =} \StringTok{"Rose resampling"}\NormalTok{) }
+\FunctionTok{AllRoc0}\NormalTok{(}\AttributeTok{predic =}\NormalTok{ predRecSmc, }\AttributeTok{dataCl =}\NormalTok{ datrecSmc}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{is\_violent\_recid, }\AttributeTok{caption =} \StringTok{"SMote{-}NC resampling"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Test_book_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\hypertarget{direct-cost-sensisitive-learnig}{%
+\section{Direct cost sensisitive learnig}\label{direct-cost-sensisitive-learnig}}
+
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{C5graph}\NormalTok{(Hacked, }\StringTok{"MULTIPLE\_OFFENSE"}\NormalTok{, }\AttributeTok{captest =} \StringTok{"Kappa depending cost"}\NormalTok{, }\AttributeTok{captest2 =} \StringTok{"Sensitivity }\SpecialCharTok{\textbackslash{}n}\StringTok{ and specificity"}\NormalTok{, }\AttributeTok{b =} \DecValTok{100}\NormalTok{, }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.8}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-12-1.pdf}
 
 \hypertarget{post-processing-threesholding}{%
 \section{Post processing Threesholding}\label{post-processing-threesholding}}
+
+\includegraphics{Test_book_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{verbatim}
+## Warning in if (listPred == "bayes") {: la condition a une longueur > 1 et seul
+## le premier élément est utilisé
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in if (listPred == "lr") {: la condition a une longueur > 1 et seul le
+## premier élément est utilisé
+\end{verbatim}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-14}perfplop}
+\centering
+\begin{tabular}[t]{l|l|l|l|l|l|l}
+\hline
+  & accuracy & FNrate & TPrate & kappa & PrecisionPPV & Fscore\\
+\hline
+rf & 0.6328511 & 0.3100917 & 0.6899083 & 0.2073542 & 0.3014028 & 0.4195258\\
+\hline
+Bayes & 0.6264996 & 0.440367 & 0.559633 & 0.1438748 & 0.2714731 & 0.3655978\\
+\hline
+lda & 0.6284404 & 0.4504587 & 0.5495413 & 0.1412709 & 0.270551 & 0.3625908\\
+\hline
+svm & 0.7115385 & 0.6082569 & 0.3917431 & 0.1619352 & 0.305218 & 0.3431097\\
+\hline
+\end{tabular}
+\end{table}
 
 \hypertarget{summary}{%
 \chapter{Summary}\label{summary}}

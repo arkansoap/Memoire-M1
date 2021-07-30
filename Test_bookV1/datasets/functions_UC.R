@@ -93,27 +93,21 @@ perf.measure <- function(pred , real, y, beta = 1)
   pra <- (sum((pred == 0) & (real[[y]] == 0)) + sum((pred == 1) & (real[[y]] == 1))) / n
   kappa <- (pra - pre) / (1 - pre)
   error <- sum(pred != real[[y]]) / nrow(real)
-  FNrate <- sum((pred == 0) & (real[[y]] == 1)) / P
+  FPrate <- sum((pred == 1) & (real[[y]] == 0)) / N
   TPrate <- sum((pred == 1) & (real[[y]] == 1)) / P
   TNrate <- sum((pred == 0) & (real[[y]] == 0)) / N
   PrecisionPPV <- sum((pred == 1) & (real[[y]] == 1)) / Pp
   accuracy <- 1 - error
   dominance <- TPrate - TNrate
   Fscore <- (1+beta^2)*((TPrate*PrecisionPPV)/(((beta^2)*PrecisionPPV)+TPrate))
-  return(list( matconf = MatConf, accuracy = accuracy, FNrate = FNrate,
+  return(list( matconf = MatConf, accuracy = accuracy, FPrate = FPrate,
                TPrate = TPrate, kappa = kappa, PrecisionPPV = PrecisionPPV,
-               Fscore = Fscore, TNrate = TNrate))
+               Fscore = Fscore))
 }
 
-TableMetricsF <- function(pred, dat, y, listPred, mod){
-  if (listPred == "bayes"){
-    listPred <- list(pred$predrf$cla, pred$predOpt$cla,
-                     pred$predLda$class, pred$predSvm) 
-  } else if (listPred == "lr"){
-    listPred <- list(pred$predrf$cla, pred$predOpt$cla,
-                     pred$predLda$class, pred$predSvm)
-  }
-
+TableMetrics <- function(pred, dat, y){
+  listPred <- list(pred$predrf$cla, pred$predlog$cla,
+                   pred$predLda$class, pred$predSvm)
   LapPred <- lapply(listPred, perf.measure,
                     real = dat, y = y)
   tabloMetric <- NULL
@@ -122,30 +116,52 @@ TableMetricsF <- function(pred, dat, y, listPred, mod){
     tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
     tabloMatconf <- rbind(tabloMatconf, LapPred[[i]][1])
   }
-  if (mod == "lr"){
-    row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
-  } else if (mod == "bayes") {
-    row.names(tabloMetric) <- c("rf", "Bayes", "lda", "svm")
-  }
+  row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
   return(list(tabloMetric, tabloMatconf))
 }
 
-KablesPerf <- function(pred, dat, y, listPred,
-                       captionCM ,captionPerf, mod){
-  Metrics1 <- TableMetricsF(pred = pred, dat = dat, mod = mod,
-                            y = y, listPred = listPred)
+KablesPerf <- function(pred, dat, y){
+  Metrics1 <- TableMetrics(pred = pred, dat = dat, y = y)
   tabloMC <- rbind(
-    c("rf", " ", " ", mod, " " ," "),
+    c("rf", " ", " ", "log", " " ," "),
     cbind(Metrics1[[2]][[1]],Metrics1[[2]][[2]]),
     c("lda", " "," ", "svm"," ",  " "),
     cbind(Metrics1[[2]][[3]],Metrics1[[2]][[4]])
-    )
-
-  kableMC <- kable(tabloMC, caption = captionCM) %>%
+  )
+  kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
     kable_styling(bootstrap_options = c("striped", "hover")) %>%
     row_spec(c(1,5), background = "lightgrey")  
-  kableMetrics <- kable(as.data.frame(Metrics1[[1]]),
-                        caption = captionPerf) %>%
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]])) %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+  return(list(kableMC, kableMetrics))
+}
+
+TableMetrics2 <- function(pred, dat, y, listPred){
+  LapPred <- lapply(listPred, perf.measure,
+                    real = dat, y = y)
+  tabloMetric <- NULL
+  tabloMatconf <- NULL
+  for(i in 1:4){
+    tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
+    tabloMatconf <- rbind(tabloMatconf, LapPred[[i]][1])
+  }
+  row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
+  return(list(tabloMetric, tabloMatconf))
+}
+
+KablesPerf2 <- function(pred, dat, y, listPred){
+  Metrics1 <- TableMetrics2(pred = pred, dat = dat,
+                            y = y, listPred = listPred)
+  tabloMC <- rbind(
+    c("rf", " ", " ", "log", " " ," "),
+    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[2]]),
+    c("lda", " "," ", "svm"," ",  " "),
+    cbind(Metrics1[[2]][[3]],Metrics1[[2]][[4]])
+  )
+  kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    row_spec(c(1,5), background = "lightgrey")  
+  kableMetrics <- kable(as.data.frame(Metrics1[[1]]), digits = 3) %>%
     kable_styling(bootstrap_options = c("striped", "hover"))
   return(list(kableMC, kableMetrics))
 }
@@ -153,23 +169,23 @@ KablesPerf <- function(pred, dat, y, listPred,
 # Courbe ROC
 
 RocCurve <- function(predi, realCl, mod) {
-  if (mod == "lr"){
-    pred <- prediction(round(predi$predOpt$prob,3), realCl)
+  if (mod == "log")
+  {
+    pred <- prediction(round(predi$predlog$prob,3), realCl)
     colA <- "orange"
-  } else if (mod == "rf"){
+  }
+  else if (mod == "rf")
+  {
     pred <- prediction(round(predi$predrf$prob[,2],3), realCl)
     colA <- "green"
   }
-  else if (mod == "bayes"){
-    score <- predi$predOpt$prob[,2]
-    pred <- prediction(score, realCl)
-    colA <- "purple"
-  }
   else if (mod == "lda")
   {
-    pred <- prediction(predi$predLda$posterior[,2], realCl)
+    pred <- prediction(predi$predLda$posterior[, 2], realCl)
     colA <- "red"
-  }else if (mod == "svm"){
+  }
+  else if (mod == "svm")
+  {
     BB <- attr(predi$predSvm, "probabilities")[,"1"]
     pred <- prediction(BB, realCl)
     colA <- "blue"
@@ -181,119 +197,27 @@ RocCurve <- function(predi, realCl, mod) {
   AUC <- perf@y.values[[1]]
 }
 
-AllRoc <- function(predic, dataCl, mod2, caption) {
+AllRoc <- function(predic, dataCl) {
   par()
   RocCurve(predi = predic, dataCl, mod = "lda")
   par(new = T)
   RocCurve(predi = predic, dataCl, mod = "svm")
   par(new = T)
-  if (mod2 == "bayes"){
-    RocCurve(predi = predic, dataCl, mod = "bayes")
-    color = "purple"
-  } else if (mod2 == "lr"){
-    RocCurve(predi = predic, dataCl, mod = "lr")
-    color = "orange"
-  }
+  RocCurve(predi = predic, dataCl, mod = "log")
   par(new = T)
   RocCurve(predi = predic, dataCl, mod = "rf")
   legend(
-    'bottomright',
-    legend = c("lda", mod2, "rf", "svm"),
-    col = c("red", color, "green", "blue"),
+    'topleft',
+    legend = c("lda", "lr", "rf", "svm"),
+    col = c("red", "orange", "green", "blue"),
     pch = 15, cex = 0.8
   )
-  title(caption)
-}
-
-########## Fit the models ##########
-
-priors <- function(dat, y){
-  a = sum(dat[[y]] == 1) / nrow(dat)
-  b = 1 - a
-  return(c(b,a)) 
-}
-
-#set seed entre les mod?
-#prior =c( sum(data$y == 1) / nrow(data) ,1 -((sum(data$y == 1) / nrow(data))))
-models <- function(y, data,
-                   prior,
-                   laplace = 1,
-                   CWSvm = c("0" = 1, "1" = 1),
-                   CWRf = c(1,1),
-                   mtry = length(data)-1, nodesize = 1,
-                   kernSvm = "polynomial", costSvm = 1,
-                   mod) {
-  set.seed(777)
-  Modlda <- lda(as.formula(paste(y , "~ .")), data = data,
-                prior = prior)
-  if (mod == "bayes"){
-    ModOpt <- naiveBayes (as.formula(paste(y , "~ .")), data = data,
-                             laplace = laplace)
-  } else if (mod == "lr"){
-    ModOpt <- glm(as.formula(paste(y , "~ .")),
-                 data = data,
-                 family = binomial(link = logit))
-  }
-
-  Modrf <- randomForest(
-    as.formula(paste(y , "~ .")),
-    data = data,
-    type = "classification",
-    method = "class",
-    parms = list(split = "gini"),
-    mtry = mtry,
-    nodesize = nodesize,
-    classwt = CWRf
-  )
-  ModSvm <- svm(
-    as.formula(paste(y , "~ .")),
-    data = data,
-    scale = FALSE,
-    kernel = kernSvm,
-    cost = costSvm,
-    class.weights = CWSvm,
-    probability = TRUE
-  )
-  return(list(
-    Modlda = Modlda,
-    ModOpt = ModOpt,
-    Modrf = Modrf,
-    ModSvm = ModSvm
-  ))
-}
-
-########## Make Predictions ##########
-
-predictions <- function(models, datas, mod) {
-  predLda <- predict(models[["Modlda"]], datas[["test"]])
-  predrf <- NULL
-  predrf$prob <- predict(models[["Modrf"]], datas[["test"]],
-                         type = "prob")
-  predrf$cla <- ifelse(predrf$prob[, 2] > 0.5, 1, 0)
-  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]], probability = TRUE)
-  if (mod == "bayes"){
-    predOpt <- NULL
-    predOpt$prob <- predict(models[["ModOpt"]], datas[["test"]], type = "raw")
-    predOpt$cla <- predict(models[["ModOpt"]], datas[["test"]], type = "class")
-  } else if (mod == "lr"){
-    predOpt <- NULL
-    predOpt$prob <- predict(models[["ModOpt"]], newdata = datas[["test"]],
-                            type = 'response')
-    # average <- sum(datas$train$popularity=="1")/nrow(datas$train)
-    predOpt$cla <- ifelse(predOpt$prob > 0.5, 1, 0)
-  }
-  
-  return(list(
-    predLda = predLda,
-    predrf = predrf,
-    predSvm = predSvm,
-    predOpt = predOpt
-  ))
+  title("Roc Curves")
 }
 
 ########## Post-processing Alternate cutoff ##########
 
-evoSeuil <- function(pred, realCl, real, mod, caption) {
+evoSeuil <- function(pred, realCl, real, mod) {
   N <- sum(realCl == 0)
   P <- sum(realCl == 1)
   Error <- NULL
@@ -339,7 +263,7 @@ evoSeuil <- function(pred, realCl, real, mod, caption) {
     bty = "n", pt.cex = 1,
     cex = 0.8, horiz = FALSE, inset = c(0.1, 0.1)
   )
-  title(caption)
+  title("Evolution des 3 types d'erreur")
 }
 
 changeSeuil <- function(pred, realCl, real, seuil, mod) {
@@ -355,13 +279,82 @@ changeSeuil <- function(pred, realCl, real, seuil, mod) {
   out <- change_seuil
 }
 
+########## Fit the models ##########
 
+priors <- function(dat, y){
+  a = sum(dat[[y]] == 1) / nrow(dat)
+  b = 1 - a
+  return(c(b,a)) 
+}
 
+#set seed entre les mod?
+#prior =c( sum(data$y == 1) / nrow(data) ,1 -((sum(data$y == 1) / nrow(data))))
+models <- function(y, data,
+                   prior,
+                   CWSvm = c("0" = 1, "1" = 1),
+                   CWRf = c(1,1),
+                   mtry = length(data)-1, nodesize = 1,
+                   kernSvm = "polynomial", costSvm = 1) {
+  set.seed(777)
+  Modlda <- lda(as.formula(paste(y , "~ .")), data = data,
+                prior = prior)
+  Modlr <- glm(as.formula(paste(y , "~ .")),
+               data = data,
+               family = binomial(link = logit)
+               )
+  Modrf <- randomForest(
+    as.formula(paste(y , "~ .")),
+    data = data,
+    type = "classification",
+    method = "class",
+    parms = list(split = "gini"),
+    mtry = mtry,
+    nodesize = nodesize,
+    classwt = CWRf
+  )
+  ModSvm <- svm(
+    as.formula(paste(y , "~ .")),
+    data = data,
+    scale = FALSE,
+    kernel = kernSvm,
+    cost = costSvm,
+    class.weights = CWSvm,
+    probability = TRUE
+  )
+  return(list(
+    Modlda = Modlda,
+    Modlr = Modlr,
+    Modrf = Modrf,
+    ModSvm = ModSvm
+  ))
+}
+
+########## Make Predictions ##########
+
+predictions <- function(models, datas) {
+  predLda <- predict(models[["Modlda"]], datas[["test"]])
+  predrf <- NULL
+  predrf$prob <- predict(models[["Modrf"]], datas[["test"]],
+                    type = "prob")
+  predrf$cla <- ifelse(predrf$prob[, 2] > 0.5, 1, 0)
+  predSvm <- predict(models[["ModSvm"]], newdata = datas[["test"]], probability = TRUE)
+  predlog <- NULL
+  predlog$prob <- predict(models[["Modlr"]], newdata = datas[["test"]],
+                     type = 'response')
+  # average <- sum(datas$train$popularity=="1")/nrow(datas$train)
+  predlog$cla <- ifelse(predlog$prob > 0.5, 1, 0)
+  return(list(
+    predLda = predLda,
+    predrf = predrf,
+    predSvm = predSvm,
+    predlog = predlog
+  ))
+}
 
 ########## Pre Processing ##########
 
 # return le resamp
-resamp_res <- function(datas, mod, mod2, captionCM, captionPerf, captionROC){
+resamp_res <- function(datas, mod ){
   if (mod == "US"){
     Resamp <- upSample( datas[,-1], datas[,1])
   } else if (mod == "DS"){
@@ -382,34 +375,29 @@ resamp_res <- function(datas, mod, mod2, captionCM, captionPerf, captionROC){
     Resamp$class <- as.factor(Resamp$class)
     names(Resamp)[names(Resamp) == "class"] <- "Class"
   } else if (mod == "SMOTE-NC"){
-    smnc <- SMOTE_NC(datas, datas[,1])
+    smnc <- SMOTE_NC(datas[,-1], datas[,1])
     Resamp <- smnc$data
     Resamp$class<-as.factor(Resamp$class)
     names(Resamp)[names(Resamp) == "class"] <- "Class"
   }
   datasplit <- split_standard(Resamp, "Class" , mod = "standard")
   Models <- models(y = "Class", data = datasplit$train,
-                   prior = priors(datasplit$train, "Class"),
-                   mod = mod2)
-  Predictions <- predictions(models = Models, datas = datasplit, mod = mod2)
+                   prior = priors(datasplit$train, "Class"))
+  Predictions <- predictions(models = Models, datas = datasplit)
   tablos <- KablesPerf(pred = Predictions, dat = datasplit$test,
-                       y = "Class", listPred = mod2,
-                       captionCM = captionCM,captionPerf = captionPerf,
-                       mod = mod2)
-
-  return(list(tablos = tablos, AllRoc(predic = Predictions, dataCl = datasplit$test$Class,
-                                                  mod = mod2, caption = captionROC) ))
+                       y = "Class")
+  Rocs <- AllRoc(predic = Predictions, dataCl = datasplit$test$Class)
+  return(list(tablos, Rocs))
 }
 
 ########## Direc cost sensitive learning with C50 ##########
 
-C5graph <- function(data, y, captest, captest2, b, ylim){
+C5graph <- function(data, y){
   Perfs <- NULL
   resTP <- NULL
-  resTN <- NULL
   resFP <- NULL
   resKAP <- NULL
-  for (Ratio in 1:b){
+  for (Ratio in 1:20){
     c5Matrix <- matrix(c(0, 1, Ratio, 0), ncol = 2)
     rownames(c5Matrix) <- levels(data$train[[y]])
     colnames(c5Matrix) <- levels(data$train[[y]])
@@ -419,104 +407,18 @@ C5graph <- function(data, y, captest, captest2, b, ylim){
     PredC5 <- predict(modelC5, data$test)
     Perfs <- perf.measure(PredC5, data$test, y)
     resTP <- rbind(resTP,Perfs$TPrate)
-    resTN <- rbind(resTN,Perfs$TNrate)
-    resFP <- 1-resTN
+    resFP <- rbind(resFP,Perfs$FPrate)
+    resTN <- 1-resFP
     resKAP <- rbind(resKAP, Perfs$kappa)
   }
   
   par(mfrow=c(1,2))
-  plot(resTP, xlim = c(0, b), ylim = ylim,
-       ylab = "rate", xlab = "cost", type = "b",
+  plot(resTP, xlim = c(0, 20), ylim = c(0, 1),
+       ylab = "", xlab = "cost", type = "b",
        col = "blue", pch = 4, lty = 2)
-  par(new = T)
-  plot(resTN,  xlim = c(0, b), ylim = ylim,
+  par(new = TRUE)
+  plot(resTN,  xlim = c(0, 20), ylim = c(0, 1),
        ylab = "", xlab = "",
-       col = "red", pch = 3, type = "b", lty = 2)
-  title(captest2)
-  plot(resKAP,  xlim = c(0, b), ylim = c(-1, 1),
-       xlab = "cost", ylab = "kappa")
-  title(captest)
+       col = "red", pch = 3, type = "b")
+  plot(resKAP,  xlim = c(0, 20), ylim = c(-1, 1))
 }
-
-########## first functions ##########
-
-TableMetrics0 <- function(pred, dat, y){
-  listPred <- list(pred$predrf$cla, pred$predlog$cla,
-                   pred$predLda$class, pred$predSvm)
-  LapPred <- lapply(listPred, perf.measure,
-                    real = dat, y = y)
-  tabloMetric <- NULL
-  tabloMatconf <- NULL
-  for(i in 1:4){
-    tabloMetric <- rbind(tabloMetric, LapPred[[i]][2:7])
-    tabloMatconf <- rbind(tabloMatconf, LapPred[[i]][1])
-  }
-  row.names(tabloMetric) <- c("rf", "log", "lda", "svm")
-  return(list(tabloMetric, tabloMatconf))
-}
-
-KablesPerf0 <- function(pred, dat, y){
-  Metrics1 <- TableMetrics0(pred = pred, dat = dat, y = y)
-  tabloMC <- rbind(
-    c("rf", " ", " ", "log", " " ," "),
-    cbind(Metrics1[[2]][[1]],Metrics1[[2]][[2]]),
-    c("lda", " "," ", "svm"," ",  " "),
-    cbind(Metrics1[[2]][[3]],Metrics1[[2]][[4]])
-  )
-  kableMC <- kable(tabloMC, caption = "Confusion matrix") %>%
-    kable_styling(bootstrap_options = c("striped", "hover")) %>%
-    row_spec(c(1,5), background = "lightgrey")  
-  kableMetrics <- kable(as.data.frame(Metrics1[[1]])) %>%
-    kable_styling(bootstrap_options = c("striped", "hover"))
-  return(list(kableMC, kableMetrics))
-}
-
-# Courbe ROC
-
-RocCurve0 <- function(predi, realCl, mod) {
-  if (mod == "log")
-  {
-    pred <- prediction(round(predi$predlog$prob,3), realCl)
-    colA <- "orange"
-  }
-  else if (mod == "rf")
-  {
-    pred <- prediction(round(predi$predrf$prob[,2],3), realCl)
-    colA <- "green"
-  }
-  else if (mod == "lda")
-  {
-    pred <- prediction(predi$predLda$posterior[, 2], realCl)
-    colA <- "red"
-  }
-  else if (mod == "svm")
-  {
-    BB <- attr(predi$predSvm, "probabilities")[,"1"]
-    pred <- prediction(BB, realCl)
-    colA <- "blue"
-  }
-  perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-  plot(perf, col = colA)
-  segments(0, 0, 1, 1)
-  perf <- performance(pred, "auc")
-  AUC <- perf@y.values[[1]]
-}
-
-AllRoc0 <- function(predic, dataCl, caption) {
-  par()
-  RocCurve0(predi = predic, dataCl, mod = "lda")
-  par(new = T)
-  RocCurve0(predi = predic, dataCl, mod = "svm")
-  par(new = T)
-  RocCurve0(predi = predic, dataCl, mod = "log")
-  par(new = T)
-  RocCurve0(predi = predic, dataCl, mod = "rf")
-  legend(
-    'bottomright',
-    legend = c("lda", "lr", "rf", "svm"),
-    col = c("red", "orange", "green", "blue"),
-    pch = 15, cex = 0.8
-  )
-  title(caption)
-}
-

@@ -8,6 +8,7 @@ In this study, we will focus on methods than we can repoduce with our level of c
 * At last, som remedies that can be used after the machine learning algorithm (postprocessing).
 
 ## different strategies : 
+
 - Special-purpose learning method : Modifications of the learning algorithm
     - advantages : 
         - users goals are incorporated directly into the models 
@@ -21,11 +22,7 @@ In this study, we will focus on methods than we can repoduce with our level of c
         - can be applied to any existing tools 
         - choosen models are biased to the goals of the users 
     - inconevnient:
-        - difficult to relate modification of the data wit the loss function
-    - methods :
-         - weighting data spaces
-         - re sampling
-         - active learning
+        - difficult to relate modification of the data with the loss function
 - Prediction Post-processing : transformations applied to the predictions of the learned model
     - advantages :
         - not necessary to know user preference biases at learning time
@@ -33,23 +30,19 @@ In this study, we will focus on methods than we can repoduce with our level of c
     - drawbavks : 
         - models do not reflect user preferences
         - models interpretability is meaningless because loss function was not optimized following user preference bias
-    - methods : 
-        - threeshold methods
-        - cost sensitive
-- Hybrid solutions
-
 
 ## Pre processing resampling 
 
+A lot of method exists in order to rebalanced a sample. Since the begin of the 21th century, a lot of studies appears in order to manage and discuss about resampling. Some methods are more sophisticated than other and might give better results, but they have no consensus on a technic whive have better results. Globally we can say it is the most commun and popular remedies to counteract imbalanced data for two key reasons : we can us the resample datas with all classisfiers and it gives generally pretty goods results.
+
+The first "basic" try of resampling is obviously try to make random over sampling or down sampling. Over sampling consists in duplicate randomly positive cases in order to reach two class with approximatively the qame number of case. Downsampling consists in randomly enlever some negative cases in order to diminush the negative classes. Then we can easily imagine other way to select the cases otted or duplicate. Moreover, we can mix try to mix the two methods. Some try
 resampling dataset method:
-
-from smote pdf (chawla)
-
-  about over and down sampling
   
-Japkowicz (2000 )discussed the effect of imbalance in a dataset.  She evaluated threestrategies: under-sampling, resampling and a recognition-based induction scheme. We focuson her sampling approaches.  She experimented on artificial 1D data in order to easilymeasure and construct concept complexity.  Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consistedof as many samples as the majority class and “focused resampling” consisted of resamplingonly those minority examples that occurred on the boundary between the minority andmajority classes. Random under-sampling was considered, which involved under-samplingthe majority class samples at random until their numbers matched the number of minorityclass samples; focused under-sampling involved under-sampling the majority class sampleslying further away. She noted that both the sampling approaches were effective, and she alsoobserved that using the sophisticated sampling techniques did not give any clear advantagein the domain considered (Japkowicz, 2000)
+Japkowicz (2000 )discussed the effect of imbalance in a dataset. Two resampling methods were considered.Random resampling consisted of resampling the smaller class at random until it consisted of as many samples as the majority class and “focused resampling” consisted of resampling only those minority examples that occurred on the boundary between the minority and majority classes. Random under-sampling was considered, which involved under-sampling the majority class samples at random until their numbers matched the number of minority class samples; focused under-sampling involved under-sampling the majority class samples lying further away. She noted that both the sampling approaches were effective, and she also observed that using the sophisticated sampling techniques did not give any clear advantage in the domain considered (Japkowicz, 2000)
 
 One approach that is particularly relevant to our work is that of Ling and Li (1998).They combined over-sampling of the minority class with under-sampling of the majorityclass
+
+in order to try and discuss those resamplig procedees, the part "application"  shows examples of random up and down sampling in order to make comparison with more sophisticated method as SMOTE and ROSE. 
 
 ### CARET up and down sample : 
 
@@ -106,9 +99,20 @@ The SMOTE function oversamples your rare event by using bootstrapping and k-near
 
 !!!! a lot of new techniques directly derived from this one as ADASYN
 
+image
+
 ## Learning method tuning
 
 ### Metaparameters tuning
+
+A first try can be to handle the parameters of the classifiers used. Empirycally we'll see part 5 application that it don't give some significants results. We coul wait for this results because parameters of classifiers are not ax on it. 
+
+### Weighted class
+
+We try to attribute some weights to our class but the results was not convinced. We try different ways and look for serious or significant results with this methods but it seems that it don't give results. Maybe the algorithm incorporing these results must be reshaped. 
+
+The best try trying to handle with classifiers during the learning phase was to incorporate a cost matrix. We choose to use it with decision tree because the algorithm CART shows good results in the literrature.
+
 ### direct sensitive learning with cart classifer
 
 The incorporation of beneﬁts and/or costs (negative beneﬁts) in existing algorithms, as a way to express the utility of diﬀerent predictions, is one of the known approaches to cope with imbalanced domains.
@@ -119,73 +123,26 @@ Theory
 We summarize the theory of cost-sensitive learning, published mostly in (Elkan, 2001; Zadrozny
 and Elkan, 2001). The theory describes how the misclassification cost plays its essential role in
 various cost-sensitive learning algorithms.
-Without loss of generality, we assume binary classification (i.e., positive and negative class) in
-this paper. In cost-sensitive learning, the costs of false positive (actual negative but predicted as
-positive; denoted as FP), false negative (FN), true positive (TP) and true negative (TN) can be
-given in a cost matrix, as shown in Table 1. In the table, we also use the notation C(i, j) to
-represent the misclassification cost of classifying an instance from its actual class j into the
-predicted class i. (We use 1 for positive, and 0 for negative). These misclassification cost values
-can be given by domain experts, or learned via other approaches. In cost-sensitive learning, it is
-usually assume that such a cost matrix is given and known. For multiple classes, the cost matrix
-can be easily extended by adding more rows and more columns.
-Table 1. An example of cost matrix for binary classification.
-Actual negative Actual positive
-Predict negative C(0,0), or TN C(0,1), or FN
-Predict positive C(1,0), or FP C(1,1), or TP
-Note that C(i, i) (TP and TN) is usually regarded as the “benefit” (i.e., negated cost) when an
-instance is predicted correctly. In addition, cost-sensitive learning is often used to deal with
-datasets with very imbalanced class distribution (Japkowicz and Stephen, 2002). Usually (and
-without loss of generality), the minority or rare class is regarded as the positive class, and it is
-often more expensive to misclassify an actual positive example into negative, than an actual
-negative example into positive. That is, the value of FN or C(0,1) is usually larger than that of
-FP or C(1,0). This is true for the cancer example mentioned earlier (cancer patients are usually
-rare in the population, but predicting an actual cancer patient as negative is usually very costly)
-and the bomb example (terrorists are rare).
-Given the cost matrix, an example should be classified into the class that has the minimum
-expected cost. This is the minimum expected cost principle. The expected cost R(i|x) of
-classifying an instance x into class i (by a classifier) can be expressed as:
- 
-j
-R(i | x) P( j | x)C(i, j) , (1)
-where P(j|x) is the probability estimation of classifying an instance into class j. That is, the
-classifier will classify an instance x into positive class if and only if:
-P(0|x)C(1,0) + P(1|x)C(1,1) ≤ P(0|x)C(0,0) + P(1|x)C(0,1)
-This is equivalent to:
-P(0|x)(C(1,0) – C(0,0)) ≤ P(1|x)(C(0,1) – C(1,1))
-Thus, the decision (of classifying an example into positive) will not be changed if a constant is
-added into a column of the original cost matrix. Thus, the original cost matrix can always be
-converted to a simpler one by subtracting C(0,0) to the first column, and C(1,1) to the second
-column. After such conversion, the simpler cost matrix is shown in Table 2. Thus, any given
-cost-matrix can be converted to one with C(0,0) = C(1,1) = 0. 1 In the rest of the paper, we will
-assume that C(0,0) = C(1,1) = 0. Under this assumption, the classifier will classify an instance x
-into positive class if and only if:
-P(0|x)C(1,0) ≤ P(1|x)C(0,1)
-Table 2. A simpler cost matrix with an equivalent optimal classification.
-True negative True positive
-Predict negative 0 C(0,1) – C(1,1)
-Predict positive C(1,0) – C(0,0) 0
-As P(0|x)=1 – P(1|x), we can obtain a threshold p* for the classifier to classify an instance x into
-positive if P(1|x) ≥ p*, where
-.
-(1,0) (0,1)
-* (1,0)
-FP FN
-FP
-C C
-p C
-
-
-
- (2)
-Thus, if a cost-insensitive classifier can produce a posterior probability estimation p(1|x) for test
-examples x, we can make it cost-sensitive by simply choosing the classification threshold
-according to (2), and classify any example to be positive whenever P(1|x) ≥ p*. This is what
-several cost-sensitive meta-learning algorithms, such as Relabeling, are based on (see later for
-details). However, some cost-insensitive classifiers, such as C4.5, may not be able to produce
-accurate probability estimation; they are designed to predict the class correctly. Empirical
-Thresholding (Sheng and Ling, 2006) does not require accurate estimation of probabilities – an
-accurate ranking is sufficient. It simply uses cross-validation to search the best probability from
-the training instances as the threshold.
+
+Cost Matrix: A matrix that assigns a cost to each cell in the confusion matrix.
+The example below is a cost matrix where we use the notation C() to indicate the cost, the first value represented as the predicted class and the second value represents the actual class. The names of each cell from the confusion matrix are also listed as acronyms, e.g. False Positive is FP.
+
+table
+
+We can see that the cost of a False Positive is C(1,0) and the cost of a False Negative is C(0,1).
+
+This formulation and notation of the cost matrix comes from Charles Elkan’s seminal 2001 paper on the topic titled “The Foundations of Cost-Sensitive Learning.”
+
+An intuition from this matrix is that the cost of misclassification is always higher than correct classification, otherwise, cost can be minimized by predicting one class.
+
+Conceptually, the cost of labeling an example incorrectly should always be greater than the cost of labeling it correctly.
+
+— The Foundations Of Cost-sensitive Learning, 2001.
+
+Total Cost = C(0,1) * False Negatives + C(1,0) * False Positives
+This is the value that we seek to minimize in cost-sensitive learning, at least conceptually.
+
+This cost matrix method can be used in different ways (...), in our applications part 5, we'll focus on cart.
 
 ## post processinf threesholding
 

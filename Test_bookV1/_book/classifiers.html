@@ -24,7 +24,7 @@
 <meta name="author" content="Yihui Xie" />
 
 
-<meta name="date" content="2021-07-29" />
+<meta name="date" content="2021-07-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,12 +180,15 @@ div.csl-indent {
 <li class="chapter" data-level="3" data-path="classifiers.html"><a href="classifiers.html"><i class="fa fa-check"></i><b>3</b> Classifiers</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="classifiers.html"><a href="classifiers.html#lda"><i class="fa fa-check"></i><b>3.1</b> LDA</a></li>
-<li class="chapter" data-level="3.2" data-path="classifiers.html"><a href="classifiers.html#logistic-regression"><i class="fa fa-check"></i><b>3.2</b> logistic regression</a></li>
-<li class="chapter" data-level="3.3" data-path="classifiers.html"><a href="classifiers.html#svm"><i class="fa fa-check"></i><b>3.3</b> SVM</a></li>
-<li class="chapter" data-level="3.4" data-path="classifiers.html"><a href="classifiers.html#classification-tree"><i class="fa fa-check"></i><b>3.4</b> classification tree</a></li>
-<li class="chapter" data-level="3.5" data-path="classifiers.html"><a href="classifiers.html#random-forest"><i class="fa fa-check"></i><b>3.5</b> random forest</a></li>
-<li class="chapter" data-level="3.6" data-path="classifiers.html"><a href="classifiers.html#naives-bayes"><i class="fa fa-check"></i><b>3.6</b> Naives bayes</a></li>
-<li class="chapter" data-level="3.7" data-path="classifiers.html"><a href="classifiers.html#plan-pr-chaque-sous-partie-ci-dessus"><i class="fa fa-check"></i><b>3.7</b> plan pr chaque sous partie ci dessus</a></li>
+<li class="chapter" data-level="3.2" data-path="classifiers.html"><a href="classifiers.html#presentation"><i class="fa fa-check"></i><b>3.2</b> Presentation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="classifiers.html"><a href="classifiers.html#learning-lda-model"><i class="fa fa-check"></i><b>3.2.1</b> Learning LDA model</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="classifiers.html"><a href="classifiers.html#logistic-regression"><i class="fa fa-check"></i><b>3.3</b> logistic regression</a></li>
+<li class="chapter" data-level="3.4" data-path="classifiers.html"><a href="classifiers.html#svm"><i class="fa fa-check"></i><b>3.4</b> SVM</a></li>
+<li class="chapter" data-level="3.5" data-path="classifiers.html"><a href="classifiers.html#classification-tree"><i class="fa fa-check"></i><b>3.5</b> classification tree</a></li>
+<li class="chapter" data-level="3.6" data-path="classifiers.html"><a href="classifiers.html#random-forest"><i class="fa fa-check"></i><b>3.6</b> random forest</a></li>
+<li class="chapter" data-level="3.7" data-path="classifiers.html"><a href="classifiers.html#naives-bayes"><i class="fa fa-check"></i><b>3.7</b> Naives bayes</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
 <ul>
@@ -199,7 +202,8 @@ div.csl-indent {
 <li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
 <ul>
 <li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
-<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.2</b> direct sensitive learning with cart classifer</a></li>
+<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#weighted-class"><i class="fa fa-check"></i><b>4.3.2</b> Weighted class</a></li>
+<li class="chapter" data-level="4.3.3" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.3</b> direct sensitive learning with cart classifer</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
 </ul></li>
@@ -237,56 +241,77 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 3</span> Classifiers</h1>
 <div id="lda" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> LDA</h2>
-<p>Linear discriminant analysis (LDA), normal discriminant analysis (NDA), or discriminant function analysis is a generalization of Fisher’s linear discriminant, a method used in statistics and other fields, to find a linear combination of features that characterizes or separates two or more classes of objects or events.</p>
+</div>
+<div id="presentation" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Presentation</h2>
+<p>The Linear Discriminant analysis classifier is used to predict the probability of belonging to a given class based on one or multiple predictor variables. It works with continuous and/or categorical predictor variables.</p>
+<p>Linear discriminant analysis is a generalization of Fisher’s linear discriminant, a method used in statistics to find a linear combination of features that characterizes or separates two or more classes of objects.</p>
 <p>In this approach, Fishers sought to ﬁnd the linear combination of the predictors such that the between-group variance was maximized relative to the within-group variance. In other words, he wanted to ﬁnd the combination of the predictors that gave maximum separation between the centers of the data while at the same time minimizing the variation within each group of data.</p>
+<div id="learning-lda-model" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Learning LDA model</h3>
+<p><span class="math inline">\(\mu_k\)</span> and <span class="math inline">\(\sigma_k\)</span> the mean and variance for the k-class.
+LDA makes predictions by estimating the probability that a new set of inputs belongs to each class.
+LDA makes some simplifiying assumptions about your data:
+- that your data are gaussian
+- that each distribute the same variance, so <span class="math inline">\(\sigma_0 = \sigma_1 = \sigma\)</span>
+The model uses Bayes Theorem to estimate the probabilities
+<span class="math display">\[P(Y=c|X=x) = \frac{\pi_c f_c(x)}{\sum_{j=1}^k \pi_j f_j(x)}\]</span>
+Where <span class="math inline">\(\pi_c\)</span> refers to the base probability of each class (c) observed in your training data (e.g. 0.5 for a 50-50 split in a two class problem). In Bayes’ Theorem this is called the prior probability.
+<span class="math display">\[\pi_c=\frac{n_c}{n}\]</span>
+Estimation of <span class="math inline">\(f_c\)</span> is more delicate, it is the estimated probability of <span class="math inline">\(x\)</span> belonging to the class. A Gaussian distribution function is used for <span class="math inline">\(f_c\)</span>. Plugging the Gaussian into the above equation and simplifying we end up with the equation below. This is called a discriminate function and the class is calculated as having the largest value will be the output classification :</p>
+<p>x will be affected to the class c for which:
+<span class="math display">\[\hat\delta_c(x) = \ln \hat\pi_c - \frac{\hat\mu_c^2}{2\hat\sigma^2} + x\frac{\hat\mu_c}{\hat\sigma^2}\]</span> is maximum.</p>
+<p>Dk(x) = x * (muk/siga^2) – (muk^2/(2*sigma^2)) + ln(PIk)</p>
+<p><span class="math inline">\(\hat\delta_c(x)\)</span> is the discriminate function for class c given input x, the <span class="math inline">\(mu_k\)</span>, <span class="math inline">\(sigma^2\)</span> and <span class="math inline">\(\pi_c\)</span> are all estimated from your data.</p>
 </div>
-<div id="logistic-regression" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> logistic regression</h2>
-<p>In statistics, the logistic model (or logit model) is used to model the probability of a certain class or event existing such as pass/fail, win/lose, alive/dead or healthy/sick. This can be extended to model several classes of events such as determining whether an image contains a cat, dog, lion, etc. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)</p>
 </div>
-<div id="svm" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> SVM</h2>
-<p>definition: There are many hyperplanes that might classify the data. One reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
+<div id="logistic-regression" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> logistic regression</h2>
+<p>In statistics, the logistic model (or logit model) is used to model the probability of a certain class. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)</p>
+<p>Binary Logistic Regression Major Assumptions
+The dependent variable should be dichotomous in nature (e.g., presence vs. absent).
+There should be no outliers in the data, which can be assessed by converting the continuous predictors to standardized scores, and removing values below -3.29 or greater than 3.29.
+There should be no high correlations (multicollinearity) among the predictors. This can be assessed by a correlation matrix among the predictors. Tabachnick and Fidell (2013) suggest that as long correlation coefficients among independent variables are less than 0.90 the assumption is met.
+At the center of the logistic regression analysis is the task estimating the log odds of an event. Mathematically, logistic regression estimates a multiple linear regression function defined as:</p>
+<p><span class="math display">\[logit(p)= \log \frac{p(y=1)}{1-p(y=1)}= \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_ix_i\]</span>
+for i = 1…n .</p>
+<p>Overfitting. When selecting the model for the logistic regression analysis, another important consideration is the model fit. Adding independent variables to a logistic regression model will always increase the amount of variance explained in the log odds (typically expressed as R²). However, adding more and more variables to the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit.</p>
+</div>
+<div id="svm" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> SVM</h2>
+<p>Support vector machine try to make a reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
 More formally, a support-vector machine constructs a hyperplane or set of hyperplanes in a high- or infinite-dimensional space, which can be used for classification, regression, or other tasks like outliers detection. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin, the lower the generalization error of the classifier.</p>
-<p>the original problem may be stated in a finite-dimensional space, it often happens that the sets to discriminate are not linearly separable in that space. For this reason, it was proposed[5] that the original finite-dimensional space be mapped into a much higher-dimensional space, presumably making the separation easier in that space</p>
 <p>The support vector machines create an optimum hyperplane that separates the training data by the maximum margin. However, sometimes we would like to allow some misclassifications while separating categories. The SVM model has a cost function, which controls training errors and margins. For example, a small cost creates a large margin (a soft margin) and allows more misclassifications. On the other hand, a large cost creates a narrow margin (a hard margin) and permits fewer misclassifications. In this recipe, we will illustrate how the large and small cost will affect the SVM classifier.</p>
-<p>Concerning the gamma value in the SVM, gamma says how far the ‘reach’ of each training example is (<a href="http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html" class="uri">http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html</a>), but can be just thought of as a regularization parameter. The higher the gamma, the more local the reach, and you have to watch out that your model keeps a general behavior since it is prone to adjust too much to the training examples.</p>
+<p>image</p>
 </div>
-<div id="classification-tree" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> classification tree</h2>
+<div id="classification-tree" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> classification tree</h2>
 <p>Tree-based models consist of one or more nested if-then statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.</p>
-<p>if Predictor A &gt;= 1.7 then</p>
-<pre><code>| if Predictor B &gt;= 202.1 then Outcome = 1.3
-
-| else Outcome = 5.6</code></pre>
-<p>else Outcome = 2.5
-In this case, two-dimensional predictor space is cut into three regions (or terminal nodes) and, within each region, the outcome categorized into either “Class 1” or “Class 2.” Figure 14.1 presents the tree in the predictor space. Just like in the regression setting, the nested if-then statements could be collapsed into rules such as</p>
-<p>if Predictor A &gt;= 0.13 and Predictor B &gt;= 0.197 then Class = 1
-if Predictor A &gt;= 0.13 and Predictor B &lt; 0.197 then Class = 2
-if Predictor A &lt; 0.13 then Class = 2</p>
+<p>Choosing the trees split points
+Technically, for regression modeling, the split cutoff is defined so that the residual sum of squared error (RSS) is minimized across the training samples that fall within the subpartition.</p>
+<p>Recall that, the RSS is the sum of the squared difference between the observed outcome values and the predicted ones, RSS = sum((Observeds - Predicteds)^2). See Chapter <span class="citation">(<a href="#ref-ref" role="doc-biblioref"><strong>ref?</strong></a>)</span>(linear-regression)</p>
+<p>In classification settings, the split point is defined so that the population in subpartitions are pure as much as possible. Two measures of purity are generally used, including the Gini index and the entropy (or information gain).</p>
+<p>For a given subpartition, Gini = sum(p(1-p)) and entropy = -1<em>sum(p</em>log(p)), where p is the proportion of misclassified observations within the subpartition.</p>
+<p>The sum is computed across the different categories or classes in the outcome variable. The Gini index and the entropy varie from 0 (greatest purity) to 1 (maximum degree of impurity)</p>
+<p>image</p>
 </div>
-<div id="random-forest" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> random forest</h2>
+<div id="random-forest" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> random forest</h2>
+<p>RF classifier is an ensemble method that trains several decision trees in parallel with bootstrapping followed by aggregation, jointly referred as bagging (Fig. 9.17). Bootstrapping indicates that several individual decision trees are trained in parallel on various subsets of the training dataset using different subsets of available features. Bootstrapping ensures that each individual decision tree in the random forest is unique, which reduces the overall variance of the RF classifier. For the final decision, RF classifier aggregates the decisions of individual trees; consequently, RF classifier exhibits good generalization.</p>
+<p>image</p>
 <p>parameters :</p>
 <p>mtry : number of variables randomy sampled at each split
 ntree : number of tree to grow
 nodesize : minimum number of observation in a terminal node. setting it lower heads to trees with a larger depth which means that more splits are performed until the terminal nodes. (default value is 1 for classification and 5 for regression -diaz urirarte and de andres 2006).</p>
 </div>
-<div id="naives-bayes" class="section level2" number="3.6">
-<h2><span class="header-section-number">3.6</span> Naives bayes</h2>
+<div id="naives-bayes" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Naives bayes</h2>
 <p>basics of formula : <span class="math display">\[P(A ∩ B) = P(A) P(B|A) \iff P(B|A) = \frac{P(A ∩ B)}{P(A)}\]</span></p>
-<p>def wiki: In statistics, naive Bayes classifiers are a family of simple “probabilistic classifiers” based on applying Bayes’ theorem with strong (naïve) independence assumptions between the features</p>
+<p>In statistics, naive Bayes classifiers are a family of simple “probabilistic classifiers” based on applying Bayes’ theorem with strong (naïve) independence assumptions between the features</p>
 <p>Naives : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)</p>
 <p>Laplace correction will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)</p>
 <p>numeric data use bins to regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)</p>
-</div>
-<div id="plan-pr-chaque-sous-partie-ci-dessus" class="section level2" number="3.7">
-<h2><span class="header-section-number">3.7</span> plan pr chaque sous partie ci dessus</h2>
-<ul>
-<li>présentation</li>
-<li>concept mathématique</li>
-<li>paramètres du classifier</li>
-</ul>
+<p>image</p>
 
 </div>
 </div>

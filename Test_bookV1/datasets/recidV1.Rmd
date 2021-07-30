@@ -44,11 +44,11 @@ sum(is.na(recid))
 recid <- na.omit(recid)
 recid$is_violent_recid <- as.factor(recid$is_violent_recid)
 
-recid <- recid[,c(10, 1:9 )]
+recid0 <- recid[,c(10, 1:9 )]
 ```
 
 ```{r}
-Recid <- split_standard(data =  recid, y =  "is_violent_recid", mod = "standard")
+Recid <- split_standard(data =  recid0, y =  "is_violent_recid", mod = "standard")
 rm(recid, data)
 ```
 
@@ -78,9 +78,23 @@ KablesPerf(pred = predRecid, dat = Recid$test,
 
 ```{r}
 par(mfrow=c(1,1))
-AllRoc(predRecid, Recid$test$is_violent_recid, mod2 = "lr")
+AllRoc(predRecid, Recid$test$is_violent_recid, mod2 = "lr", caption = "test")
 ```
+
+
 
 # Remedies
 
 ## Datas prepocessing : 
+
+```{r}
+RecidUS <- resamp_res(datas = recid0 , mod = "US", mod2 = "bayes", captionCM = "matrix confusion", captionPerf = "Metrics", captionROC = "ROC Curves test")
+```
+
+```{r}
+par(mfrow=c(2,2))
+AllRoc0(predic = PredRec1, dataCl = datRecid$test$is_violent_recid,
+        caption = "first models")
+AllRoc0(predRoseRecid, dataCl = datasRoseRecid$test$is_violent_recid, caption = "Rose resampling") 
+AllRoc0(predic = predRecSmc, dataCl = datrecSmc$test$is_violent_recid, caption = "SMote-NC resampling")
+```

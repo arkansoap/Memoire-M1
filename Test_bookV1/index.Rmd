@@ -12,7 +12,7 @@ description: "This is a minimal example of using the bookdown package to write a
 
 ```{r, echo = FALSE, message=FALSE}
 source("FuncLib.R")
-load("alldatV1.Rdata")
+load("alldatV3.Rdata")
 ```
 
 # Introduction
