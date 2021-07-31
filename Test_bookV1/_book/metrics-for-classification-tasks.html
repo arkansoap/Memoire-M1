@@ -4,24 +4,24 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Metrics for classification tasks | A Minimal Book Example</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>Chapter 2 Metrics for classification tasks | Models of classification in context of imbalanced datas</title>
+  <meta name="description" content="First try of bookdown" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Metrics for classification tasks | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 2 Metrics for classification tasks | Models of classification in context of imbalanced datas" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="First try of bookdown" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Metrics for classification tasks | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 2 Metrics for classification tasks | Models of classification in context of imbalanced datas" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="First try of bookdown" />
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="Thibault Fuchez" />
 
 
 <meta name="date" content="2021-07-31" />
@@ -57,70 +57,6 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
@@ -170,8 +106,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#the-foundation-of-the-metrics-the-confusion-matrix"><i class="fa fa-check"></i><b>2.1</b> The foundation of the metrics: The Confusion Matrix</a></li>
 <li class="chapter" data-level="2.2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#accuracy-and-error-rate"><i class="fa fa-check"></i><b>2.2</b> Accuracy and error rate</a></li>
-<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate :</a></li>
-<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-flase-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and Flase positive rate</a></li>
+<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate</a></li>
+<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-false-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and False positive rate</a></li>
 <li class="chapter" data-level="2.5" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#positive-prediction-value-precision"><i class="fa fa-check"></i><b>2.5</b> Positive prediction value : Precision</a></li>
 <li class="chapter" data-level="2.6" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#f-measure"><i class="fa fa-check"></i><b>2.6</b> F-measure</a></li>
 <li class="chapter" data-level="2.7" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#kappa"><i class="fa fa-check"></i><b>2.7</b> Kappa</a></li>
@@ -192,30 +128,32 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#different-strategies"><i class="fa fa-check"></i><b>4.1</b> different strategies :</a></li>
-<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.2</b> Pre processing resampling</a>
+<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.1</b> Pre processing resampling</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#caret-up-and-down-sample"><i class="fa fa-check"></i><b>4.2.1</b> CARET up and down sample :</a></li>
-<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.2.2</b> ROSE</a></li>
-<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.2.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
+<li class="chapter" data-level="4.1.1" data-path="remedies.html"><a href="remedies.html#random-up-and-down-sample"><i class="fa fa-check"></i><b>4.1.1</b> Random Up and Down sample :</a></li>
+<li class="chapter" data-level="4.1.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.1.2</b> ROSE</a></li>
+<li class="chapter" data-level="4.1.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.1.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
+<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.2</b> Learning method tuning</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
-<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#weighted-class"><i class="fa fa-check"></i><b>4.3.2</b> Weighted class</a></li>
-<li class="chapter" data-level="4.3.3" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.3</b> direct sensitive learning with cart classifer</a></li>
+<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.2.1</b> Metaparameters tuning</a></li>
+<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#weighted-class"><i class="fa fa-check"></i><b>4.2.2</b> Weighted class</a></li>
+<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.2.3</b> direct sensitive learning with cart classifer</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
+<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#post-processing-threesholding"><i class="fa fa-check"></i><b>4.3</b> post-processing threesholding</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
-<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing : Resampling methods</a></li>
+<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing: Resampling methods</a></li>
 <li class="chapter" data-level="5.4" data-path="applications.html"><a href="applications.html#direct-cost-sensisitive-learnig"><i class="fa fa-check"></i><b>5.4</b> Direct cost sensisitive learnig</a></li>
-<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
+<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding-1"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
+<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="summary.html"><a href="summary.html#different-strategies"><i class="fa fa-check"></i><b>6.1</b> different strategies :</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -229,7 +167,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Models of classification in context of imbalanced datas</a>
           </h1>
         </div>
 
@@ -239,8 +177,8 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="metrics-for-classification-tasks" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Metrics for classification tasks</h1>
-<p>Understanding if a model is a good classifier or not require a good comprehension of the predictions he made. We want to know the global effiency but some specific element too. Is he better in predicting one or the other class? What are the strenght and weaknees of the model? Can we be confident towards the results, haw can we know they are not due to chance?</p>
-<p>In order to compare the performance’s models, we use differents “metrics.” The reliability of our tools is higlhy dependant on the structure of our datas. In our case, the imbalanced sample of datas classes has to be take into account in order to find the metrics which allows to give a good evaluation of our models.</p>
+<p>Understanding if a model is a good classifier or not requires a good comprehension of the predictions. We want to know the global effiency but some specific element too. Is classifier better in predicting one or the other class? What are the strength and weakness of the model? Can we be confident towards the results, haw can we know they are not due to chance?</p>
+<p>In order to compare the performance’s models, we use different “metrics.” Our tools reliability is highly dependent on the data structure. In our case, the imbalanced sample of data classes has to be taken into account in order to find the metrics which allows to give a good evaluation of our models.</p>
 <div id="the-foundation-of-the-metrics-the-confusion-matrix" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> The foundation of the metrics: The Confusion Matrix</h2>
 <p>The confusion matrix presents the results obtained by a given classifier. This table provides the instances that were correctly classified (True Positive and True negative), and the instances that were wrongly classified (False Positive and False negative).
@@ -302,22 +240,22 @@ TN
 <h2><span class="header-section-number">2.2</span> Accuracy and error rate</h2>
 <p><span class="math display">\[error = \frac{FP + FN}{TN+TP+FP+FN}\]</span></p>
 <p><span class="math display">\[accuracy = 1 - error\]</span>
-The first metrics is obviously the global accuracy and its complement the error rate. It is the most frequently used to estimate the performance of a model. If accuracy is too low, we deduce that our learning algolritm is globally inneficient. However In the context of imbalanced dataset, accuracy is not suitable. Indeed, because of the massive representation of the negative class, and as the classifiers failed to identify the positive class, we reach a high value of accuracy. For instance, if only 10% of the cases belong to the positive class and the classifiers predicts all cases as negative, accuracy will be at 90%.
+The first metrics is obviously the global accuracy and its complement the error rate. It is the most frequently used to estimate the performance of a model. If accuracy is too low, we deduce that our learning algorithm is globally inefficient. However In the context of imbalanced data set, accuracy is not suitable. Indeed, because of the massive representation of the negative class, and as the classifiers failed to identify the positive class, we reach a high value of accuracy. For instance, if only 10% of the cases belong to the positive class and the classifiers predicts all cases as negative, accuracy will be at 90%.
 This is worthless when users objectives is to predict the rare cases.</p>
 <p>To reflect more closely the users needs and priorities, several performance measure exist.</p>
 </div>
 <div id="true-positive-rate" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> True Positive rate :</h2>
+<h2><span class="header-section-number">2.3</span> True Positive rate</h2>
 <p><span class="math display">\[TP_{rate} = \frac{TP}{TP+FN} = \frac{TP}{P_{real}}\]</span></p>
-<p>Also called sensitivity, recall or detection power. I personnaly prefer the term detection power because it is more explicit. It is the ratio of the value predicted as positive and which are actually positive among all the real positive. This is the ability of our classifier to detect the positive cases.</p>
+<p>Also called sensitivity, recall or detection power. I personally prefer the term detection power because it is more explicit. It is the ratio of the value predicted as positive and which are actually positive among all the real positive. This is the ability of our classifier to detect the positive cases.</p>
 </div>
-<div id="true-negative-and-flase-positive-rate" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> True Negative and Flase positive rate</h2>
+<div id="true-negative-and-false-positive-rate" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> True Negative and False positive rate</h2>
 <p>Also called specificity. It is the ratio of the value predicted as negative and which are actually negative among all the real negative case.</p>
 <p><span class="math display">\[TN_{rate} = \frac{TN}{TN+FP}\]</span></p>
-<p>I prefer its complement, the False positive rate, also called False alarm. Indeed, the terme “False alarm” is more relevant than specificity.</p>
+<p>I prefer its complement, the False positive rate, also called False alarm. Indeed, the term “False alarm” is more relevant than specificity.</p>
 <p><span class="math display">\[FP_{rate} = \frac{FP}{TN+FP} = 1 - TN_{rate}\]</span>
-TPrate (detection power) and FP rate (False alarm) are often quote in the litterature as benefits and costs, respectively. These terms refers to a central point of our problematic. Indeed, a key point to find good remedies is to make a trade-off between what it cost in terms of False alarm and the benefits gained in terms of detection power.</p>
+TPrate (detection power) and FP rate (False alarm) are often quote in the literature as benefits and costs, respectively. These terms refers to a central point of our problematic. Indeed, a key point to find good remedies is to make a trade-off between what it cost in terms of False alarm and the benefits gained in terms of detection power.</p>
 </div>
 <div id="positive-prediction-value-precision" class="section level2" number="2.5">
 <h2><span class="header-section-number">2.5</span> Positive prediction value : Precision</h2>
@@ -326,7 +264,7 @@ TPrate (detection power) and FP rate (False alarm) are often quote in the litter
 </div>
 <div id="f-measure" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> F-measure</h2>
-<p>The F-measure is a combiination of both precision and recall. This metric value is high when both recall (a measure of completness) and precision ( a measure of exactness) are high (citation). Hence, this metrics is particuilary suitable on predicting the case that matter to the user.</p>
+<p>The F-measure is a combination of both precision and recall. This metric value is high when both recall (a measure of completeness) and precision ( a measure of exactness) are high. Hence, this metrics is particulary suitable on predicting the case that matter to the user.</p>
 <p><span class="math display">\[F_\beta = \frac{(1+\beta^2) \times recall \times precision}{\beta^2 \times recall + precision}\]</span>
 Beta is a coefficient to adjust the weight of recall against precision. In this paper, we choose a value of 1 which give the same weights to recall and precision.</p>
 </div>
@@ -336,11 +274,7 @@ Beta is a coefficient to adjust the weight of recall against precision. In this 
 <p><span class="math display">\[P_{agree} = \frac{TP + FN} {number \ of \ cases} \]</span>
 <span class="math display">\[P_{chance} = \frac{P_{pre} \times P_{act}}{number \ of \ cases^2}+\frac{N_{pre} \times N_{act}}{number \ of \ cases^2}\]</span></p>
 <p>Kappa is a very interesting metrics in context of imbalanced datas.
-The calculation is based on the difference between how much agreement(positive) is actually present (“observed”) compared to how much positive would be expected to be present by chance alone (“expected”). We want to know how different the observed positive are from the expected. Kappa is a measure of this difference (citation).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="metrics-for-classification-tasks.html#cb1-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&lt; 0&quot;</span>, <span class="st">&quot;0.01-0.20&quot;</span>,<span class="st">&quot;0.21– 0.40&quot;</span>, <span class="st">&quot;0.41–0.60&quot;</span>, <span class="st">&quot;0.61–0.80&quot;</span>,<span class="st">&quot;0.81–0.99&quot;</span>)</span>
-<span id="cb1-2"><a href="metrics-for-classification-tasks.html#cb1-2" aria-hidden="true" tabindex="-1"></a>app <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Less than chance agreement&quot;</span>, <span class="st">&quot;slight agreement&quot;</span>,<span class="st">&quot;Fair agreement&quot;</span>,<span class="st">&quot;Moderate agreement&quot;</span>, <span class="st">&quot;Substantial agreement&quot;</span>,<span class="st">&quot;Almost perfect agreement&quot;</span>)</span>
-<span id="cb1-3"><a href="metrics-for-classification-tasks.html#cb1-3" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">&lt;-</span> <span class="fu">cbind</span>(score, app)</span>
-<span id="cb1-4"><a href="metrics-for-classification-tasks.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(gg) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>()</span></code></pre></div>
+The calculation is based on the difference between how much agreement(positive) is actually present (“observed”) compared to how much positive would be expected to be present by chance alone (“expected”). We want to know how different the observed positive are from the expected. Kappa is a measure of this difference<span class="citation">(<a href="#ref-kappa" role="doc-biblioref">McHugh 2015</a>)</span>.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -408,7 +342,14 @@ Almost perfect agreement
 <h2><span class="header-section-number">2.8</span> ROC Curve</h2>
 <p>A receiver operating characteristic curve, or ROC curve, is a graphical plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.</p>
 <p>The ROC curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.</p>
+<p><img src="Roc.jpg" style="display: block; margin: auto;" /></p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-kappa" class="csl-entry">
+McHugh, Mary L. 2015. <em>Interrater Reliability: The Kappa Statistic</em>. Biochem Med.
 </div>
 </div>
             </section>

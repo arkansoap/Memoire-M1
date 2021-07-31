@@ -1,14 +1,18 @@
 --- 
-title: "A Minimal Book Example"
-author: "Yihui Xie"
+title: "Models of classification in context of imbalanced datas"
+author: "Thibault Fuchez"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: report
 bibliography: references.bib
 biblio-style: apalike
 link-citations: yes
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+description: "First try of bookdown"
 ---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align="center")
+```
 
 ```{r, echo = FALSE, message=FALSE}
 source("FuncLib.R")
@@ -19,23 +23,25 @@ load("alldatV3.Rdata")
 
 ## Abstract
 
-In data-minig, a frequent and major issue for handling with two-class classification is to make reliable predictions with strongly imbalanced distribution of the target variable. Most of the machine learning algorithms assumes by default that all data are balanced. Empirically, a lot of dataset faces this distorsion (fraud detection, anticipation of catastrophes, donators in case of funding campain, unusual returns on stock markets, ...). The majority class represents "normal cases", while the minority class represents "abnormal" cases. Because The least common values of the target variable are linked with events which are very relevant for users, we considered the minority class as positive and the majority class as negative.
+In data-minig, a frequent and relevant issue to handle with two-class classification is to make reliable predictions with strongly imbalanced distribution of the target variable. Most of the machine learning algorithms assume by default that all data are balanced. Empirically, a lot of datasets faces this distortion (fraud detection, anticipation of catastrophes, donators in case of funding campain, unusual returns on stock markets, ...). The majority class represents "normal cases", while the minority class represents "abnormal" cases. Because The least common values of the target variable are linked with events which are very relevant for users, we considered the minority class as positive and the majority class as negative.
 
 The commun issue with classifiers is that they are unable to learn from the positive class. It results that the predictions are almost only negative class. Algorithms failed to predict the positive class which is properly what the users need.  
 
-Nowadays, the imbalanced data sets problem plays a key role in machine learning. During the last decades, literature was very prolific on this subject. Many tools were developped to solve this problem. This paper has neither ambition to give an exhaustive review of the existing solutions nor exploring new solutions. Moreover, we won't go to far in the explanation of the mathematical principle handling the algorithms. Our purpose is to propose some elements of solution to counteract the effect of imbalanced datatset which can be used an uderstanded by people who like data-minig without having a large scale of knowledge in this domain. 
+Nowadays, the imbalanced data sets problem plays a key role in machine learning. During the last decades, literature was very prolific about this subject. Many tools were developped to solve this problem. This paper has neither ambition to give an exhaustive review of the existing solutions nor exploring new solutions. Moreover, we won't go to far in the explanation of the mathematical principle handling the algorithms. Our purpose is to propose some elements of solution to counteract the effect of imbalanced datatset which can be used an uderstanded by people who like data-minig without having a large scale of knowledge in this domain. 
 
 ## Document format
 
-On chapter 1, we introduce some tools which allows to measure the effiency of a model. 
+Chapter 1 was an introduction of this paper.
 
-Chapter 2 briefly presents the differents models we used. We will touch upon the math behind the classifier and the way the algorithm works.
+On chapter 2, we introduce some tools which allows to measure the efficiency of a model. 
 
-Chapter 3 introduce some remedies to make our classifiers better predictors. 
+Chapter 3 briefly presents the different models we used. We will touch upon the math behind the classifier and the way the algorithm works.
 
-Chapter 4 is an application on three dataset with wich we can evaluate the submitted remedies. 
+Chapter 4 introduces some remedies to make our classifiers better predictors. 
 
-Chapter 5 stands as a conclusion. 
+Chapter 5 is an application on three dataset with which we can evaluate the submitted remedies. 
+
+Chapter 6 stands as a conclusion. 
 
 
 

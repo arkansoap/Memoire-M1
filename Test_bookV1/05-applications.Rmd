@@ -7,38 +7,50 @@ editor_options:
 
 ## Introduction
 
-In order [@xie2015] to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
+In order to illustrate and discuss the different remedies proposed in the previous chapter, we are handling each on different dataset. Hence we can make comparisons and try to measure their efficiency.
 
-Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience (show plots). Notice that we first try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give similar results (quote). !! maybe put it in classifiers part !!!!
+- Few words about classifiers:
 
-Few words About the code : We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this github repositery, wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need. 
+Our first choice as classifiers was to use LDA, LR, RF and SVM. having ascertained that LDA et LR give very similar results, we decide to substitute LR by naives bayes'classifier in order to proposed a richer experience. Notice that we first try to use glmnet instead of glm but it doesn't deliver better results (see spot.rmd). It is not unexpected that LR and LDA give nearly predictions, indeed they both are linear models and litteracy confirms they both give quite similar results. 
 
-We choose four dataset with different level of imabalanced. 
+- Few words About the code : 
+
+We don't introduce here all the manipulations done on the datasets, either the preparation of the dataset. You can find them in this [github repositery](https://github.com/arkansoap/Memoire-M1) wich contains the .rmd for each dataset. In this repositery, you can also find the .R file which contains also the functions we code in order to avoid to many repetition in the code. At last, the alldat.Rdata stocked all objects built in the .rmd, it is used here to call the object we need. A fourth data set is in development that is not use here (creditcard).
+
+Our first think was to put the tuning of parameters inherent to classifiers as a track of remedies. We eventually decided to launch our first models with the parameters already tune. First because there was no significant improvement in detection power, then because svm models was unable to give results with the basic parameters.
+
+To illustrate some remdies introduced above, We choose three dataset with different level of imabalanced. 
 
 Let's briefly presents those datasets:
 
-* Spotify ...
-* Recidivism ...
-* Creditcard ...
-* Hacked ...
+* Spotify : a database including songs from spotify servers with categorical (about the qualification genre) and numerical predictors (about sound aspect of the songs computed by algorithm). Here the predicted variable is the popularity (is low /is not low). 
+* Recidivism : a database containing arrested people and some caterogical predictors about their identity and judicial priors.
+* Hacked : a database concerning system and hacked tentative. a variable multiple_offense with "1" if hacked and "0" if not.
 
-Table of priors ratio between positive and negative class
+The table 5.1 shows the priors of the depending class for the three datasets.
+
+```{r}
+spot <- priors(spot_B,"popularity")
+hack <- priors(Hacked$train, "MULTIPLE_OFFENSE")
+recid <- priors(recid, "is_violent_recid")
+kable(cbind(c("0", "1"), spot,hack ,recid), caption = "Table of priors ratio between positive and negative class") %>% kable_styling()
+```
 
 ## First Models
 
-The function models compute our four models. We show the function in order to show the basic parameters. This parameters will be change in a following section. For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later. 
+We start to compute classifiers algorithm .For now, we just want to observe results with basic parameters. This first computation can be used as a start reference to measure the remedies tested later. 
 
 ```{r, echo = FALSE}
 KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", captionCM = "Confusion matrix spotify", captionPerf = "Spotify metrics", mod = "bayes", listPred = "bayes")[[1]]
 ```
 
-The table ... shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics sharps this observation.
+The table 5.2 shows the confusion matrix resulting to the four classifiers used on the spotofy dataset. We observe the unabilty to properly predict the unpopular songs. A look on the metrics (table5.3) sharps this observation.
 
 ```{r, echo = FALSE}
 KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", captionCM = "Confusion matrix spotify", captionPerf = "Spotify metrics", mod = "bayes", listPred = "bayes")[[2]]
 ```
 
-First we note that accuracy is very good, wigch confirms accuracy is not a relaible metrics concerning imbalance dataset. a simple view on Detection power(TPr) shows that we don't achieve to predict what songs are very un popular. FN rate is obviously good because of the imblalanced ratio. Here FN won't be a good metrics.
+First we note that accuracy is very good, wich confirms accuracy is not a relaible metrics concerning imbalance dataset. A simple view on Detection power(TPr) shows that we don't achieve to predict what songs are very unpopular. FN rate is obviously good because of the imblalanced ratio.
 
 Let see the plot curve for all datasets. 
 
@@ -51,45 +63,39 @@ AllRoc(predHacked, Hacked$test$MULTIPLE_OFFENSE, mod2 = "bayes",
        caption = "Hacked ROC Curves")
 ```
 
-!!! discuss the better results for creditcard and hacked !!!
-- from kaggle (datasets directly from professional use, more relevant, data more reliable) ? preprocessing (pca, onlynumeircal), extreme imbalanced ? 
-
-Even if creditcard and hacked seems not to need remedies to counteract imbalanced data, let see the detection power. We can argue that 3/4 of detection power is not enough to reassure users. In a professional use, we can wish at leat 90% of TPr.
-
-At last, it is sure that all explicative variable are dependent to the variable to predict and and non colinear between them. for spotify we can'b sure that these variable can explain popularity, mayb there's no link between them. As the variable for recid, are they really a good choice.
+Spotify and recid faces a real problem, no classifiers is able to make good predictions. Hacked data set has pretty good results for a first try.
+It is possible that the nature of the data explains a part of this gap. Maybe variables can have some colinerarity or just don't have a real dependency for the dependant variable. 
 
 ```{r, echo = FALSE}
 KablesPerf(pred = predHacked, dat = Hacked$test, y = "MULTIPLE_OFFENSE", captionCM = "Confusion matrix Hacked", captionPerf = "Hacked metrics", listPred = "bayes", mod = "bayes")[[2]]
 ```
-On this one, we can see that only rf has very good results. Detection power and Fscore allows to judge the performance classifiers, contrarly to accuracy or FNr which are not usefull here. Rf has the better results, In second position comes svm, even if he detects only a third among True positive, its quite a good results for a first try with an imbalanced data set, and Fscore ank kappa are not so bad. 
+On table 5.4, we can see that only RF has very good results. Detection power and Fscore allows to judge the performance classifiers, contrary to accuracy or FN rate which are not usefull here. RF has the better results, In second position comes svm, even if he detects only a third among True positive, its quite a good results for a first try with an imbalanced data set, and Fscore ank kappa are not so bad. 
 
-## Preprocessing : Resampling methods
+## Preprocessing: Resampling methods
 
-As we can see with the function 'resamp'in the funclin.R and the .rmd , we try many resampling with different method. As the smote methods seems to us pertinent with this approach of oversampling with some logic, we try some develepment as adasyn or BLSMOTE.
-Note that the original smote algorithm is only for numerical variable. Some databases have few or no numerical variable so it is not an issue but a dataset as recid (with many caterogicla variable) asks to act on this variable. We could try to transform them as numerical but we choose to use SMoteNC, which is developped to deal with bot numerical and caterogical variable. 
+As we can see with the function *resamp* (in Funclib.R of this[github repositery](https://github.com/arkansoap/Memoire-M1) )the funclin.R and the .rmd, we try many resampling with different method. As the smote methods seems to us pertinent with this approach of oversampling with some logic, we try some development as adasyn or BLSMOTE. We made some test with random up sampling and downsizing which don't stands here.
 
-an example of downsampling with spotify
+Note that the original smote algorithm is only for numerical variable. Some databases have few or no numerical variable so it is not an issue but a dataset as recid (with many caterogicla variable) asks to act on this variable. We could try to transform them as numerical but we choose to use SMoteNC, which is developed to deal with bot numerical and categorical variable. 
 
-
-Here another example with smoteNC spotify
+Table 5.5 shows the results of SMOTE-NC resampling.
 
 ```{r,  echo = FALSE}
 KablesPerf(pred = SpotSmoteNC, dat = datasSmote$test,
            y = "popularity", listPred = "bayes",
-           captionCM ="test" ,captionPerf = "test",
+           captionCM ="Spot with Smote-NC" ,captionPerf = "Spot with Smote-NC",
            mod = "bayes")[[2]]
 ```
 
-Lets compare RocCurve before and after smote resampling
+On graphics below, Lets compare RocCurve before and after smote resampling. This graphics illustrate a situation we faces a lot during our works. It often occurs with all smotefamily resamplers and Upsampling. We clearly see a global improvement. Random forest leads the course, following by SVM.
 
 ```{r, echo = FALSE}
 par(mfrow=c(1,2))
 AllRoc(predSpot, Spot$test$popularity, mod2 = "bayes", caption = "spotify ROC Curves")
-AllRoc(predic = SpotSmoteNC, dataCl = datasSmote$test$popularity, mod2 = "bayes", caption = "test" ) 
+AllRoc(predic = SpotSmoteNC, dataCl = datasSmote$test$popularity, mod2 = "bayes", caption = "spotify SMOTE-NC RoC Curves" ) 
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 par(mfrow=c(2,2))
 AllRoc0(predic = PredRec1, dataCl = datRecid$test$is_violent_recid,
         caption = "first models")
@@ -100,17 +106,29 @@ AllRoc0(predic = predRecSmc, dataCl = datrecSmc$test$is_violent_recid, caption =
 
 ## Direct cost sensisitive learnig
 
+Using a decision tree with a cost matrix give interesting results. 
+A question we ask is : what is the optimal cost to give at FP and FN rate?
+Intuitively, we want to use the ratio of priors, for example, spotify priors are approximately 0,8 and 0,2 so we use c(1,0) = 1 and c(0,1) = 4, or with recid c(0,1) = 19 (0.95/0.005).
+
+The graphics below shows evolution of sensitivity and specificity in function of the given cost. 
+
+The first one confirms that priors can be a good choice to choose the cost for confusion matrix. Globally, CART with cost has improve the predictions in comparison of first models. Not as good as resampling, but it gives substantial improvement. Kappa stills a bit low. A look on the left graph can help users to choose a cost slightly on the right to improove detection power if the cost in specificity is not too expensive for his application of the prediction.
+
 ```{r, echo = FALSE}
 C5graph(Spot, "popularity", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b=20, ylim = c(0,1))
 ```
 
-```{r}
-C5graph(Hacked, "MULTIPLE_OFFENSE", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b = 100, ylim = c(0.8,1))
+Here, CART gives excellent result, as shows the kappa measure, still high which means results are not due to chance. Beside, TP and TN curves shows that a value between 50 and 90 seems optimal to maintain a high level of detection power and a low level of false alarm and stay balanced between them.
+
+```{r, echo = FALSE}
+C5graph(Hacked, "MULTIPLE_OFFENSE", captest = "Kappa depending cost", captest2 = "Sensitivity \n and specificity", b = 100, ylim = c(0.9,1))
 ```
 
 ## Post processing Threesholding
 
-```{r, echo = FALSE}
+In order to choose a good threeshold for the probabilities, we first vizualize the evolution of the three kind of errors. Those graphics will help us to choose a good threshold. We want that global error stays as high as possible. We also want a threeshold where FPrate and FNrate are closed to their intercept. At last we prefer situate on the right of the intercept because we privilegies FPrate to FNrate. the softer the slope is, the easier we can make gains on FP without looing too much in FN and accuracy. Hence, bayes and RF are better here for users who would try different threshold.
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
 par(mfrow=c(2,2))
 evoSeuil(predSpot$predLda, Spot$test$popularity, Spot$test, "posterior", caption = "lda")
 evoSeuil(predSpot$predOpt$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "bayes")
@@ -119,10 +137,13 @@ evoSeuil(attr(predSpot$predSvm, "probabilities")[,2],
 evoSeuil(predSpot$predrf$prob[,2], Spot$test$popularity, Spot$test, "autres", caption = "rf")
 ```
 
-```{r, echo = FALSE}
-KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", listPred = listPredseuil, captionCM = "plop" ,captionPerf= "perfplop", mod = "bayes")[[2]]
+Once we have choosen the better value depending our attempts, we can observe results in table 5.6 and reshape with another threshold if necessary. 
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+KablesPerf(pred = predSpot, dat = Spot$test, y = "popularity", listPred = listPredseuil, captionCM = "plop" ,captionPerf= "metrics with new threshold", mod = "bayes")[[2]]
 ```
 
+Once again, we observe a remrquable improvement in comparison of the first try. This threshold can be choosed by someone whants to keep accuracy above 60 percent and keep a balanced between specificity an sensitivity. If the user wants to win some detection power because he has still some margin in terms of specificity and accuracy, he can raise a bit the threshold.
 
 
 

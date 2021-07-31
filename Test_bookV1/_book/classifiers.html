@@ -4,24 +4,24 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Classifiers | A Minimal Book Example</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>Chapter 3 Classifiers | Models of classification in context of imbalanced datas</title>
+  <meta name="description" content="First try of bookdown" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Classifiers | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 3 Classifiers | Models of classification in context of imbalanced datas" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="First try of bookdown" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Classifiers | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 3 Classifiers | Models of classification in context of imbalanced datas" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="First try of bookdown" />
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="Thibault Fuchez" />
 
 
 <meta name="date" content="2021-07-31" />
@@ -57,70 +57,6 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
@@ -170,8 +106,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#the-foundation-of-the-metrics-the-confusion-matrix"><i class="fa fa-check"></i><b>2.1</b> The foundation of the metrics: The Confusion Matrix</a></li>
 <li class="chapter" data-level="2.2" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#accuracy-and-error-rate"><i class="fa fa-check"></i><b>2.2</b> Accuracy and error rate</a></li>
-<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate :</a></li>
-<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-flase-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and Flase positive rate</a></li>
+<li class="chapter" data-level="2.3" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-positive-rate"><i class="fa fa-check"></i><b>2.3</b> True Positive rate</a></li>
+<li class="chapter" data-level="2.4" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#true-negative-and-false-positive-rate"><i class="fa fa-check"></i><b>2.4</b> True Negative and False positive rate</a></li>
 <li class="chapter" data-level="2.5" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#positive-prediction-value-precision"><i class="fa fa-check"></i><b>2.5</b> Positive prediction value : Precision</a></li>
 <li class="chapter" data-level="2.6" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#f-measure"><i class="fa fa-check"></i><b>2.6</b> F-measure</a></li>
 <li class="chapter" data-level="2.7" data-path="metrics-for-classification-tasks.html"><a href="metrics-for-classification-tasks.html#kappa"><i class="fa fa-check"></i><b>2.7</b> Kappa</a></li>
@@ -192,30 +128,32 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="remedies.html"><a href="remedies.html"><i class="fa fa-check"></i><b>4</b> Remedies</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#different-strategies"><i class="fa fa-check"></i><b>4.1</b> different strategies :</a></li>
-<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.2</b> Pre processing resampling</a>
+<li class="chapter" data-level="4.1" data-path="remedies.html"><a href="remedies.html#pre-processing-resampling"><i class="fa fa-check"></i><b>4.1</b> Pre processing resampling</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#caret-up-and-down-sample"><i class="fa fa-check"></i><b>4.2.1</b> CARET up and down sample :</a></li>
-<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.2.2</b> ROSE</a></li>
-<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.2.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
+<li class="chapter" data-level="4.1.1" data-path="remedies.html"><a href="remedies.html#random-up-and-down-sample"><i class="fa fa-check"></i><b>4.1.1</b> Random Up and Down sample :</a></li>
+<li class="chapter" data-level="4.1.2" data-path="remedies.html"><a href="remedies.html#rose"><i class="fa fa-check"></i><b>4.1.2</b> ROSE</a></li>
+<li class="chapter" data-level="4.1.3" data-path="remedies.html"><a href="remedies.html#smote-family-smotenc-blsmote-adasyn"><i class="fa fa-check"></i><b>4.1.3</b> Smote family (smoteNC, BLSMOTE, ADASYN)</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.3</b> Learning method tuning</a>
+<li class="chapter" data-level="4.2" data-path="remedies.html"><a href="remedies.html#learning-method-tuning"><i class="fa fa-check"></i><b>4.2</b> Learning method tuning</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.3.1</b> Metaparameters tuning</a></li>
-<li class="chapter" data-level="4.3.2" data-path="remedies.html"><a href="remedies.html#weighted-class"><i class="fa fa-check"></i><b>4.3.2</b> Weighted class</a></li>
-<li class="chapter" data-level="4.3.3" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.3.3</b> direct sensitive learning with cart classifer</a></li>
+<li class="chapter" data-level="4.2.1" data-path="remedies.html"><a href="remedies.html#metaparameters-tuning"><i class="fa fa-check"></i><b>4.2.1</b> Metaparameters tuning</a></li>
+<li class="chapter" data-level="4.2.2" data-path="remedies.html"><a href="remedies.html#weighted-class"><i class="fa fa-check"></i><b>4.2.2</b> Weighted class</a></li>
+<li class="chapter" data-level="4.2.3" data-path="remedies.html"><a href="remedies.html#direct-sensitive-learning-with-cart-classifer"><i class="fa fa-check"></i><b>4.2.3</b> direct sensitive learning with cart classifer</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="remedies.html"><a href="remedies.html#post-processinf-threesholding"><i class="fa fa-check"></i><b>4.4</b> post processinf threesholding</a></li>
+<li class="chapter" data-level="4.3" data-path="remedies.html"><a href="remedies.html#post-processing-threesholding"><i class="fa fa-check"></i><b>4.3</b> post-processing threesholding</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#first-models"><i class="fa fa-check"></i><b>5.2</b> First Models</a></li>
-<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing : Resampling methods</a></li>
+<li class="chapter" data-level="5.3" data-path="applications.html"><a href="applications.html#preprocessing-resampling-methods"><i class="fa fa-check"></i><b>5.3</b> Preprocessing: Resampling methods</a></li>
 <li class="chapter" data-level="5.4" data-path="applications.html"><a href="applications.html#direct-cost-sensisitive-learnig"><i class="fa fa-check"></i><b>5.4</b> Direct cost sensisitive learnig</a></li>
-<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
+<li class="chapter" data-level="5.5" data-path="applications.html"><a href="applications.html#post-processing-threesholding-1"><i class="fa fa-check"></i><b>5.5</b> Post processing Threesholding</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a></li>
+<li class="chapter" data-level="6" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>6</b> Summary</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="summary.html"><a href="summary.html#different-strategies"><i class="fa fa-check"></i><b>6.1</b> different strategies :</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -229,7 +167,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Models of classification in context of imbalanced datas</a>
           </h1>
         </div>
 
@@ -246,63 +184,55 @@ div.csl-indent {
 <h2><span class="header-section-number">3.2</span> Presentation</h2>
 <p>The Linear Discriminant analysis classifier is used to predict the probability of belonging to a given class based on one or multiple predictor variables. It works with continuous and/or categorical predictor variables.</p>
 <p>Linear discriminant analysis is a generalization of Fisher’s linear discriminant, a method used in statistics to find a linear combination of features that characterizes or separates two or more classes of objects.</p>
-<p>In this approach, Fishers sought to ﬁnd the linear combination of the predictors such that the between-group variance was maximized relative to the within-group variance. In other words, he wanted to ﬁnd the combination of the predictors that gave maximum separation between the centers of the data while at the same time minimizing the variation within each group of data.</p>
+<p>In this approach, Fishers sought to ﬁnd the linear combination of the predictors such that the between-group variance was maximized relative to the within-group variance. In other words, he wanted to ﬁnd the combination of the predictors that gave maximum separation between the centers of the data while at the same time minimizing the variation within each group of data. <span class="citation">(<a href="#ref-lda" role="doc-biblioref">Li 2014</a>)</span></p>
 <div id="learning-lda-model" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Learning LDA model</h3>
 <p><span class="math inline">\(\mu_k\)</span> and <span class="math inline">\(\sigma_k\)</span> the mean and variance for the k-class.
 LDA makes predictions by estimating the probability that a new set of inputs belongs to each class.
 LDA makes some simplifiying assumptions about your data:
-- that your data are gaussian
-- that each distribute the same variance, so <span class="math inline">\(\sigma_0 = \sigma_1 = \sigma\)</span>
-The model uses Bayes Theorem to estimate the probabilities
+* that your data are gaussian
+* that each distribute the same variance, so <span class="math inline">\(\sigma_0 = \sigma_1 = \sigma\)</span>
+The model uses Bayes Theorem to estimate the probabilities.
 <span class="math display">\[P(Y=c|X=x) = \frac{\pi_c f_c(x)}{\sum_{j=1}^k \pi_j f_j(x)}\]</span>
-Where <span class="math inline">\(\pi_c\)</span> refers to the base probability of each class (c) observed in your training data (e.g. 0.5 for a 50-50 split in a two class problem). In Bayes’ Theorem this is called the prior probability.
+Where <span class="math inline">\(\pi_c\)</span> refers to the base probability of each class (c) observed in your training data. In Bayes’ Theorem this is called the prior probability.
 <span class="math display">\[\pi_c=\frac{n_c}{n}\]</span>
 Estimation of <span class="math inline">\(f_c\)</span> is more delicate, it is the estimated probability of <span class="math inline">\(x\)</span> belonging to the class. A Gaussian distribution function is used for <span class="math inline">\(f_c\)</span>. Plugging the Gaussian into the above equation and simplifying we end up with the equation below. This is called a discriminate function and the class is calculated as having the largest value will be the output classification :</p>
 <p>x will be affected to the class c for which:
 <span class="math display">\[\hat\delta_c(x) = \ln \hat\pi_c - \frac{\hat\mu_c^2}{2\hat\sigma^2} + x\frac{\hat\mu_c}{\hat\sigma^2}\]</span> is maximum.</p>
-<p>Dk(x) = x * (muk/siga^2) – (muk^2/(2*sigma^2)) + ln(PIk)</p>
 <p><span class="math inline">\(\hat\delta_c(x)\)</span> is the discriminate function for class c given input x, the <span class="math inline">\(mu_k\)</span>, <span class="math inline">\(sigma^2\)</span> and <span class="math inline">\(\pi_c\)</span> are all estimated from your data.</p>
 </div>
 </div>
 <div id="logistic-regression" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> logistic regression</h2>
-<p>In statistics, the logistic model (or logit model) is used to model the probability of a certain class. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in its basic form uses a logistic function to model a binary dependent variable, although many more complex extensions exist. In regression analysis, logistic regression (or logit regression) is estimating the parameters of a logistic model (a form of binary regression)</p>
-<p>Binary Logistic Regression Major Assumptions
-The dependent variable should be dichotomous in nature (e.g., presence vs. absent).
-There should be no outliers in the data, which can be assessed by converting the continuous predictors to standardized scores, and removing values below -3.29 or greater than 3.29.
-There should be no high correlations (multicollinearity) among the predictors. This can be assessed by a correlation matrix among the predictors. Tabachnick and Fidell (2013) suggest that as long correlation coefficients among independent variables are less than 0.90 the assumption is met.
-At the center of the logistic regression analysis is the task estimating the log odds of an event. Mathematically, logistic regression estimates a multiple linear regression function defined as:</p>
-<p><span class="math display">\[logit(p)= \log \frac{p(y=1)}{1-p(y=1)}= \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_ix_i\]</span>
-for i = 1…n .</p>
-<p>Overfitting. When selecting the model for the logistic regression analysis, another important consideration is the model fit. Adding independent variables to a logistic regression model will always increase the amount of variance explained in the log odds (typically expressed as R²). However, adding more and more variables to the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit.</p>
+<p>In statistics, the logistic model (or logit model) is used to model the probability of a certain class. Each object being detected in the image would be assigned a probability between 0 and 1, with a sum of one. Logistic regression is a statistical model that in uses a logistic function to model a binary dependent variable. In regression analysis, logistic regression is estimating the parameters of a logistic model.</p>
+<p>Binary Logistic Regression Major Assumptions:
+* The dependent variable should be dichotomous in nature.
+* There should be no outliers in the data, which can be assessed by converting the continuous predictors to standardized scores
+* There should be no high correlations (multicollinearity) among the predictors. This can be assessed by a correlation matrix among the predictors. Tabachnick and Fidell suggest that as long correlation coefficients among independent variables are less than 0.90 the assumption is met <span class="citation">(<a href="#ref-log" role="doc-biblioref">Tabachnick and Fidell 2007</a>)</span>.</p>
+<p>At the center of the logistic regression analysis is the task estimating the log odds of an event. Mathematically, logistic regression estimates a multiple linear regression function defined as:</p>
+<p><span class="math display">\[logit(p)= \log \frac{p(y=1)}{1-p(y=1)}= \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_ix_i\]</span></p>
+<p>Overfitting. When selecting the model for the logistic regression analysis, another important consideration is the model fit. Adding independent variables to a logistic regression model will always increase the amount of variance explained in the log odds (typically expressed as <span class="math inline">\(R^2\)</span>). However, adding more and more variables to the model can result in overfitting, which reduces the generalizability of the model beyond the data on which the model is fit.</p>
 </div>
 <div id="svm" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> SVM</h2>
-<p>Support vector machine try to make a reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.
-More formally, a support-vector machine constructs a hyperplane or set of hyperplanes in a high- or infinite-dimensional space, which can be used for classification, regression, or other tasks like outliers detection. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin, the lower the generalization error of the classifier.</p>
+<p>Support vector machine try to make a reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes. So we choose the hyperplane so that the distance from it to the nearest data point on each side is maximized. If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability.More formally, a support-vector machine constructs a hyperplane or set of hyperplanes in a high dimensional space, which can be used for classification, regression, or other tasks like outliers detection. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin, the lower the generalization error of the classifier.</p>
 <p>The support vector machines create an optimum hyperplane that separates the training data by the maximum margin. However, sometimes we would like to allow some misclassifications while separating categories. The SVM model has a cost function, which controls training errors and margins. For example, a small cost creates a large margin (a soft margin) and allows more misclassifications. On the other hand, a large cost creates a narrow margin (a hard margin) and permits fewer misclassifications. In this recipe, we will illustrate how the large and small cost will affect the SVM classifier.</p>
-<p>image</p>
+<p><img src="svm.PNG" style="display: block; margin: auto;" /></p>
 </div>
 <div id="classification-tree" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> classification tree</h2>
 <p>Tree-based models consist of one or more nested if-then statements for the predictors that partition the data. Within these partitions, a model is used to predict the outcome.</p>
-<p>Choosing the trees split points
-Technically, for regression modeling, the split cutoff is defined so that the residual sum of squared error (RSS) is minimized across the training samples that fall within the subpartition.</p>
-<p>Recall that, the RSS is the sum of the squared difference between the observed outcome values and the predicted ones, RSS = sum((Observeds - Predicteds)^2). See Chapter <span class="citation">(<a href="#ref-ref" role="doc-biblioref"><strong>ref?</strong></a>)</span>(linear-regression)</p>
+<p><em>Choosing the trees split points :</em></p>
+<p>Technically, for regression modeling, the split cutoff is defined so that the residual sum of squared error (RSS) is minimized across the training samples that fall within the subpartition.</p>
+<p>Recall that, the RSS is the sum of the squared difference between the observed outcome values and the predicted ones, <span class="math inline">\(RSS = \sum((Observeds - Predicteds)^2)\)</span>.</p>
 <p>In classification settings, the split point is defined so that the population in subpartitions are pure as much as possible. Two measures of purity are generally used, including the Gini index and the entropy (or information gain).</p>
-<p>For a given subpartition, Gini = sum(p(1-p)) and entropy = -1<em>sum(p</em>log(p)), where p is the proportion of misclassified observations within the subpartition.</p>
+<p>For a given subpartition, <span class="math inline">\(Gini = \sum(p(1-p))\)</span> and <span class="math inline">\(entropy = -1\times \sum(p*log(p))\)</span>, where p is the proportion of misclassified observations within the subpartition.</p>
 <p>The sum is computed across the different categories or classes in the outcome variable. The Gini index and the entropy varie from 0 (greatest purity) to 1 (maximum degree of impurity)</p>
-<p>image</p>
+<p><img src="tree.png" style="display: block; margin: auto;" /></p>
 </div>
 <div id="random-forest" class="section level2" number="3.6">
 <h2><span class="header-section-number">3.6</span> random forest</h2>
-<p>RF classifier is an ensemble method that trains several decision trees in parallel with bootstrapping followed by aggregation, jointly referred as bagging (Fig. 9.17). Bootstrapping indicates that several individual decision trees are trained in parallel on various subsets of the training dataset using different subsets of available features. Bootstrapping ensures that each individual decision tree in the random forest is unique, which reduces the overall variance of the RF classifier. For the final decision, RF classifier aggregates the decisions of individual trees; consequently, RF classifier exhibits good generalization.</p>
-<p>image</p>
-<p>parameters :</p>
-<p>mtry : number of variables randomy sampled at each split
-ntree : number of tree to grow
-nodesize : minimum number of observation in a terminal node. setting it lower heads to trees with a larger depth which means that more splits are performed until the terminal nodes. (default value is 1 for classification and 5 for regression -diaz urirarte and de andres 2006).</p>
+<p>RF classifier is an ensemble method that trains several decision trees in parallel with bootstrapping followed by aggregation, jointly referred as bagging. Bootstrapping indicates that several individual decision trees are trained in parallel on various subsets of the training dataset using different subsets of available features. Bootstrapping ensures that each individual decision tree in the random forest is unique, which reduces the overall variance of the RF classifier. For the final decision, RF classifier aggregates the decisions of individual trees; consequently, RF classifier exhibits good generalization.</p>
 </div>
 <div id="naives-bayes" class="section level2" number="3.7">
 <h2><span class="header-section-number">3.7</span> Naives bayes</h2>
@@ -310,9 +240,16 @@ nodesize : minimum number of observation in a terminal node. setting it lower he
 <p>In statistics, naive Bayes classifiers are a family of simple “probabilistic classifiers” based on applying Bayes’ theorem with strong (naïve) independence assumptions between the features</p>
 <p>Naives : The joint probability calculation is simpler for independent events. so we consider events are independent. (it will be too complexe for more than two events)</p>
 <p>Laplace correction will allow a small chance for these types of unforeseen circumstances (if joint event probabilty equals to 0.)</p>
-<p>numeric data use bins to regroup them (hour cans be group by morning/afternoon/evening, temperature can be group by hot/warm/cold)</p>
-<p>image</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lda" class="csl-entry">
+Li, Cheng. 2014. <em>Fisher Linear Discriminant Analysis</em>. Computer Science.
+</div>
+<div id="ref-log" class="csl-entry">
+Tabachnick, Barbara G., and Linda S. Fidell. 2007. <em>Using Multivariate Statistics</em>. seventh edition.
 </div>
 </div>
             </section>

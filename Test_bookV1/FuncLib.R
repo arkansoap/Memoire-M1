@@ -100,9 +100,9 @@ perf.measure <- function(pred , real, y, beta = 1)
   accuracy <- 1 - error
   dominance <- TPrate - TNrate
   Fscore <- (1+beta^2)*((TPrate*PrecisionPPV)/(((beta^2)*PrecisionPPV)+TPrate))
-  return(list( matconf = MatConf, accuracy = accuracy, FNrate = FNrate,
+  return(list( matconf = MatConf, accuracy = accuracy, TNrate = TNrate,
                TPrate = TPrate, kappa = kappa, PrecisionPPV = PrecisionPPV,
-               Fscore = Fscore, TNrate = TNrate))
+               Fscore = Fscore, TPrate = TPrate))
 }
 
 TableMetricsF <- function(pred, dat, y, listPred, mod){

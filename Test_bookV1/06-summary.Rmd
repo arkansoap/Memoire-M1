@@ -1,2 +1,36 @@
 # Summary
 
+- Random forest is globally the best performer. Before the remedies, it is already the one which give on average the best predictions. It reacts very well to pre and post processing manipulations (resampling and thresholding). In several articles, Ensemble classifiers are referred as very efficient in order to counteract imbalanced daataset.[@survey] 
+
+- Results from alternate cutoff are not as good as resampling but they have still relevant results which can be useful for the users who wants shape predictions depending his preference. thresholding can also be combine with resampling. We make the learning with resampled datas, then we shape the results with a slight trehsdolding.
+
+- The cost sensitive learning with CARTS give some significant improvement of the predictions. Even when the first results are already good, this classifier allows to refine through better detection power or false alarm according to  he user's choices.
+
+- Resampling works generally very well. However, We notice some significant differences between upsampling and downsizing. Resampling Algorithm based on oversampling seems works better in our works.
+Among oversampling method, it is hard to say which one is better than another. They give very similar results. It would asked a large study on a large range of data set to really establish a scale of the better "resampling methods" in one or another situation.
+
+## different strategies : 
+
+- Data Pre-processing : changes on the data before the learning process takes place
+    - advantages:
+        - can be applied to any existing tools 
+        - choosen models are biased to the goals of the users 
+    - inconevnient:
+        - difficult to relate modification of the data with the loss function
+
+- Special-purpose learning method : Modifications of the learning algorithm
+    - advantages : 
+        - users goals are incorporated directly into the models 
+        - model obtained more comprehensive for the users
+    - disadvantages : 
+        - user is restricted in his algorithmm choices or have to developp new algorithm
+        - if the target of the loss function changes, model must be relearned
+        - requires deep knowlegde of the learning algorithm implementation
+
+- Prediction Post-processing : transformations applied to the predictions of the learned model
+    - advantages :
+        - not necessary to know user preference biases at learning time
+        - any standard learning tool can be used
+    - drawbavks : 
+        - models do not reflect user preferences
+        - models interpretability is meaningless because loss function was not optimized following user preference bias
