@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("C:/Users/arkan/Desktop/Test_bookV1")
-source("FuncLib.R")
+setwd("C:/Users/arkan/Desktop/Memoire-M1/applications_R")
+source("FuncLib0.R")
 ```
   
 # Preparation of the data base
@@ -113,10 +113,10 @@ Training and test sets are created with random sampling. First, we split the tra
 
 ```{r}
 #posssibilité de changer les paramètres prop1, prop2, seed1, seed2
-datas <- split_standard(spot_B, "popularity", mod = "standard")
-datasNS <- split_standard(spot_B, "popularity", mod = "nonstandard")
+spot_S <- split_standard(spot_B, "popularity", mod = "standard")
+spot_NS <- split_standard(spot_B, "popularity", mod = "nonstandard")
 # verif
-sum(nrow(datas$train),nrow(datas$test),nrow(datas$eval))==nrow(spot_B)
+sum(nrow(spot_S$train),nrow(spot_S$test),nrow(spot_S$eval))==nrow(spot_B)
 ```
 
 # First Models : 
